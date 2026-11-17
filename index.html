@@ -4,6 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
+    <meta name="game-version" content="6" />
+    <meta name="theme-color" content="#0b0908" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MAISON D'OR" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230b0908'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='%23c8a24a' font-family='Georgia'%3EM%3C/text%3E%3C/svg%3E" />
+    <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22MAISON%20D'OR%20%E2%80%94%20Luxury%20Perfume%20Empire%22%2C%22short_name%22%3A%22MAISON%20D'OR%22%2C%22start_url%22%3A%22.%22%2C%22scope%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b0908%22%2C%22theme_color%22%3A%22%230b0908%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg+xml%2C%253Csvg%20xmlns='http%3A//www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%253E%253Crect%20width='100'%20height='100'%20fill='%25230b0908'/%253E%253Ctext%20x='50'%20y='70'%20font-size='58'%20text-anchor='middle'%20fill='%2523c8a24a'%20font-family='Georgia'%253EM%253C/text%253E%253C/svg%253E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image/svg+xml%22%2C%22purpose%22%3A%22any%22%7D%5D%7D" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -41,6 +49,7 @@
           linear-gradient(180deg, #0d0a08, var(--bg) 30%);
         color:var(--cream); font-family:var(--sans); font-weight:300;
         min-height:100vh; -webkit-font-smoothing:antialiased;
+        overflow-x:clip;
       }
       .wrap{ max-width:1120px; margin:0 auto; padding:0 16px 90px; }
 
@@ -243,34 +252,70 @@
       .empty{ text-align:center; padding:44px 20px; color:var(--faint); border:1px dashed var(--line-soft); border-radius:6px; }
       .empty .e-title{ font-family:var(--serif); font-size:1.25rem; color:var(--muted); margin-bottom:6px; }
 
-      /* ---------- Modals ---------- */
+      /* ---------- Modals (v5: centred, viewport-safe, internally scrollable) ---------- */
       .overlay{
-        position:fixed; inset:0; z-index:80; background:rgba(5,4,3,.72); backdrop-filter:blur(6px);
-        display:none; align-items:flex-end; justify-content:center; padding:0;
+        position:fixed; inset:0; z-index:80; background:rgba(5,4,3,.72); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+        display:none; align-items:center; justify-content:center; padding:10px; box-sizing:border-box;
       }
       .overlay.open{ display:flex; }
       .sheet{
-        background:linear-gradient(180deg, #1c1610, #120e0a); border:1px solid var(--line); border-bottom:none;
-        border-radius:14px 14px 0 0; width:100%; max-width:560px; max-height:88vh; overflow-y:auto; padding:26px 24px 30px;
+        background:linear-gradient(180deg, #1c1610, #120e0a); border:1px solid var(--line);
+        border-radius:12px; width:min(560px, calc(100vw - 20px)); max-width:100%; box-sizing:border-box;
+        max-height:92vh; max-height:92dvh; overflow-y:auto; overflow-x:hidden;
+        -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+        padding:24px 22px calc(26px + env(safe-area-inset-bottom, 0px));
         animation:sheetUp .4s cubic-bezier(.22,1,.36,1);
+        overflow-wrap:break-word;
       }
-      @media (min-width:640px){ .overlay{ align-items:center; padding:20px; } .sheet{ border-radius:10px; border-bottom:1px solid var(--line); } }
+      @media (min-width:640px){ .overlay{ padding:20px; } }
+      @media (max-width:480px){ .sheet{ padding:20px 16px calc(24px + env(safe-area-inset-bottom, 0px)); } }
       @keyframes sheetUp{ from{ transform:translateY(34px); opacity:0;} to{ transform:none; opacity:1;} }
-      .sheet h3{ font-family:var(--serif); font-size:1.5rem; margin:0 0 4px; font-weight:700; }
+      .sheet h3{ font-family:var(--serif); font-size:1.5rem; margin:0 0 4px; font-weight:700; overflow-wrap:break-word; }
       .sheet .kicker{ font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold-bright); font-weight:600; }
-      .report-table{ width:100%; border-collapse:collapse; margin:14px 0; font-size:.9rem; }
-      .report-table td, .report-table th{ padding:7px 4px; border-bottom:1px dashed rgba(243,234,216,.12); text-align:left; }
+      .report-table{ width:100%; max-width:100%; border-collapse:collapse; margin:14px 0; font-size:.9rem; table-layout:fixed; }
+      .report-table td, .report-table th{ padding:7px 4px; border-bottom:1px dashed rgba(243,234,216,.12); text-align:left; white-space:normal; overflow-wrap:break-word; word-break:break-word; }
       .report-table td:last-child, .report-table th:last-child{ text-align:right; font-variant-numeric:tabular-nums; }
       .report-table th{ color:var(--faint); font-weight:500; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; }
-      .report-total{ display:flex; justify-content:space-between; font-size:1.05rem; font-weight:500; padding:10px 0 2px; }
+      .report-total{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 14px; font-size:1.05rem; font-weight:500; padding:10px 0 2px; }
+      .report-total span{ white-space:normal; overflow-wrap:break-word; font-variant-numeric:tabular-nums; }
+      /* ---------- Weekly Report: responsive rows (v5) ---------- */
+      .rep-frag-list{ margin:14px 0 4px; }
+      .rep-frag-head, .rep-frag-row{ display:grid; grid-template-columns:minmax(0,1fr) auto auto; column-gap:14px; align-items:baseline; padding:7px 0; border-bottom:1px dashed rgba(243,234,216,.12); font-size:.9rem; }
+      .rep-frag-head{ color:var(--faint); font-weight:500; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; }
+      .rep-frag-head .rep-frag-nums, .rep-frag-row .rep-frag-nums{ display:contents; }
+      .rep-frag-name{ min-width:0; overflow-wrap:break-word; }
+      .rep-frag-units, .rep-frag-rev{ text-align:right; font-variant-numeric:tabular-nums; white-space:normal; overflow-wrap:break-word; }
+      .rep-frag-rev{ font-weight:500; }
+      .rep-units-label, .rep-frag-sep{ display:none; }
+      .rep-units-label{ font-style:normal; }
+      .rep-summary{ margin:6px 0 0; }
+      .rep-sum-row{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:4px 14px; padding:7px 0; border-bottom:1px dashed rgba(243,234,216,.12); font-size:.9rem; }
+      .rep-sum-label{ flex:1 1 150px; min-width:0; overflow-wrap:break-word; }
+      .rep-sum-val{ text-align:right; font-variant-numeric:tabular-nums; white-space:normal; overflow-wrap:break-word; word-break:break-word; font-weight:500; }
+      .rep-rivals-val{ display:flex; flex-direction:column; gap:2px; }
+      .rep-rival-line{ display:block; white-space:normal; overflow-wrap:break-word; }
+      .stockout-warning{ margin:12px 0 4px; padding:10px 12px; border:1px solid rgba(217,138,126,.55); background:rgba(217,138,126,.13); color:#f2c6bc; border-radius:5px; font-size:.88rem; line-height:1.5; font-weight:500; white-space:normal; overflow-wrap:break-word; }
+      .badge.low-stock{ color:#f2b8a9; border-color:rgba(217,138,126,.65); background:rgba(217,138,126,.16); font-weight:600; text-transform:none; letter-spacing:.03em; font-size:.72rem; white-space:normal; }
+      @media (max-width:480px){
+        .rep-frag-head{ display:none; }
+        .rep-frag-row{ display:block; padding:9px 0; }
+        .rep-frag-row .rep-frag-nums{ display:block; margin-top:2px; }
+        .rep-frag-name{ display:block; font-weight:500; }
+        .rep-frag-units, .rep-frag-rev{ text-align:left; }
+        .rep-units-label, .rep-frag-sep{ display:inline; }
+        .rep-sum-row{ font-size:.88rem; }
+        .rep-rivals-val{ align-items:flex-end; }
+      }
       .choice-btn{
-        display:block; width:100%; text-align:left; margin-top:10px; padding:14px 16px; cursor:pointer;
+        display:block; width:100%; max-width:100%; box-sizing:border-box; text-align:left; margin-top:10px; padding:14px 16px; cursor:pointer;
         background:var(--panel); border:1px solid var(--line-soft); border-radius:6px; color:var(--cream); font-family:var(--sans);
         transition:border-color .2s, background .2s;
       }
       .choice-btn:hover{ border-color:var(--gold); background:rgba(200,162,74,.1); }
-      .choice-btn .c-label{ font-weight:500; font-size:.98rem; display:block; }
-      .choice-btn .c-desc{ color:var(--muted); font-size:.83rem; display:block; margin-top:3px; line-height:1.45; }
+      .choice-btn .c-label{ font-weight:500; font-size:.98rem; display:block; white-space:normal; overflow-wrap:break-word; }
+      .choice-btn .c-desc{ color:var(--muted); font-size:.83rem; display:block; margin-top:3px; line-height:1.45; white-space:normal; overflow-wrap:break-word; }
+      /* Last choice in any sheet always clears the bottom edge + home indicator */
+      .sheet > *:last-child{ margin-bottom:2px; }
 
       /* ---------- Toasts ---------- */
       #toasts{ position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:120; display:flex; flex-direction:column; gap:8px; width:min(92vw, 430px); pointer-events:none; }
@@ -310,6 +355,13 @@
         .empty{ padding:26px 16px; }
       }
     
+      .swatch{display:inline-block;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);vertical-align:middle;margin-bottom:6px}
+      details.ph{margin-top:12px;border-top:1px dashed rgba(243,234,216,.12);padding-top:8px}
+      details.ph summary{cursor:pointer;color:var(--gold-bright);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:4px 0}
+      .mission-card{border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:0 0 14px;background:linear-gradient(120deg, rgba(200,162,74,.12), rgba(243,234,216,.03));font-size:.92rem;line-height:1.55}
+      .mission-card b{color:var(--gold-bright)}
+      select{background:rgba(0,0,0,.35);color:var(--cream);border:1px solid var(--line-soft);border-radius:3px;padding:9px 10px;font-family:var(--sans);font-size:.9rem;width:100%;min-height:2.25rem}
+      #nameWarn{color:#e0b184;font-size:.8rem;line-height:1.45;margin:8px 0 0;display:none}
       .shake{animation:shake .5s ease}
       @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
       .pulse-hot{animation:pulseGold 1.8s infinite}
@@ -332,6 +384,39 @@
       .trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
       .trophy{opacity:.45}.trophy.unlocked{opacity:1;border-color:var(--gold)}
       @media (prefers-reduced-motion: reduce){.shake,.pulse-hot{animation:none}}
+
+      /* ---------- v6 Wave 3 (items 33-48) ---------- */
+      #thumbBar{ display:none; }
+      @media (max-width:860px){
+        #thumbBar{ display:flex; gap:8px; align-items:stretch; position:fixed; left:0; right:0; bottom:0; z-index:65; padding:8px 10px calc(8px + env(safe-area-inset-bottom, 0px)); background:rgba(11,9,8,.96); border-top:1px solid var(--line); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+        .wrap{ padding-bottom:180px; }
+        #toasts{ bottom:86px; }
+      }
+      body.modal-open #thumbBar{ display:none !important; }
+      #thumbBar .tb-adv{ flex:1; height:46px; width:auto; }
+      #thumbBar .tb-quick{ flex:0 0 34%; font-family:var(--sans); cursor:pointer; font-weight:600; letter-spacing:.08em; font-size:.74rem; text-transform:uppercase; color:var(--gold-bright); background:rgba(200,162,74,.1); border:1px solid var(--line); border-radius:2px; height:46px; }
+      #thumbBar .tb-quick:active{ transform:scale(.98); }
+      #edgeFlash{ position:fixed; inset:0; z-index:95; pointer-events:none; opacity:0; box-shadow:inset 0 0 90px 18px rgba(200,162,74,.85), inset 0 0 22px 4px rgba(236,210,138,.9); }
+      body.big-numbers .hstat .val{ font-size:1.34rem; }
+      body.big-numbers .hstat label{ font-size:.62rem; }
+      body.big-numbers .goal-line{ font-size:.84rem; }
+      .grid.perfumes.compact{ grid-template-columns:1fr; }
+      .compact-row{ display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; padding:12px 14px; }
+      .compact-row .cr-main{ flex:1 1 130px; min-width:110px; }
+      .compact-row .cr-main b{ font-family:var(--serif); font-size:1.02rem; display:block; }
+      .compact-row .cr-main small{ color:var(--muted); font-size:.74rem; }
+      .compact-row .cr-num{ font-variant-numeric:tabular-nums; font-weight:500; font-size:.9rem; white-space:nowrap; }
+      .compact-row .cr-num label{ display:block; font-size:.52rem; letter-spacing:.2em; text-transform:uppercase; color:var(--faint); font-weight:400; }
+      .compact-row .cr-step{ display:flex; gap:6px; margin-left:auto; }
+      .compact-row .cr-step .btn{ padding:6px 13px; font-size:.85rem; }
+      .menu-dropdown{ max-height:72vh; overflow-y:auto; min-width:238px; }
+      .slot-item .slot-sum{ display:block; font-size:.7rem; color:var(--faint); margin-top:2px; letter-spacing:.02em; text-transform:none; }
+      #updateNotice{ position:fixed; left:50%; transform:translateX(-50%); bottom:18px; z-index:140; display:flex; align-items:center; gap:10px; background:rgba(24,19,13,.97); border:1px solid var(--gold); border-radius:6px; padding:10px 12px; font-size:.85rem; color:var(--cream); box-shadow:0 12px 34px rgba(0,0,0,.55); width:min(94vw, 520px); }
+      #updateNotice[hidden]{ display:none; }
+      @media (max-width:860px){ #updateNotice{ bottom:84px; } body.modal-open #updateNotice{ bottom:18px; } }
+      #updateNotice span{ flex:1; line-height:1.4; }
+      #btnUpdateNow{ font-family:var(--sans); cursor:pointer; font-weight:600; font-size:.78rem; letter-spacing:.06em; color:#191104; background:linear-gradient(160deg,#ecd28a,var(--gold)); border:1px solid var(--gold-bright); border-radius:3px; padding:8px 12px; white-space:nowrap; min-height:2.25rem; }
+      #btnUpdateDismiss{ font-family:var(--sans); cursor:pointer; background:none; border:none; color:var(--muted); font-size:1rem; padding:6px 8px; min-height:2.25rem; }
     </style>
   </head>
   <body>
@@ -341,23 +426,31 @@
       <header class="hud">
         <div class="hud-in">
           <div class="hud-line1">
-            <div class="brand-compact">MAISON <em>D'OR</em><span class="ver-badge">v4</span></div>
+            <div class="brand-compact">MAISON <em>D'OR</em><span class="ver-badge">v6</span></div>
             <div class="hud-week"><b id="hudWeekLabel">Week 1</b> · <span id="hudSeason">Spring · Year 1</span></div>
             <div class="menu-wrap">
               <button class="menu-btn" id="btnMenu" aria-haspopup="true" aria-expanded="false">Menu ⋯</button>
               <div class="menu-dropdown" id="menuDropdown" hidden>
-                <div class="menu-ver">MAISON D'OR · Version v4</div>
+                <div class="menu-ver">MAISON D'OR · Version v6</div>
                 <button class="menu-item" id="btnExportTop">⇩&nbsp; Export Save</button>
                 <button class="menu-item" id="btnImportTop">⇧&nbsp; Import Save</button>
                 <button class="menu-item" id="btnNewGameTop">New Game</button>
                 <button class="menu-item" id="btnCheckUpdates">Check for updates — reload</button>
+                <div class="menu-ver">Empire &amp; Display</div>
+                <button class="menu-item" id="btnQuickWeekMenu">⚡&nbsp; Quick Week</button>
+                <button class="menu-item" id="btnShareEmpireMenu">Share My Empire</button>
+                <button class="menu-item" id="btnBigNumbers">Big Numbers: Off</button>
+                <button class="menu-item" id="btnInstall">Install App</button>
+                <div class="menu-ver">Save Slots</div>
+                <div id="slotList"></div>
+                <div class="menu-ver" id="savedStamp">Saved · —</div>
               </div>
             </div>
           </div>
           <div class="hud-line2">
             <div class="hstat"><label>Cash</label><span class="val gold" id="hudCash">$5,000</span></div>
             <div class="hstat"><label>Net Worth</label><span class="val" id="hudWorth">$5,000</span></div>
-            <div class="hstat prestige-inline"><label>Prestige · <span id="hudPrestigeVal">10</span>/100</label>
+            <div class="hstat prestige-inline"><label>Prestige · <span id="hudTitle">Artisan</span> · <span id="hudPrestigeVal">10</span>/100</label>
               <span class="prestige-row"><span class="prestige-bar"><span class="prestige-fill" id="hudPrestigeBar" style="display:block;width:10%"></span></span></span>
             </div>
           </div>
@@ -382,7 +475,13 @@
       <!-- ================= SHOWROOM ================= -->
       <section class="panel active" id="panel-showroom">
         <h2 class="sec">The <i>Showroom</i></h2>
-        <p class="sec-sub">Up to four fragrances on the market — tune prices, watch sales, retire faded scents.</p>
+        <p class="sec-sub">Your active collection — tune prices, watch sales, retire faded scents.</p>
+        <div id="missionCard"></div>
+        <div class="flex-row" style="margin-bottom:12px">
+          <button class="btn" id="btnViewToggle">View: Detailed</button>
+          <button class="btn" id="btnShareEmpire">Share My Empire</button>
+        </div>
+        <div id="featurePanel"></div>
         <div class="empty" id="showroomEmpty" style="display:none">
           <div class="e-title">The shelves are bare</div>
           <p>Your boutique has nothing to sell. Compose your first fragrance in the Scent Lab and give the maison its signature.</p>
@@ -390,6 +489,7 @@
         </div>
         <h3 class="step" id="shelfHead">Bottle Collection Shelf</h3><div class="shelf" id="bottleShelf"></div>
         <div class="grid perfumes" id="perfumeGrid"></div>
+        <h3 class="step">Gift Set · Bundle Two Scents</h3><div id="giftPanel"></div>
         <h3 class="step" id="rivalHead">Rival Board · Weekly Movement</h3><div class="grid three" id="rivalBoard"></div>
       </section>
 
@@ -421,17 +521,23 @@
               <div class="bottle-shadow"></div>
             </div>
             <div class="kv"><span>Scent Profile</span><span id="labProfile">Awaiting notes…</span></div>
+            <div id="labSynergy" style="margin:6px 0 2px"></div>
             <div class="kv"><span>Unit Cost</span><span id="labCost">—</span></div>
             <div class="kv"><span>Suggested Price</span><span id="labSuggested">—</span></div>
             <div class="kv"><span>Launch Run (25 units)</span><span id="labFee">—</span></div>
             <h3 class="step" style="margin-top:20px">Concentration</h3><div class="opt-grid" id="concOpts"></div>
             <h3 class="step">Signature Accord <span id="sigHint">— unlock via R&amp;D</span></h3><div class="opt-grid" id="sigOpts"></div>
+            <h3 class="step" style="margin-top:20px">Bottle Colour <span>— the liquid</span></h3><div class="opt-grid" id="colourOpts"></div>
+            <h3 class="step" style="margin-top:20px">Test Panel <span>— virtual testers, before you launch</span></h3><div id="testPanel"></div>
             <button class="btn block" id="labLimitedBtn" style="margin-top:14px">Limited Edition: OFF — tap for 3-week 1.5× drop</button>
+            <button class="btn block" id="labBlindBtn" style="margin-top:8px">🎲 Blind Creation — Randomise 3 Notes</button>
+            <p id="blindNote" style="display:none;color:var(--gold-bright);font-size:.8rem;line-height:1.5;margin:8px 0 0">🎲 <b>Blind draft active</b> — these notes were chosen by fate. Launch it and sell 50+ lifetime units to win a +4 Prestige bonus. Picking a note yourself cancels the blind draft.</p>
             <h3 class="step" style="margin-top:20px">Name the Fragrance</h3>
             <div class="flex-row">
               <input type="text" id="labName" class="grow" maxlength="28" placeholder="e.g. Velours de Minuit" />
               <button class="btn" id="btnRandomName" title="Generate a random luxury name">⚄ Random</button>
             </div>
+            <p id="nameWarn" role="alert"></p>
             <h3 class="step">Retail Price · <span id="labPriceVal">$120</span></h3>
             <input type="range" id="labPrice" min="40" max="500" step="5" value="120" />
             <div class="kv"><span>Profit / Unit</span><span id="labUnitProfit">—</span></div>
@@ -441,6 +547,8 @@
             <p style="color:var(--faint); font-size:.78rem; text-align:center; margin:10px 0 0" id="labSlots"></p>
           </aside>
         </div>
+        <h3 class="step">Formula Vault <span>— discontinued formulas, kept forever</span></h3>
+        <div id="vaultPanel"></div>
       </section>
 
       <!-- ================= MARKETING & EMPIRE ================= -->
@@ -459,6 +567,10 @@
           </div>
         </div>
 
+        <h3 class="step">The Perfumery Team</h3>
+        <div id="perfumerPanel"></div>
+
+        <div id="scandalPanel"></div>
         <h3 class="step">Campaigns</h3>
         <div class="grid three" id="campaignList"></div>
 
@@ -468,11 +580,15 @@
         <h3 class="step">R&amp;D Laboratory</h3>
         <div class="grid three" id="rdList"></div>
 
+        <h3 class="step">House Upgrades · Loyalty, Quality &amp; Reach</h3>
+        <div class="grid three" id="upgradeList"></div>
+
         <h3 class="step">Seasonal Campaigns</h3><div class="grid three" id="seasonalList"></div>
         <h3 class="step">Boutique Cities · Expansion Buffs</h3><div class="grid three" id="cityList"></div><p style="color:var(--muted);font-size:.86rem" id="cityBuffs"></p>
         <h3 class="step">Finance · Loans &amp; Investors</h3><div class="grid two" id="financePanel"></div>
         <h3 class="step">PR Crisis Meter</h3><div class="card" id="prPanel"></div>
         <h3 class="step">Active Story Arcs</h3><div class="card" id="arcPanel"></div>
+        <h3 class="step">Arch-Rival</h3><div class="card" id="archPanel"></div>
         <h3 class="step">Market Trend Intelligence</h3>
         <div class="card" id="trendIntel"></div>
       </section>
@@ -501,8 +617,8 @@
         <p style="color:var(--faint); font-size:.82rem; margin-top:10px">Export downloads your empire as a JSON file — import it on any device to pick up exactly where you left off. New Game erases this maison and begins again at Week 1 with $5,000.</p>
       </section>
 
-      <section class="panel" id="panel-trophies"><h2 class="sec">Trophies &amp; <i>Achievements</i></h2><p class="sec-sub">Milestones of the maison — unlocked trophies glow gold.</p><div class="trophy-grid" id="trophyGrid"></div><div class="divider"></div><h3 class="step">Award Season</h3><div class="card" id="awardPanel"></div></section>
-      <p class="foot">MAISON D'OR · v4 · A luxury perfume empire simulation · Progress saves automatically in this browser</p>
+      <section class="panel" id="panel-trophies"><h2 class="sec">Trophies &amp; <i>Achievements</i></h2><p class="sec-sub">Milestones of the maison — unlocked trophies glow gold.</p><div class="trophy-grid" id="trophyGrid"></div><div class="divider"></div><h3 class="step">Personal Best Board</h3><div class="card" id="bestsPanel"></div><div class="divider"></div><h3 class="step">Award Season</h3><div class="card" id="awardPanel"></div></section>
+      <p class="foot">MAISON D'OR · v6 · A luxury perfume empire simulation · Progress saves automatically in this browser</p>
     </div>
 
     <!-- ================= REPORT MODAL ================= -->
@@ -512,6 +628,7 @@
         <h3 id="reportTitle">Week 1 Results</h3>
         <div id="reportBody"></div>
         <button class="btn solid block" id="btnReportClose" style="margin-top:18px">Continue</button>
+        <button class="btn block" id="btnShareRecap" style="margin-top:8px">Share Recap</button>
       </div>
     </div>
 
@@ -532,6 +649,8 @@
         <h3 style="font-size:2rem">A Global Luxury Empire</h3>
         <p style="color:var(--muted); line-height:1.65">From a boutique pop-up to the summit of the fragrance world. MAISON D'OR now stands at <b style="color:var(--gold-bright)">100 Prestige</b> with a net worth beyond <b style="color:var(--gold-bright)">$1,000,000</b> — a house spoken of in the same breath as the great Parisian maisons.</p>
         <p style="color:var(--muted); line-height:1.65">The empire is yours to keep growing, season after season.</p>
+        <h4 id="winEndingTitle" style="font-family:var(--serif);color:var(--gold-bright);font-size:1.3rem;margin:16px 0 4px"></h4>
+        <p id="winEndingText" style="color:var(--muted); line-height:1.65"></p>
         <button class="btn solid block" id="btnWinClose" style="margin-top:14px">Continue in Endless Mode</button>
       </div>
     </div>
@@ -541,12 +660,81 @@
       <div class="sheet">
         <span class="kicker">New Game</span>
         <h3>Begin a new maison?</h3>
-        <p style="color:var(--muted); line-height:1.6">This permanently erases the current empire and starts again at Week 1. Choose a mode:</p>
+        <p style="color:var(--muted); line-height:1.6">This permanently erases the current empire in <b id="confirmSlotNote" style="color:var(--cream)">Save Slot 1</b> — your other slots and your Personal Best Board are untouched — and starts again at Week 1. Choose a mode:</p>
         <div style="display:grid;gap:8px;margin:12px 0"><label style="color:var(--muted)"><input type="radio" name="challenge" value="normal" checked> Normal — $5,000 start</label><label style="color:var(--muted)"><input type="radio" name="challenge" value="hard"> $1,000 Hard Mode — start with $1,000</label><label style="color:var(--muted)"><input type="radio" name="challenge" value="nomarketing"> No Marketing Run — campaigns disabled</label><label style="color:var(--muted)"><input type="radio" name="challenge" value="winter"> Winter-Only House — winter demand all year</label></div>
         <div class="flex-row" style="margin-top:16px">
           <button class="btn danger grow" id="btnConfirmReset">Yes, Start Over</button>
           <button class="btn ghost grow" id="btnCancelReset">Keep Playing</button>
         </div>
+      </div>
+    </div>
+
+    <!-- ================= RESCUE MODAL (v6) ================= -->
+    <div class="overlay" id="rescueOverlay">
+      <div class="sheet">
+        <span class="kicker">Bankruptcy Safety Net · One-Time Offer</span>
+        <h3>An Investor Offers a Rescue</h3>
+        <p style="color:var(--muted); line-height:1.6">The maison's cash has fallen below $0. A private investor will inject <b style="color:var(--gold-bright)">$20,000</b> today in exchange for <b style="color:var(--gold-bright)">20% equity</b> and −5 Prestige. This offer comes once in the life of the maison — and it will be recorded in the Ledger.</p>
+        <button class="choice-btn" id="btnRescueAccept"><span class="c-label">Accept the rescue — +$20,000</span><span class="c-desc">Sell 20% equity, −5 Prestige, and keep the maison alive.</span></button>
+        <button class="choice-btn" id="btnRescueDecline"><span class="c-label">Decline and trade on</span><span class="c-desc">No cash injection. The offer will not come again.</span></button>
+      </div>
+    </div>
+
+    <!-- ================= v6 Wave 3: THUMB BAR / FLASH / UPDATE NOTICE ================= -->
+    <div id="thumbBar" role="navigation" aria-label="Quick week actions">
+      <button id="btnQuickWeek" class="tb-quick">⚡ Quick Week</button>
+      <button id="btnAdvanceThumb" class="btn-advance tb-adv">Advance Week ▸</button>
+    </div>
+    <div id="edgeFlash" aria-hidden="true"></div>
+    <div id="updateNotice" hidden>
+      <span>Update available — a newer version of MAISON D'OR is live.</span>
+      <button id="btnUpdateNow">Tap to update</button>
+      <button id="btnUpdateDismiss" aria-label="Dismiss update notice">✕</button>
+    </div>
+
+    <!-- ================= QUICK WEEK MODAL (item 37) ================= -->
+    <div class="overlay" id="quickOverlay">
+      <div class="sheet">
+        <span class="kicker">Quick Week · Summary</span>
+        <h3 id="quickTitle">Week in Brief</h3>
+        <div id="quickBody"></div>
+        <button class="btn solid block" id="btnQuickClose" style="margin-top:16px">Done</button>
+      </div>
+    </div>
+
+    <!-- ================= COMEBACK MODAL (item 44) ================= -->
+    <div class="overlay" id="comebackOverlay">
+      <div class="sheet" style="text-align:center">
+        <span class="kicker">While You Were Away</span>
+        <h3>Welcome Back to the Maison</h3>
+        <p id="comebackText" style="color:var(--muted); line-height:1.65"></p>
+        <button class="btn solid block" id="btnComebackCollect" style="margin-top:14px">Collect Bonus</button>
+      </div>
+    </div>
+
+    <!-- ================= SHARE CARD MODAL (items 41-42) ================= -->
+    <div class="overlay" id="shareOverlay">
+      <div class="sheet" style="text-align:center">
+        <span class="kicker">Share Card</span>
+        <h3 id="shareTitle">My Empire</h3>
+        <img id="shareImg" alt="MAISON D'OR share card" style="width:100%;height:auto;border:1px solid var(--line);border-radius:6px;margin-top:8px" />
+        <div class="flex-row" style="margin-top:14px">
+          <button class="btn solid grow" id="btnShareDownload">Download PNG</button>
+          <button class="btn grow" id="btnShareNative" style="display:none">Share…</button>
+          <button class="btn ghost" id="btnShareClose">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= INSTALL MODAL (item 46) ================= -->
+    <div class="overlay" id="installOverlay">
+      <div class="sheet">
+        <span class="kicker">Install App</span>
+        <h3>Play MAISON D'OR Like an App</h3>
+        <p style="color:var(--muted); line-height:1.65">Add the game to your home screen and it opens full-screen with its own icon — no browser bar, and your empire is right where you left it.</p>
+        <p style="color:var(--muted); line-height:1.65"><b style="color:var(--cream)">Android (Chrome):</b> tap the browser's ⋮ menu, then <b style="color:var(--cream)">Add to Home screen</b> (or “Install app”).</p>
+        <p style="color:var(--muted); line-height:1.65"><b style="color:var(--cream)">iPhone (Safari):</b> tap the Share button, then <b style="color:var(--cream)">Add to Home Screen</b>.</p>
+        <button class="btn solid block" id="btnInstallClose" style="margin-top:12px">Got It</button>
       </div>
     </div>
 
@@ -563,7 +751,8 @@ const TOPS = [
   { name:"Pink Pepper", fam:"Spicy",    cost:8,  desc:"A rosy spark of spice that turns heads." },
   { name:"Sea Salt",    fam:"Aquatic",  cost:5,  desc:"Mineral sea air off the Amalfi coast." },
   { name:"Mandarin",    fam:"Fresh",    cost:5,  desc:"Sun-ripened, juicy and effortlessly clean." },
-  { name:"Cardamom",    fam:"Aromatic", cost:9,  desc:"Cool green spice from Guatemalan pods." }
+  { name:"Cardamom",    fam:"Aromatic", cost:9,  desc:"Cool green spice from Guatemalan pods." },
+  { name:"Monsoon Mint", fam:"Fresh",   cost:6,  desc:"Rain-cooled mint leaf, green and electric.", season:"Summer" }
 ];
 const HEARTS = [
   { name:"Tuberose", fam:"Floral", cost:13, desc:"Creamy tuberose — opulent white floral." },
@@ -574,7 +763,8 @@ const HEARTS = [
   { name:"Jasmine Sambac",fam:"Floral",   cost:10, desc:"Intoxicating white petals, warm and sensual." },
   { name:"Iris Root",     fam:"Powdery",  cost:11, desc:"Six years aged for its violet-soft powder." },
   { name:"Saffron",       fam:"Spicy",    cost:16, desc:"The world's costliest spice, crimson threads." },
-  { name:"Lavender",      fam:"Aromatic", cost:7,  desc:"High-altitude Provence lavender, serene." }
+  { name:"Lavender",      fam:"Aromatic", cost:7,  desc:"High-altitude Provence lavender, serene." },
+  { name:"Winter Saffron Reserve", fam:"Spicy", cost:18, desc:"Cellar-aged saffron threads, deeper and darker.", season:"Winter" }
 ];
 const BASES = [
   { name:"Patchouli", fam:"Woody", cost:11, desc:"Earthy patchouli, dark chocolate depth." },
@@ -621,7 +811,39 @@ const ALL_FAMS = ["Citrus","Spicy","Aquatic","Fresh","Aromatic","Floral","Powder
 const CONCS=[{id:"EDT",name:"Eau de Toilette (EDT)",costMult:1,capMult:0.8,demand:1,desc:"Light, fresh, lower price ceiling."},{id:"EDP",name:"Eau de Parfum (EDP)",costMult:1.25,capMult:1,demand:1.12,desc:"Balanced richness and longevity."},{id:"Extrait",name:"Parfum Extrait",costMult:1.6,capMult:1.3,demand:1.28,desc:"Highest concentration — costliest, longest hype, highest ceiling."}];
 const SIGNATURES=[{rd:1,name:"Golden Amber",desc:"+20% demand"},{rd:2,name:"Royal Oud Resin",desc:"+20% demand"},{rd:3,name:"Diamond Musk",desc:"+20% demand"},{rd:4,name:"Eternal Saffron Veil",desc:"+20% demand"}];
 const CITIES=[{id:"dubai",name:"Dubai",cost:20000,fams:["Gourmand","Amber"],desc:"Gourmand & Amber +30% demand in Dubai."},{id:"paris",name:"Paris",cost:25000,fams:["Floral"],desc:"Floral +30% demand in Paris."},{id:"tokyo",name:"Tokyo",cost:22000,fams:["Clean","Fresh","Green"],desc:"Clean, Fresh & Green +30% demand in Tokyo."}];
+/* ==================== v6 Wave 2 DATA ==================== */
+const CITY_MANAGERS = { dubai:"Layla Haddad", paris:"Camille Renaud", tokyo:"Yuki Tanaka" };
+const MGR_GOOD = ["landed a hotel amenities contract","charmed a wedding party into a bulk order","won a local magazine's best-boutique vote","negotiated a rent rebate from the landlord","hosted an influencer morning that sold out the shelf","signed a department-store pop-up for next season"];
+const MGR_BAD = ["over-ordered gift wrap for the season","lost a display flacon to a clumsy influencer","had to discount slow stock to clear the shelf","paid express freight after a delivery mix-up","comped a VIP after a spill in-store","double-booked the private salon and refunded a client"];
+const SENIOR_PERFUMER_NAME = "Élise Moreau";
 const SEASONAL_CAMPS=[{id:"eid",name:"Ramadan / Eid Gift Sets",cost:1800,weeks:2,season:"Spring",desc:"Gift sets for Ramadan & Eid — temporary demand spike +50%."},{id:"valentine",name:"Valentine\u2019s Collection",cost:1500,weeks:2,season:"Winter",desc:"Romantic February gifting spike +50% in the Winter window."},{id:"christmas",name:"Christmas Gift Sets",cost:2200,weeks:2,season:"Winter",desc:"Festive gift sets — demand spike +60% in Winter."}];
+/* ==================== v6 DATA ==================== */
+const SYNERGIES = [
+  ["Damask Rose","Aged Oud"], ["Bergamot","Lavender"], ["Madagascar Vanilla","Ambergris"], ["Saffron","Aged Oud"],
+  ["Jasmine Sambac","Mysore Sandalwood"], ["Pink Pepper","Damask Rose"], ["Iris Root","White Musk"], ["Fig Leaf","Fig"],
+  ["Winter Saffron Reserve","Aged Oud"]
+];
+function hasSynergy(names){ const set = (names||[]).filter(Boolean); return SYNERGIES.some(pair => pair.every(n => set.includes(n))); }
+const COLOURS = [
+  { name:"Amber Gold", css:"linear-gradient(180deg, rgba(240,200,90,.4), rgba(200,140,30,.75))" },
+  { name:"Rose Blush", css:"linear-gradient(180deg, rgba(245,175,200,.4), rgba(205,95,140,.7))" },
+  { name:"Noir Smoke", css:"linear-gradient(180deg, rgba(90,85,80,.5), rgba(25,22,20,.85))" },
+  { name:"Emerald", css:"linear-gradient(180deg, rgba(120,220,170,.35), rgba(30,130,85,.7))" },
+  { name:"Sapphire", css:"linear-gradient(180deg, rgba(120,170,240,.35), rgba(35,80,170,.7))" },
+  { name:"Royal Violet", css:"linear-gradient(180deg, rgba(190,150,240,.4), rgba(110,60,180,.7))" },
+  { name:"Ruby", css:"linear-gradient(180deg, rgba(240,120,120,.4), rgba(165,30,45,.72))" },
+  { name:"Ivory Pearl", css:"linear-gradient(180deg, rgba(250,246,235,.55), rgba(205,195,170,.65))" }
+];
+function colourCss(name){ const c = COLOURS.find(x=>x.name===name); return c ? c.css : ""; }
+const STOCK_CAPS = [60, 150, 300, 600];
+function stockCap(){ return STOCK_CAPS[clamp(S.tier||0, 0, STOCK_CAPS.length-1)]; }
+function scentCap(){ return S.juniorPerfumer ? 5 : 4; }
+const PERFUMER_FEE = 3000, PERFUMER_SALARY = 250, CLONE_COST = 2500;
+const RIVAL_HITS = {
+  "Noir Paris": { name:"Ombre Impériale", top:"Bergamot", heart:"Damask Rose", base:"Aged Oud" },
+  "Velour": { name:"Velours de Soie", top:"Mandarin", heart:"Jasmine Sambac", base:"Madagascar Vanilla" },
+  "Maison Verre": { name:"Verre Marin", top:"Sea Salt", heart:"Violet Leaf", base:"White Musk" }
+};
 const ACHIEVEMENTS=[{id:"rev10k",name:"First $10k Week",desc:"Earn $10,000 revenue in one week",test:s=>s.ledger.some(w=>w.revenue>=10000)},{id:"units100",name:"First 100 Units",desc:"Sell 100 units total",test:s=>s.totalUnits>=100},{id:"four",name:"Full Showroom",desc:"Have 4 active scents",test:s=>s.perfumes.length>=4},{id:"empire",name:"Global Empire",desc:"Reach the win goal",test:s=>!!s.won},{id:"prestige50",name:"Prestige 50",desc:"Reach 50 Prestige",test:s=>s.prestige>=50},{id:"rev100k",name:"$100k Lifetime Revenue",desc:"Reach $100,000 lifetime revenue",test:s=>s.totalRevenue>=100000},{id:"debtfree",name:"Debt-Free Growth",desc:"Reach Week 12 with no debt",test:s=>s.week>=12&&!s.debt},{id:"limited",name:"Limited Drop",desc:"Launch a Limited Edition scent",test:s=>!!s.launchedLimited}];
 const FAM_COLORS = {
   Citrus:"linear-gradient(180deg, rgba(240,200,90,.35), rgba(230,170,40,.65))",
@@ -642,7 +864,45 @@ const NAME_A = ["Velours","Nuit","Soleil","Éclat","Impérial","Opulence","Ambre
 const NAME_B = ["d'Or","de Minuit","Royal","Secret","Éternel","Suprême","de Lune","Velvet","Noire","de Paris","Absolu","Enchanté","de Soie","Impérial","Solitaire","de Nuit"];
 
 /* ==================== STATE ==================== */
-const SAVE_KEY = "maison-dor-save-v1";
+/* ---------- v6 Wave 3: save slots / prefs / personal bests / meta (items 36, 40, 43, 44, 48) ---------- */
+const LEGACY_SAVE_KEY = "maison-dor-save-v1";
+const SLOT_PREFIX = "maison-dor-slot-";
+const ACTIVE_SLOT_KEY = "maison-dor-active-slot";
+const BESTS_KEY = "maison-dor-bests";
+const PREFS_KEY = "maison-dor-prefs";
+const LASTSEEN_KEY = "maison-dor-lastseen";
+const GAME_VERSION = 6;
+let SAVE_KEY = LEGACY_SAVE_KEY;
+let activeSlot = 1;
+function slotKey(n){ return SLOT_PREFIX + n; }
+let prefs = { compact:false, bigNumbers:false };
+let bests = { bestWeekProfit:0, bestWeekProfitWeek:0, bestScentName:"", bestScentRevenue:0, fastestWin:0, highestNetWorth:0 };
+/* Item 45: Prestige Titles — six bands, Artisan to Icon */
+function prestigeTitle(p){ p = Math.round(Number(p)||0); if(p>=100) return "Icon"; if(p>=80) return "Luminary"; if(p>=60) return "Tastemaker"; if(p>=40) return "Connoisseur"; if(p>=20) return "Perfumer"; return "Artisan"; }
+function loadPrefs(){ try{ const pr = JSON.parse(localStorage.getItem(PREFS_KEY)); if(pr && typeof pr === "object") prefs = { compact:!!pr.compact, bigNumbers:!!pr.bigNumbers }; }catch(e){} }
+function savePrefs(){ try{ localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); }catch(e){} }
+function loadBests(){ try{ const b = JSON.parse(localStorage.getItem(BESTS_KEY)); if(b && typeof b === "object") bests = Object.assign(bests, b); }catch(e){} }
+function saveBests(){ try{ localStorage.setItem(BESTS_KEY, JSON.stringify(bests)); }catch(e){} }
+function updateBestsFromWeek(profit, weekPlayed){
+  let changed = false;
+  if(typeof profit === "number" && isFinite(profit) && profit > (bests.bestWeekProfit||0)){ bests.bestWeekProfit = Math.round(profit); bests.bestWeekProfitWeek = weekPlayed; changed = true; }
+  const nw = netWorth();
+  if(nw > (bests.highestNetWorth||0)){ bests.highestNetWorth = nw; changed = true; }
+  (S.perfumes||[]).forEach(p => { if((p.lifetimeRevenue||0) > (bests.bestScentRevenue||0)){ bests.bestScentRevenue = Math.round(p.lifetimeRevenue); bests.bestScentName = p.name; changed = true; } });
+  if(changed) saveBests();
+}
+/* Item 40: Last Saved stamp — refreshed on every save */
+function updateSavedStamp(){ const el = document.getElementById("savedStamp"); if(el){ const d = new Date(); const hh = String(d.getHours()).padStart(2,"0"), mm = String(d.getMinutes()).padStart(2,"0"); el.textContent = "Saved · Week " + S.week + " · " + hh + ":" + mm + " · Slot " + activeSlot; } }
+/* Item 39: Gold Edge Flash — intensity scales with the week's profit; never blocks taps */
+function goldFlash(profit){
+  try{
+    if(document.querySelector(".overlay.open")) return;
+    if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = document.getElementById("edgeFlash"); if(!el || !el.animate) return;
+    const k = profit > 0 ? clamp(0.25 + profit/45000, 0.25, 0.95) : 0.12;
+    el.animate([{ opacity:0 }, { opacity:k, offset:0.22 }, { opacity:0 }], { duration:950, easing:"ease-out" });
+  }catch(e){}
+}
 let uidC = 1;
 function defaultState(){
   return {
@@ -654,11 +914,17 @@ function defaultState(){
     rivals:[{name:"Noir Paris",prestige:22,sales:3200,trend:0},{name:"Velour",prestige:18,sales:2600,trend:0},{name:"Maison Verre",prestige:15,sales:2100,trend:0}],
     debt:0, equitySold:0, prMeter:0, cities:[], seasonalBoost:null, seasonalBoostWeeks:0,
     lastLoginDate:"", loginStreak:0, achievements:[], awards:[], arcs:[], challenge:"normal", launchedLimited:false,
-    challengeBadge:"", flopNote:"", storagePaid:0
+    challengeBadge:"", flopNote:"", storagePaid:0,
+    juniorPerfumer:false, giftSet:null, mission:null, rescueUsed:false, rescueTaken:false, rescuePending:false, salvageNotes:[],
+    /* v6 Wave 2 (items 17-32) */
+    vault:[], featuredId:"", loyaltyClub:false, dutyFree:false, collab:null, subBox:false, qc:false,
+    cityManagers:{}, licenses:[], perfumer:{ name:SENIOR_PERFUMER_NAME, morale:70 },
+    heir:{ step:0, style:"", nextWeek:0, done:false, buff:"" }, heirReady:false, fwPending:false,
+    scandal:{ active:false, step:0, lastWeek:0 }, archRival:"", archChanged:false, heritageLaunches:0, ending:""
   };
 }
 let S = defaultState();
-function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }catch(e){} }
+function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); localStorage.setItem(LASTSEEN_KEY, String(Date.now())); updateSavedStamp(); }catch(e){} }
 function load(){
   try{
     const raw = localStorage.getItem(SAVE_KEY);
@@ -770,6 +1036,8 @@ function campaignMult(p){
     if(c.id==="celebrity") m *= 1 + 0.9*f;
   }
   if(S.seasonalBoostWeeks>0) m *= (S.seasonalBoost==="christmas"?1.6:1.5);
+  /* v6 Wave 2: Collab Drop hype — +50% demand while the fashion collab runs */
+  if(S.collab && S.collab.weeksLeft > 0) m *= 1.5;
   return m;
 }
 function cityMult(p){ let m=1; (S.cities||[]).forEach(cid=>{ const city=CITIES.find(x=>x.id===cid); if(city && [p.topFam,p.heartFam,p.baseFam].some(f=>city.fams.includes(f))) m*=1.3; }); return m; }
@@ -785,12 +1053,56 @@ function valueMult(p){
   }
   return m;
 }
+/* ==================== v6 DEMAND / FORECAST / MISSIONS ==================== */
+function scentAge(p){ return Math.max(0, S.week - (Number(p.bornWeek)||S.week)); }
+function agingMult(p){ const a = scentAge(p); return a > 8 ? Math.max(0.55, 1 - (a-8)*0.05) : 1; }
+function computeDemand(p){
+  let demand = TIERS[S.tier].traffic * 0.185;
+  demand *= 0.55 + S.prestige/100;
+  demand *= trendMult(p);
+  demand *= seasonMult(p);
+  demand *= campaignMult(p);
+  demand *= valueMult(p);
+  demand *= cityMult(p);
+  demand *= 0.88;
+  const concObj = CONCS.find(x=>x.id===p.conc) || CONCS[1]; demand *= concObj.demand;
+  if(p.signature) demand *= 1.2;
+  if(p.limited) demand *= 1.5;
+  if(p.bottleCls === "gold") demand *= 1.15 + S.prestige/400;
+  if(S.rd >= 2 && hasRare(p)) demand *= 1.25;
+  if(S.rd >= 3) demand *= 1.1;
+  if(p.synergy || hasSynergy([p.top,p.heart,p.base])) demand *= 1.1;
+  demand *= agingMult(p);
+  /* v6 Wave 2 multipliers */
+  if(p.heritage) demand *= 1.15;
+  if(S.featuredId) demand *= (p.id === S.featuredId) ? 1.3 : 0.9;
+  if(S.perfumer) demand *= 0.92 + (clamp(S.perfumer.morale,0,100)/100) * 0.16;
+  if(S.archRival && !S.loyaltyClub) demand *= 0.93;
+  if(S.heir && S.heir.buff === "craft") demand *= 1.06;
+  if(S.perfumes.length > 1) demand *= 0.72;
+  return Math.max(0, Math.round(demand));
+}
+function genMission(){
+  const kind = pick(["fam","units","revenue"]);
+  if(kind === "fam"){
+    const fam = pick(ALL_FAMS), target = Math.round(rnd(25,55));
+    return { kind, fam, target, rewardCash: Math.round(rnd(600,1400)/50)*50, rewardPrestige: 2, desc: "Sell " + target + " " + fam + " units", week: S.week };
+  }
+  if(kind === "units"){
+    const target = Math.round(rnd(40,90));
+    return { kind, target, rewardCash: Math.round(rnd(500,1200)/50)*50, rewardPrestige: 3, desc: "Sell " + target + " units in total", week: S.week };
+  }
+  const target = Math.round(rnd(4000,9000)/100)*100;
+  return { kind:"revenue", target, rewardCash: Math.round(rnd(700,1500)/50)*50, rewardPrestige: 3, desc: "Earn " + fmt(target) + " revenue", week: S.week };
+}
+function ensureMission(){ if(!S.mission || typeof S.mission !== "object" || !S.mission.desc) S.mission = genMission(); return S.mission; }
 
 /* ==================== RENDER ==================== */
 function renderHUD(){
   $("hudWeekLabel").textContent = "Week " + S.week;
   $("hudSeason").textContent = seasonOf(S.week) + " · Year " + yearOf(S.week);
   $("hudPrestigeVal").textContent = Math.round(S.prestige);
+  const hudTitleEl = $("hudTitle"); if(hudTitleEl) hudTitleEl.textContent = prestigeTitle(S.prestige);
   $("hudPrestigeBar").style.width = clamp(S.prestige,0,100) + "%";
   $("hudTier").textContent = TIERS[S.tier].name + (S.challenge && S.challenge!=="normal" ? " · "+S.challenge : "");
   if($("hudStreak")) $("hudStreak").textContent = "Day "+(S.loginStreak||1)+" 🔥";
@@ -806,8 +1118,8 @@ function renderTrends(){
   const season = seasonOf(S.week);
   $("trendBar").innerHTML =
     '<span class="tb-title">Market Trend Forecast</span>' +
-    '<span>Hot <span class="chip hot">' + S.hot.map(escapeHtml).join('</span><span class="chip hot">') + '</span> <span style="color:var(--faint)">2× demand</span></span>' +
-    '<span>Oversaturated <span class="chip sat">' + S.saturated.map(escapeHtml).join('</span><span class="chip sat">') + '</span> <span style="color:var(--faint)">0.5× demand</span></span>' +
+    '<span>Hot <span class="chip hot">▲ ' + S.hot.map(escapeHtml).join('</span><span class="chip hot">▲ ') + '</span> <span style="color:var(--faint)">2× demand</span></span>' +
+    '<span>Oversaturated <span class="chip sat">▼ ' + S.saturated.map(escapeHtml).join('</span><span class="chip sat">▼ ') + '</span> <span style="color:var(--faint)">0.5× demand</span></span>' +
     '<span>' + season + ' favours <span class="chip season">' + SEASON_FAMS[season].join('</span><span class="chip season">') + '</span></span>' +
     '<span style="color:var(--faint)">Trends shift in ' + S.trendTimer + ' wk</span>';
   const nwGoal = clamp(netWorth()/1000000*100, 0, 100);
@@ -818,24 +1130,72 @@ function renderTrends(){
 }
 function perfumeBadges(p){
   const b = [];
-  if([p.topFam,p.heartFam,p.baseFam].some(f=>S.hot.includes(f))) b.push('<span class="badge hot">Trending 2×</span>');
-  if([p.topFam,p.heartFam,p.baseFam].some(f=>S.saturated.includes(f))) b.push('<span class="badge sat">Oversaturated 0.5×</span>');
+  if(p.lastUnits !== null && p.lastUnits !== undefined && p.lastUnits > 0 && (p.stock||0) < p.lastUnits) b.push('<span class="badge low-stock">⚠ Low stock — only ' + (p.stock||0) + ' left · sold ' + p.lastUnits + ' last week · restock in the Showroom</span>');
+  if([p.topFam,p.heartFam,p.baseFam].some(f=>S.hot.includes(f))) b.push('<span class="badge hot">▲ Trending 2×</span>');
+  if([p.topFam,p.heartFam,p.baseFam].some(f=>S.saturated.includes(f))) b.push('<span class="badge sat">▼ Oversaturated 0.5×</span>');
   if(seasonMult(p) >= 1.2) b.push('<span class="badge season">In Season</span>');
   if(p.bottleCls === "gold") b.push('<span class="badge">VIP Appeal</span>');
+  if(p.synergy || hasSynergy([p.top,p.heart,p.base])) b.push('<span class="badge hot">Golden Pairing ✦ +10%</span>');
+  if(p.id === S.featuredId) b.push('<span class="badge hot">🪟 Window Feature · +30%</span>');
+  if(p.heritage) b.push('<span class="badge season">Heritage Edition</span>');
+  if(p.blind) b.push('<span class="badge">' + (p.blindBonus ? '🎲 Blind Creation · Bonus Won ✓' : '🎲 Blind Creation') + '</span>');
+  if(scentAge(p) > 8) b.push('<span class="badge sat">Aging — demand fading</span>');
   return b.join("");
 }
 function renderShelfAndRivals(){
-  const shelf=$("bottleShelf"); if(shelf){ shelf.innerHTML = S.perfumes.length? S.perfumes.map(p=>{ const fam=p.baseFam; return '<div class="shelf-bottle"><div class="sb-cap"></div><div class="sb-body"><div class="sb-liq" style="background:'+(FAM_COLORS[fam]||FAM_COLORS.Amber)+'"></div></div><small>'+escapeHtml(p.name)+'<br>'+p.profile+'</small></div>'; }).join("") : '<span style="color:var(--faint)">No bottles yet — launch a scent to fill the shelf.</span>'; }
-  const rb=$("rivalBoard"); if(rb){ rb.innerHTML=(S.rivals||[]).map(r=>'<article class="card"><span class="profile-tag">Rival House</span><h4 style="font-family:var(--serif);margin:4px 0">'+r.name+'</h4><div class="kv"><span>Prestige</span><span>'+Math.round(r.prestige)+'</span></div><div class="kv"><span>Last Sales</span><span>'+fmt(r.sales)+'</span></div><div class="kv"><span>Movement</span><span>'+(r.trend>=0?"▲ +":"▼ ")+fmt(Math.abs(r.trend||0))+'</span></div></article>').join(""); }
+  const shelf=$("bottleShelf"); if(shelf){ shelf.innerHTML = S.perfumes.length? S.perfumes.map(p=>{ const fam=p.baseFam; return '<div class="shelf-bottle"><div class="sb-cap"></div><div class="sb-body"><div class="sb-liq" style="background:'+(p.colour ? colourCss(p.colour) : (FAM_COLORS[fam]||FAM_COLORS.Amber))+'"></div></div><small>'+escapeHtml(p.name)+'<br>'+p.profile+'</small></div>'; }).join("") : '<span style="color:var(--faint)">No bottles yet — launch a scent to fill the shelf.</span>'; }
+  const rb=$("rivalBoard"); if(rb){ rb.innerHTML=(S.rivals||[]).map(r=>{ const hit=r.hit||RIVAL_HITS[r.name]; return '<article class="card"><span class="profile-tag">Rival House</span><h4 style="font-family:var(--serif);margin:4px 0">'+escapeHtml(r.name)+'</h4><div class="kv"><span>Prestige</span><span>'+Math.round(r.prestige)+'</span></div><div class="kv"><span>Last Sales</span><span>'+fmt(r.sales)+'</span></div><div class="kv"><span>Movement</span><span>'+(r.trend>=0?"▲ +":"▼ ")+fmt(Math.abs(r.trend||0))+'</span></div>'+(hit? '<div class="kv"><span>Bestseller</span><span>'+escapeHtml(hit.name)+'</span></div><div class="kv"><span>Formula</span><span>'+escapeHtml(hit.top)+' · '+escapeHtml(hit.heart)+' · '+escapeHtml(hit.base)+'</span></div><button class="btn block" data-clone="'+escapeHtml(r.name)+'" style="margin-top:10px">Analyse Hit — '+fmt(CLONE_COST)+' R&amp;D</button>' : '')+'</article>'; }).join("");
+    rb.querySelectorAll("[data-clone]").forEach(b=>b.addEventListener("click",()=>{ const r=(S.rivals||[]).find(x=>x.name===b.getAttribute("data-clone")); const hit=r && (r.hit||RIVAL_HITS[r.name]); if(!hit) return; if(S.cash<CLONE_COST){ toast("Analysing a rival bestseller costs "+fmt(CLONE_COST)+".","bad"); return; } S.cash-=CLONE_COST; lab.top=TOPS.find(n=>n.name===hit.top)||null; lab.heart=HEARTS.find(n=>n.name===hit.heart)||null; lab.base=BASES.find(n=>n.name===hit.base)||null; lab.name=hit.name+" Homage"; lab.test=null; const ni=$("labName"); if(ni) ni.value=lab.name; logEvent("🔬 Analysed <b>"+escapeHtml(r.name)+"</b>'s bestseller <b>"+escapeHtml(hit.name)+"</b> — its note combo is pre-filled in the Lab."); save(); renderAll(); switchTab("lab"); toast("🔬 Rival formula decoded — the Lab draft is pre-filled with <b>"+escapeHtml(hit.name)+"</b>'s notes (−"+fmt(CLONE_COST)+").","good"); }));
+  }
 }
-function renderShowroom(){ renderShelfAndRivals();
+/* ---------- v6 Wave 2: Store Window Display pick ---------- */
+function renderFeature(){
+  const fp = $("featurePanel"); if(!fp) return;
+  if(!S.perfumes.length){ fp.innerHTML = ""; return; }
+  const cur = S.perfumes.find(p=>p.id===S.featuredId);
+  fp.innerHTML = '<div class="card" style="margin-bottom:14px"><h4 style="font-family:var(--serif);margin:0 0 4px;font-size:1.18rem">🪟 Store Window Display</h4>' +
+    '<p style="color:var(--muted);font-size:.87rem;line-height:1.55;margin:4px 0 10px">One scent takes the window: <b style="color:var(--cream)">+30% demand</b> for it, <b style="color:var(--cream)">−10%</b> for every other active scent.' + (cur ? ' Currently featuring <b style="color:var(--gold-bright)">' + escapeHtml(cur.name) + '</b>.' : ' No scent is featured right now.') + '</p>' +
+    '<div class="flex-row"><select id="featSel" style="flex:1;min-width:160px;width:auto"><option value="">— No feature —</option>' + S.perfumes.map(p=>'<option value="' + escapeHtml(p.id) + '"' + (p.id===S.featuredId ? ' selected' : '') + '>' + escapeHtml(p.name) + '</option>').join("") + '</select><button class="btn" id="btnSetFeature">Set Window Pick</button></div></div>';
+  const b = $("btnSetFeature");
+  if(b) b.addEventListener("click", ()=>{ const v = $("featSel").value; S.featuredId = v; save(); renderAll(); const nm = (S.perfumes.find(p=>p.id===v)||{}).name; toast(v ? "🪟 <b>" + escapeHtml(nm||"") + "</b> takes the store window (+30% demand; others −10%)." : "Window feature cleared.", "good"); });
+}
+function renderShowroom(){ renderShelfAndRivals(); renderMissionGift(); renderFeature();
   const grid = $("perfumeGrid");
   const isEmpty = !S.perfumes.length;
   $("showroomEmpty").style.display = isEmpty ? "block" : "none";
   /* v4: with no scents on sale, hide the shelf/rival sections so the empty state sits at the top */
   ["shelfHead","bottleShelf","rivalHead","rivalBoard"].forEach(id => { const el = $(id); if(el) el.style.display = isEmpty ? "none" : ""; });
+  /* v6 Wave 3 (item 35): Compact / Detailed view toggle — choice persists in prefs */
+  const viewBtn = $("btnViewToggle"); if(viewBtn) viewBtn.textContent = prefs.compact ? "View: Compact" : "View: Detailed";
+  if(prefs.compact){
+    grid.classList.add("compact");
+    grid.innerHTML = S.perfumes.map(p => {
+      const fc = computeDemand(p);
+      const low = p.lastUnits !== null && p.lastUnits !== undefined && p.lastUnits > 0 && (p.stock||0) < p.lastUnits;
+      const trendTag = [p.topFam,p.heartFam,p.baseFam].some(f=>S.hot.includes(f)) ? ' · <span style="color:var(--gold-bright)">▲ Hot</span>' : ([p.topFam,p.heartFam,p.baseFam].some(f=>S.saturated.includes(f)) ? ' · <span style="color:var(--red)">▼ Oversaturated</span>' : '');
+      return '<article class="card compact-row">' +
+        '<span class="cr-main"><b>' + escapeHtml(p.name) + '</b><small>' + escapeHtml(p.profile) + trendTag + (low ? ' · <span style="color:#f2b8a9">⚠ low stock</span>' : '') + '</small></span>' +
+        '<span class="cr-num"><label>Price</label>' + fmt(p.price) + '</span>' +
+        '<span class="cr-num"><label>Stock</label>' + p.stock + '</span>' +
+        '<span class="cr-num"><label>Sold</label>' + (p.lastUnits===null ? "—" : p.lastUnits) + '</span>' +
+        '<span class="cr-num"><label>Forecast</label>~' + fc + '</span>' +
+        '<span class="cr-step"><button class="btn" data-cprice="-5:' + escapeHtml(p.id) + '" aria-label="Lower price by $5">−</button><button class="btn" data-cprice="5:' + escapeHtml(p.id) + '" aria-label="Raise price by $5">+</button></span>' +
+      '</article>';
+    }).join("");
+    grid.querySelectorAll("[data-cprice]").forEach(b => b.addEventListener("click", () => {
+      const parts = b.getAttribute("data-cprice").split(":");
+      const delta = parseInt(parts[0],10);
+      const pp = S.perfumes.find(x=>x.id === parts.slice(1).join(":"));
+      if(!pp) return;
+      pp.price = clamp(pp.price + delta, 40, pp.priceCap);
+      save(); renderShowroom();
+    }));
+    return;
+  }
+  grid.classList.remove("compact");
   grid.innerHTML = S.perfumes.map(p => {
     const margin = p.price > 0 ? Math.round((p.price-p.cost)/p.price*100) : 0;
+    const fc = computeDemand(p), age = scentAge(p), cap = stockCap();
     return '<article class="card perfume-card'+([p.topFam,p.heartFam,p.baseFam].some(f=>S.hot.includes(f))?' pulse-hot':'')+'">' +
       '<span class="profile-tag">' + p.profile + '</span>' +
       '<h4>' + escapeHtml(p.name) + '</h4>' +
@@ -844,6 +1204,10 @@ function renderShowroom(){ renderShelfAndRivals();
       '<div class="kv"><span>Price</span><span>' + fmt(p.price) + '</span></div>' +
       '<div class="kv"><span>Unit Cost / Margin</span><span>' + fmt(p.cost) + ' · ' + margin + '%</span></div>' +
       '<div class="kv"><span>Stock on Hand</span><span>' + p.stock + ' units</span></div>' +
+      '<div class="kv"><span>Stock Cap · ' + TIERS[S.tier].name + '</span><span>' + cap + ' units max</span></div>' +
+      '<div class="kv"><span>Demand Forecast</span><span>Expected: ~' + fc + ' units next week</span></div>' +
+      '<div class="kv"><span>Age</span><span>' + age + ' week' + (age===1?'':'s') + (age>8 ? ' · Aging' : '') + '</span></div>' +
+      (p.colour ? '<div class="kv"><span>Bottle Colour</span><span>' + escapeHtml(p.colour) + '</span></div>' : '') +
       '<div class="kv"><span>Sold Last Week</span><span>' + (p.lastUnits===null ? "—" : p.lastUnits + " units") + '</span></div>' +
       '<div class="kv"><span>Lifetime Revenue</span><span>' + fmt(p.lifetimeRevenue) + '</span></div>' +
       '<div class="kv"><span>Concentration / Signature</span><span>' + (p.conc||"EDP") + (p.signature? " · "+p.signature:"") + '</span></div>' +
@@ -852,6 +1216,9 @@ function renderShowroom(){ renderShelfAndRivals();
       '<div style="margin-top:8px"><div class="seg"><span>VIPs fit</span><b>'+segmentFit(p).VIPs+'%</b></div><div class="seg"><span>Trendsetters fit</span><b>'+segmentFit(p).Trendsetters+'%</b></div><div class="seg"><span>Collectors fit</span><b>'+segmentFit(p).Collectors+'%</b></div></div>' +
       '<div class="price-btns"><button class="btn" data-autoprice="profit:'+escapeHtml(p.id)+'">Price for Profit</button><button class="btn" data-autoprice="volume:'+escapeHtml(p.id)+'">Price for Volume</button><button class="btn" data-autoprice="prestige:'+escapeHtml(p.id)+'">Price for Prestige</button></div>' +
       '<div class="small-btns"><button class="btn" data-restock="'+escapeHtml(p.id)+'">Produce 25 ('+fmt(p.cost*25)+')</button><button class="btn" data-remix="'+escapeHtml(p.id)+'">Remix / Clone</button></div>' +
+      '<div class="small-btns"><button class="btn" data-autotoggle="'+escapeHtml(p.id)+'">Auto-Restock: '+(p.autoRestock?'ON':'OFF')+'</button><button class="btn" data-rstarget="-10:'+escapeHtml(p.id)+'">Target −10</button><button class="btn" data-rstarget="10:'+escapeHtml(p.id)+'">Target +10</button></div>' +
+      '<div class="kv"><span>Restock Target</span><span>'+(p.restockTarget||0)+' units'+(p.autoRestock?' · restocked on Advance':'')+'</span></div>' +
+      '<details class="ph"><summary>Price History</summary>' + ((p.priceHistory && p.priceHistory.length) ? p.priceHistory.slice().reverse().map(h=>'<div class="kv"><span>'+fmt(h.price)+'</span><span>'+h.units+' units sold</span></div>').join("") : '<p style="color:var(--faint);font-size:.82rem;margin:6px 0 2px">No completed weeks yet — history appears after each Advance.</p>') + '</details>' +
       '<label style="display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin:14px 0 4px">Adjust Price · <span style="color:var(--gold-bright)">' + fmt(p.price) + '</span></label>' +
       '<input type="range" min="40" max="' + p.priceCap + '" step="5" value="' + p.price + '" data-price-for="' + escapeHtml(p.id) + '" />' +
       '<button class="btn danger block" data-discontinue="' + escapeHtml(p.id) + '" style="margin-top:10px">Discontinue</button>' +
@@ -865,14 +1232,34 @@ function renderShowroom(){ renderShelfAndRivals();
     inp.addEventListener("change", () => renderShowroom());
   });
   grid.querySelectorAll("[data-autoprice]").forEach(b=>b.addEventListener("click",()=>{ const [mode,id]=b.getAttribute("data-autoprice").split(":"); const pp=S.perfumes.find(x=>x.id===id); if(!pp) return; if(mode==="profit") pp.price=clamp(Math.round(pp.cost*4.2/5)*5,40,pp.priceCap); if(mode==="volume") pp.price=clamp(Math.round(pp.cost*2.4/5)*5,40,pp.priceCap); if(mode==="prestige") pp.price=clamp(Math.round(pp.cost*5.2/5)*5,40,pp.priceCap); save(); renderAll(); toast("Auto-price set for <b>"+escapeHtml(pp.name)+"</b>: "+fmt(pp.price),"good"); }));
-  grid.querySelectorAll("[data-restock]").forEach(b=>b.addEventListener("click",()=>{ const pp=S.perfumes.find(x=>x.id===b.getAttribute("data-restock")); if(!pp) return; const cost=pp.cost*25; if(S.cash<cost){toast("Need "+fmt(cost)+" to produce 25 units.","bad");return;} S.cash-=cost; pp.stock+=25; save(); renderAll(); toast("Produced 25 units of <b>"+escapeHtml(pp.name)+"</b>. Stock: "+pp.stock,"good"); }));
+  grid.querySelectorAll("[data-restock]").forEach(b=>b.addEventListener("click",()=>{ const pp=S.perfumes.find(x=>x.id===b.getAttribute("data-restock")); if(!pp) return; const cap=stockCap(); const room=cap-(pp.stock||0); if(room<=0){ toast("<b>"+escapeHtml(pp.name)+"</b> is at the "+cap+"-unit stock cap for "+TIERS[S.tier].name+". Upgrade your retail tier to hold more.","bad"); return; } const make=Math.min(25, room); const cost=pp.cost*make; if(S.cash<cost){toast("Need "+fmt(cost)+" to produce "+make+" units.","bad");return;} S.cash-=cost; pp.stock+=make; save(); renderAll(); toast("Produced "+make+" units of <b>"+escapeHtml(pp.name)+"</b>. Stock: "+pp.stock+" / "+cap,"good"); }));
+  grid.querySelectorAll("[data-autotoggle]").forEach(b=>b.addEventListener("click",()=>{ const pp=S.perfumes.find(x=>x.id===b.getAttribute("data-autotoggle")); if(!pp) return; pp.autoRestock=!pp.autoRestock; if(pp.autoRestock && !(pp.restockTarget>0)) pp.restockTarget=Math.min(stockCap(), Math.max(25, pp.stock||0)); save(); renderAll(); toast("Auto-Restock <b>"+(pp.autoRestock?"ON":"OFF")+"</b> for <b>"+escapeHtml(pp.name)+"</b>"+(pp.autoRestock?" — target "+pp.restockTarget+" units each week.":""), pp.autoRestock?"good":""); }));
+  grid.querySelectorAll("[data-rstarget]").forEach(b=>b.addEventListener("click",()=>{ const parts=b.getAttribute("data-rstarget").split(":"); const delta=parseInt(parts[0],10); const pp=S.perfumes.find(x=>x.id===parts.slice(1).join(":")); if(!pp) return; pp.restockTarget=clamp((pp.restockTarget||0)+delta, 0, stockCap()); save(); renderAll(); }));
   grid.querySelectorAll("[data-remix]").forEach(b=>b.addEventListener("click",()=>{ const pp=S.perfumes.find(x=>x.id===b.getAttribute("data-remix")); if(!pp) return; lab.top=TOPS.find(n=>n.name===pp.top)||lab.top; lab.heart=HEARTS.find(n=>n.name===pp.heart)||lab.heart; lab.base=BASES.find(n=>n.name===pp.base)||lab.base; lab.bottle=BOTTLES.findIndex(x=>x.name===pp.bottle); if(lab.bottle<0) lab.bottle=1; lab.conc=pp.conc||"EDP"; lab.signature=pp.signature||""; lab.name=pp.name+" Flanker"; $("labName").value=lab.name; syncLabPrice(true); if(pp.price) lab.price=pp.price; save(); renderAll(); switchTab("lab"); toast("Cloned <b>"+escapeHtml(pp.name)+"</b> into the Lab — tweak one note to make your flanker.","good"); }));
   grid.querySelectorAll("[data-discontinue]").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = btn.getAttribute("data-discontinue");
       const p = S.perfumes.find(x=>x.id===id);
       S.perfumes = S.perfumes.filter(x=>x.id!==id);
-      if(p){ logEvent("Discontinued <b>" + escapeHtml(p.name) + "</b>, freeing a showroom slot."); toast("“" + escapeHtml(p.name) + "” has been retired from the showroom."); }
+      if(p){
+        /* v6 Wave 2: discontinued formulas are archived in the Formula Vault */
+        if(!Array.isArray(S.vault)) S.vault = [];
+        if(S.vault.length < 12){ S.vault.push({ name:p.name, top:p.top, heart:p.heart, base:p.base, topFam:p.topFam, heartFam:p.heartFam, baseFam:p.baseFam, bottle:p.bottle, bottleCls:p.bottleCls, conc:p.conc||"EDP", signature:p.signature||"", cost:p.cost, price:p.price, colour:p.colour||"", profile:p.profile, blind:!!p.blind }); logEvent("📜 The formula of <b>" + escapeHtml(p.name) + "</b> was archived in the <b>Formula Vault</b> — relaunch it as a Heritage Edition or license it from the Lab."); }
+        if(S.featuredId === id) S.featuredId = "";
+        const salvage = Math.floor((p.stock||0) * (p.cost||0) * 0.5);
+        if(S.giftSet && (S.giftSet.a===id || S.giftSet.b===id)) S.giftSet = null;
+        if(salvage > 0){
+          S.cash += salvage;
+          const note = "Discontinued " + p.name + " — remaining " + (p.stock||0) + " units sold as salvage at 50% of cost: +" + fmt(salvage) + ".";
+          if(!Array.isArray(S.salvageNotes)) S.salvageNotes = [];
+          S.salvageNotes.push(note);
+          logEvent("♻ Discontinued <b>" + escapeHtml(p.name) + "</b> — salvage credit <b>" + fmt(salvage) + "</b> for " + (p.stock||0) + " remaining units (50% of unit cost).");
+          toast("“" + escapeHtml(p.name) + "” retired — remaining stock sold as salvage: <b>+" + fmt(salvage) + "</b> (50% of unit cost).", "good");
+        } else {
+          logEvent("Discontinued <b>" + escapeHtml(p.name) + "</b>, freeing a showroom slot.");
+          toast("“" + escapeHtml(p.name) + "” has been retired from the showroom.");
+        }
+      }
       save(); renderAll();
     });
   });
@@ -883,6 +1270,44 @@ function renderShowroomLight(changed){
     const label = card.querySelector("label span");
     if(label) label.textContent = fmt(p.price);
   });
+}
+/* ---------- v6: Weekly Mission card + Gift Set panel ---------- */
+let gsDraft = { a:"", b:"", price:300 };
+let gsInit = false;
+function renderMissionGift(){
+  const mc = $("missionCard");
+  if(mc){
+    const m = ensureMission();
+    mc.innerHTML = '<div class="mission-card">🎯 <b>Weekly Mission</b> — ' + escapeHtml(m.desc) + ' this week.<br/><span style="color:var(--muted)">Reward: <b>' + fmt(m.rewardCash||0) + '</b>' + (m.rewardPrestige ? ' · <b>+' + m.rewardPrestige + ' Prestige</b>' : '') + ' · Resolved in the Weekly Report.</span></div>';
+  }
+  const gp = $("giftPanel");
+  if(gp){
+    if(S.perfumes.length < 2){
+      gp.innerHTML = '<div class="card"><p style="color:var(--muted);margin:0">Launch at least two active scents to pair them as a Gift Set. Gift Sets sell as their own line in the Weekly Report — and sell far stronger in Winter and during the Ramadan / Eid window.</p></div>';
+    } else {
+      if(!gsDraft.a || !S.perfumes.some(p=>p.id===gsDraft.a)) gsDraft.a = S.perfumes[0].id;
+      if(!gsDraft.b || !S.perfumes.some(p=>p.id===gsDraft.b) || gsDraft.b===gsDraft.a) gsDraft.b = (S.perfumes.find(p=>p.id!==gsDraft.a)||S.perfumes[0]).id;
+      if(S.giftSet && !gsInit){ gsDraft = { a:S.giftSet.a, b:S.giftSet.b, price:S.giftSet.price }; }
+      gsInit = true;
+      const opts = sel => S.perfumes.map(p=>'<option value="' + escapeHtml(p.id) + '"' + (p.id===sel?' selected':'') + '>' + escapeHtml(p.name) + ' (' + fmt(p.price) + ')</option>').join("");
+      const cur = S.giftSet ? S.perfumes.filter(p=>p.id===S.giftSet.a || p.id===S.giftSet.b) : [];
+      gp.innerHTML = '<div class="card">' +
+        (S.giftSet && cur.length===2 ? '<p style="margin:0 0 12px">🎁 <b>Active Gift Set:</b> ' + escapeHtml(cur[0].name) + ' + ' + escapeHtml(cur[1].name) + ' at <b style="color:var(--gold-bright)">' + fmt(S.giftSet.price) + '</b> — sells each week while both scents are in stock. Stronger in Winter and Ramadan / Eid windows.</p>' : '<p style="color:var(--muted);margin:0 0 12px">Pair two active scents into one gift box at a bundle price. Each set sold draws one bottle from each scent\'s stock.</p>') +
+        '<div class="grid two" style="gap:12px"><label style="font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)">First Scent<select id="gsA" style="margin-top:6px">' + opts(gsDraft.a) + '</select></label>' +
+        '<label style="font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)">Second Scent<select id="gsB" style="margin-top:6px">' + opts(gsDraft.b) + '</select></label></div>' +
+        '<label style="display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin:14px 0 4px">Bundle Price · <span style="color:var(--gold-bright)">' + fmt(gsDraft.price) + '</span></label>' +
+        '<input type="range" id="gsPrice" min="80" max="1000" step="10" value="' + gsDraft.price + '" />' +
+        '<div class="flex-row" style="margin-top:12px"><button class="btn solid" id="btnSetGift">Set Gift Set</button>' + (S.giftSet ? '<button class="btn danger" id="btnClearGift">Remove Gift Set</button>' : '') + '</div></div>';
+      const gA = $("gsA"), gB = $("gsB"), gP = $("gsPrice");
+      if(gA) gA.addEventListener("change", ()=>{ gsDraft.a = gA.value; renderShowroom(); });
+      if(gB) gB.addEventListener("change", ()=>{ gsDraft.b = gB.value; renderShowroom(); });
+      if(gP) gP.addEventListener("input", ()=>{ gsDraft.price = parseInt(gP.value,10); const lbl = gP.previousElementSibling; if(lbl) { const sp = lbl.querySelector("span"); if(sp) sp.textContent = fmt(gsDraft.price); } });
+      const bs = $("btnSetGift");
+      if(bs) bs.addEventListener("click", ()=>{ if(gsDraft.a===gsDraft.b){ toast("A Gift Set needs two different scents.","bad"); return; } S.giftSet = { a:gsDraft.a, b:gsDraft.b, price:gsDraft.price }; const A=S.perfumes.find(p=>p.id===gsDraft.a), B=S.perfumes.find(p=>p.id===gsDraft.b); logEvent("🎁 Gift Set created — <b>" + escapeHtml(A?A.name:"") + " + " + escapeHtml(B?B.name:"") + "</b> at " + fmt(gsDraft.price) + "."); save(); renderAll(); toast("🎁 Gift Set live at <b>" + fmt(gsDraft.price) + "</b> — watch for its line in the Weekly Report.","good"); });
+      const bc = $("btnClearGift");
+      if(bc) bc.addEventListener("click", ()=>{ S.giftSet = null; save(); renderAll(); toast("Gift Set removed."); });
+    }
+  }
 }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 function sanitizeState(){
@@ -915,20 +1340,126 @@ function sanitizeState(){
   if(typeof S.lastLoginDate!=="string" || !/^\d{4}-\d{2}-\d{2}$/.test(S.lastLoginDate)) S.lastLoginDate = S.lastLoginDate? String(S.lastLoginDate).slice(0,10) : "";
   // Log entries: strip all tags except the known-safe <b></b> emphasis used by the Chronicle
   if(Array.isArray(S.log)) S.log = S.log.map(l=>{ let txt=String((l && l.text)||""); txt=txt.split("<b>").join("\u0001").split("</b>").join("\u0002"); txt=txt.replace(/<[^>]*>/g,""); txt=txt.split("\u0001").join("<b>").split("\u0002").join("</b>"); return { week: Number(l && l.week)||1, text: txt }; });
+  /* v6 hydration — old saves gain the new fields with safe defaults */
+  S.juniorPerfumer = !!S.juniorPerfumer;
+  S.rescueUsed = !!S.rescueUsed; S.rescueTaken = !!S.rescueTaken; S.rescuePending = false;
+  if(!Array.isArray(S.salvageNotes)) S.salvageNotes = [];
+  if(S.giftSet){
+    const okIds = Array.isArray(S.perfumes) ? S.perfumes.map(p=>p.id) : [];
+    if(!okIds.includes(S.giftSet.a) || !okIds.includes(S.giftSet.b) || S.giftSet.a === S.giftSet.b) S.giftSet = null;
+    else S.giftSet = { a:String(S.giftSet.a), b:String(S.giftSet.b), price: clamp(Number(S.giftSet.price)||300, 40, 1000) };
+  }
+  if(S.mission !== null && (typeof S.mission !== "object" || typeof S.mission.desc !== "string")) S.mission = null;
+  if(Array.isArray(S.perfumes)) S.perfumes.forEach(pp=>{
+    pp.autoRestock = !!pp.autoRestock;
+    pp.restockTarget = Math.max(0, Math.round(Number(pp.restockTarget)||0));
+    if(!Array.isArray(pp.priceHistory)) pp.priceHistory = [];
+    pp.priceHistory = pp.priceHistory.slice(-6).map(h=>({ price: Math.max(0,Number(h && h.price)||0), units: Math.max(0,Number(h && h.units)||0) }));
+    if(typeof pp.colour !== "string" || !COLOURS.some(c=>c.name===pp.colour)) pp.colour = "";
+    pp.synergy = hasSynergy([pp.top, pp.heart, pp.base]);
+  });
+  if(Array.isArray(S.rivals)) S.rivals.forEach(r=>{ const h = RIVAL_HITS[r.name]; if(h && !r.hit) r.hit = h; });
+  /* v6 Wave 2 hydration — Wave 1 (v6) and older saves gain the new fields with safe defaults */
+  if(!Array.isArray(S.vault)) S.vault = [];
+  S.vault = S.vault.filter(v=>v && typeof v==="object").slice(0,12).map(v=>({ name:strip(String(v.name||"Untitled Formula")).slice(0,44), top:strip(String(v.top||"")), heart:strip(String(v.heart||"")), base:strip(String(v.base||"")), topFam:strip(String(v.topFam||"")), heartFam:strip(String(v.heartFam||"")), baseFam:strip(String(v.baseFam||"")), bottle:strip(String(v.bottle||"Minimalist Glass")), bottleCls:["","crystal","gold"].includes(v.bottleCls)?v.bottleCls:"", conc:CONCS.some(c=>c.id===v.conc)?v.conc:"EDP", signature:strip(String(v.signature||"")), cost:Math.max(4,Number(v.cost)||10), price:clamp(Number(v.price)||120,40,650), colour:COLOURS.some(c=>c.name===v.colour)?v.colour:"", profile:strip(String(v.profile||"")), blind:!!v.blind }));
+  if(typeof S.featuredId !== "string" || !(S.perfumes||[]).some(p=>p.id===S.featuredId)) S.featuredId = "";
+  S.loyaltyClub = !!S.loyaltyClub; S.dutyFree = !!S.dutyFree; S.subBox = !!S.subBox; S.qc = !!S.qc;
+  S.collab = (S.collab && typeof S.collab==="object" && Number(S.collab.weeksLeft) > 0) ? { weeksLeft: Math.min(4, Math.round(Number(S.collab.weeksLeft))) } : null;
+  if(!S.cityManagers || typeof S.cityManagers !== "object" || Array.isArray(S.cityManagers)) S.cityManagers = {};
+  (S.cities||[]).forEach(cid=>{ if(typeof S.cityManagers[cid] !== "string" || !S.cityManagers[cid]) S.cityManagers[cid] = CITY_MANAGERS[cid] || "The Manager"; });
+  if(!Array.isArray(S.licenses)) S.licenses = [];
+  S.licenses = S.licenses.filter(L=>L && typeof L==="object" && Number(L.amount) > 0 && Number(L.weeksLeft) > 0).slice(0,6).map(L=>({ name:strip(String(L.name||"Formula")).slice(0,44), rival:(S.rivals||[]).some(r=>r.name===L.rival) ? L.rival : "Noir Paris", amount:Math.round(Number(L.amount)), weeksLeft:Math.min(12, Math.round(Number(L.weeksLeft))) }));
+  if(!S.perfumer || typeof S.perfumer !== "object") S.perfumer = { name:SENIOR_PERFUMER_NAME, morale:70 };
+  if(typeof S.perfumer.name !== "string" || !S.perfumer.name) S.perfumer.name = SENIOR_PERFUMER_NAME;
+  S.perfumer.morale = clamp(Number(S.perfumer.morale), 0, 100); if(!isFinite(S.perfumer.morale)) S.perfumer.morale = 70;
+  if(!S.heir || typeof S.heir !== "object") S.heir = { step:0, style:"", nextWeek:0, done:false, buff:"" };
+  S.heir.step = clamp(Math.round(Number(S.heir.step)||0), 0, 3);
+  if(!["craft","dynasty","empire",""].includes(S.heir.style)) S.heir.style = "";
+  if(!["craft","dynasty","empire",""].includes(S.heir.buff)) S.heir.buff = "";
+  S.heir.nextWeek = Math.max(0, Number(S.heir.nextWeek)||0); S.heir.done = !!S.heir.done;
+  S.heirReady = false; S.fwPending = false;
+  if(!S.scandal || typeof S.scandal !== "object") S.scandal = { active:false, step:0, lastWeek:0 };
+  S.scandal.active = !!S.scandal.active; S.scandal.step = clamp(Math.round(Number(S.scandal.step)||0), 0, 3); S.scandal.lastWeek = Math.max(0, Number(S.scandal.lastWeek)||0);
+  if(!(S.rivals||[]).some(r=>r.name===S.archRival)) S.archRival = "";
+  S.archChanged = !!S.archChanged;
+  S.heritageLaunches = Math.max(0, Math.round(Number(S.heritageLaunches)||0));
+  if(!["","icon","empire","artisan"].includes(S.ending)) S.ending = "";
+  if(Array.isArray(S.perfumes)) S.perfumes.forEach(pp=>{ pp.blind = !!pp.blind; pp.blindBonus = !!pp.blindBonus; pp.heritage = !!pp.heritage; });
+}
+
+/* ---------- v6 Wave 2: Formula Vault ---------- */
+function renderVault(){
+  const vp = $("vaultPanel"); if(!vp) return;
+  if(!S.vault || !S.vault.length){ vp.innerHTML = '<div class="card"><p style="color:var(--muted);margin:0;line-height:1.6">The Vault is empty. When you discontinue a scent, its formula is archived here — relaunch it later as a <b style="color:var(--cream)">Heritage Edition</b> (+15% demand), or license it to a rival for a lump sum plus weekly royalties.</p></div>'; return; }
+  vp.innerHTML = '<div class="grid two">' + S.vault.map((v,i) =>
+    '<article class="card"><span class="profile-tag">' + escapeHtml(v.profile || "Archived Formula") + '</span>' +
+    '<h4 style="font-family:var(--serif);margin:4px 0;font-size:1.2rem">' + escapeHtml(v.name) + '</h4>' +
+    '<p class="notes-line">' + escapeHtml(v.top) + ' · ' + escapeHtml(v.heart) + ' · ' + escapeHtml(v.base) + '<br/><span style="color:var(--faint)">' + escapeHtml(v.bottle) + ' · ' + escapeHtml(v.conc || "EDP") + ' · was ' + fmt(v.price) + ' · unit cost ' + fmt(v.cost) + '</span></p>' +
+    (v.blind ? '<div class="badges"><span class="badge">🎲 Blind Creation</span></div>' : '') +
+    '<div class="small-btns"><button class="btn" data-vault-relaunch="' + i + '">Relaunch · Heritage Edition</button><button class="btn" data-vault-license="' + i + '">License to a Rival</button></div></article>'
+  ).join("") + '</div>';
+  vp.querySelectorAll("[data-vault-relaunch]").forEach(b=>b.addEventListener("click", ()=>relaunchHeritage(parseInt(b.getAttribute("data-vault-relaunch"),10))));
+  vp.querySelectorAll("[data-vault-license]").forEach(b=>b.addEventListener("click", ()=>licenseFormula(parseInt(b.getAttribute("data-vault-license"),10))));
+}
+function relaunchHeritage(i){
+  const v = (S.vault||[])[i]; if(!v) return;
+  if(S.perfumes.length >= scentCap()){ toast("The showroom holds " + scentCap() + " fragrances at most — discontinue one first.", "bad"); return; }
+  const fee = v.cost * 25;
+  if(S.cash < fee){ toast("A Heritage relaunch needs " + fmt(fee) + " for the production run.", "bad"); return; }
+  const bottle = BOTTLES.find(b=>b.name===v.bottle) || BOTTLES[0];
+  const concObj = CONCS.find(c=>c.id===v.conc) || CONCS[1];
+  S.cash -= fee;
+  S.vault.splice(i,1);
+  const p = {
+    id: "p" + (uidC++),
+    name: /heritage/i.test(v.name) ? v.name : v.name + " — Heritage Edition",
+    top: v.top, topFam: v.topFam, heart: v.heart, heartFam: v.heartFam, base: v.base, baseFam: v.baseFam,
+    bottle: bottle.name, bottleCls: bottle.cls, priceCap: Math.round(bottle.cap * concObj.capMult),
+    profile: v.profile || "Heritage", cost: v.cost, price: clamp(v.price, 40, Math.round(bottle.cap * concObj.capMult)), stock: 25,
+    lastUnits: null, lifetimeUnits: 0, lifetimeRevenue: 0, bornWeek: S.week,
+    conc: concObj.id, signature: v.signature || "", limited: false, leWeeksLeft: 0,
+    colour: v.colour || "", synergy: hasSynergy([v.top, v.heart, v.base]),
+    autoRestock: false, restockTarget: 0, priceHistory: [],
+    blind: !!v.blind, blindBonus: false, heritage: true
+  };
+  S.perfumes.push(p);
+  S.uid = uidC;
+  S.heritageLaunches = (S.heritageLaunches||0) + 1;
+  logEvent("🏛 <b>" + escapeHtml(p.name) + "</b> relaunched from the Formula Vault as a <b>Heritage Edition</b> (+15% demand).");
+  toast("🏛 <b>" + escapeHtml(p.name) + "</b> is back — a Heritage Edition with +15% demand.", "good");
+  confettiBurst(false);
+  save(); renderAll();
+  switchTab("showroom");
+}
+function licenseFormula(i){
+  const v = (S.vault||[])[i]; if(!v) return;
+  const rivalName = S.archRival || pick((S.rivals||[]).map(r=>r.name).filter(Boolean).concat(["Noir Paris"]));
+  const lump = Math.round((v.cost * 30 + S.prestige * 15) / 10) * 10;
+  const royalty = Math.max(25, Math.round(lump * 0.08 / 5) * 5);
+  const weeks = 8;
+  S.cash += lump;
+  if(!Array.isArray(S.licenses)) S.licenses = [];
+  S.licenses.push({ name: v.name, rival: rivalName, amount: royalty, weeksLeft: weeks });
+  S.vault.splice(i,1);
+  logEvent("🤝 Licensed the formula of <b>" + escapeHtml(v.name) + "</b> to <b>" + escapeHtml(rivalName) + "</b> — <b>" + fmt(lump) + "</b> up front plus " + fmt(royalty) + "/wk royalties for " + weeks + " weeks. The formula leaves the Vault.");
+  toast("🤝 <b>" + escapeHtml(v.name) + "</b> licensed to " + escapeHtml(rivalName) + ": <b>+" + fmt(lump) + "</b> now, " + fmt(royalty) + "/wk for " + weeks + " weeks.", "good");
+  save(); renderAll();
 }
 
 /* ---------- Lab ---------- */
-let lab = { top:null, heart:null, base:null, bottle:2, price:120, name:"", conc:"EDP", signature:"", limited:false };
+let lab = { top:null, heart:null, base:null, bottle:2, price:120, name:"", conc:"EDP", signature:"", limited:false, colour:"", test:null, blind:false };
 function optButton(item, group, extra){
   const sel = lab[group] && lab[group].name === item.name;
   return '<button class="opt' + (sel?" sel":"") + '" data-opt="' + group + '" data-name="' + item.name + '">' +
     '<span class="o-fam">' + item.fam + '</span><span class="o-name">' + item.name + '</span>' +
-    '<span class="o-desc">' + item.desc + '</span>' + (extra || "") + '</button>';
+    '<span class="o-desc">' + item.desc + '</span>' + (item.season ? '<span class="badge season" style="display:inline-block;margin-top:7px">Seasonal · ' + item.season + ' only</span>' : '') + (extra || "") + '</button>';
 }
 function renderLab(){
-  $("topOpts").innerHTML = TOPS.map(n => optButton(n, "top", '<span class="o-cost">Essence cost ' + fmt(n.cost) + '</span>')).join("");
-  $("heartOpts").innerHTML = HEARTS.map(n => optButton(n, "heart", '<span class="o-cost">Essence cost ' + fmt(n.cost) + '</span>')).join("");
-  $("baseOpts").innerHTML = BASES.map(n => optButton(n, "base", '<span class="o-cost">Essence cost ' + fmt(n.cost) + '</span>')).join("");
+  ["top","heart","base"].forEach(g=>{ if(lab[g] && lab[g].season && lab[g].season !== seasonOf(S.week)) lab[g] = null; });
+  const inSeason = n => !n.season || n.season === seasonOf(S.week);
+  $("topOpts").innerHTML = TOPS.filter(inSeason).map(n => optButton(n, "top", '<span class="o-cost">Essence cost ' + fmt(n.cost) + '</span>')).join("");
+  $("heartOpts").innerHTML = HEARTS.filter(inSeason).map(n => optButton(n, "heart", '<span class="o-cost">Essence cost ' + fmt(n.cost) + '</span>')).join("");
+  $("baseOpts").innerHTML = BASES.filter(inSeason).map(n => optButton(n, "base", '<span class="o-cost">Essence cost ' + fmt(n.cost) + '</span>')).join("");
   $("bottleOpts").innerHTML = BOTTLES.map((b,i) => {
     const sel = lab.bottle === i;
     return '<button class="opt' + (sel?" sel":"") + '" data-bottle="' + i + '">' +
@@ -940,16 +1471,22 @@ function renderLab(){
     const group = btn.getAttribute("data-opt"), name = btn.getAttribute("data-name");
     const list = group==="top" ? TOPS : group==="heart" ? HEARTS : BASES;
     lab[group] = list.find(n=>n.name===name);
+    lab.blind = false; /* v6 Wave 2: hand-picking a note cancels the blind draft */
+    lab.test = null;
     syncLabPrice(true);
     renderLab();
   }));
   document.querySelectorAll("[data-bottle]").forEach(btn => btn.addEventListener("click", () => {
     lab.bottle = parseInt(btn.getAttribute("data-bottle"),10);
+    lab.test = null;
     syncLabPrice(true);
     renderLab();
   }));
-  const concEl=$("concOpts"); if(concEl){ concEl.innerHTML=CONCS.map(c=>'<button class="opt'+(lab.conc===c.id?" sel":"")+'" data-conc="'+c.id+'"><span class="o-fam">Cost ×'+c.costMult+' · Ceiling ×'+c.capMult+'</span><span class="o-name">'+c.name+'</span><span class="o-desc">'+c.desc+'</span></button>').join(""); concEl.querySelectorAll("[data-conc]").forEach(b=>b.addEventListener("click",()=>{lab.conc=b.getAttribute("data-conc"); syncLabPrice(true); renderLab();})); }
+  const concEl=$("concOpts"); if(concEl){ concEl.innerHTML=CONCS.map(c=>'<button class="opt'+(lab.conc===c.id?" sel":"")+'" data-conc="'+c.id+'"><span class="o-fam">Cost ×'+c.costMult+' · Ceiling ×'+c.capMult+'</span><span class="o-name">'+c.name+'</span><span class="o-desc">'+c.desc+'</span></button>').join(""); concEl.querySelectorAll("[data-conc]").forEach(b=>b.addEventListener("click",()=>{lab.conc=b.getAttribute("data-conc"); lab.test=null; syncLabPrice(true); renderLab();})); }
   const sigEl=$("sigOpts"); if(sigEl){ const unlocked=SIGNATURES.filter(s=>S.rd>=s.rd); sigEl.innerHTML= (unlocked.length? '<button class="opt'+(!lab.signature?" sel":"")+'" data-sig=""><span class="o-name">None</span><span class="o-desc">No signature accord</span></button>'+unlocked.map(s=>'<button class="opt'+(lab.signature===s.name?" sel":"")+'" data-sig="'+s.name+'"><span class="o-name">'+s.name+'</span><span class="o-desc">'+s.desc+' · unlocked at R&D '+s.rd+'</span></button>').join("") : '<span style="color:var(--faint);font-size:.85rem">Reach R&D Level 1 to unlock Golden Amber, then one new accord per level.</span>'); sigEl.querySelectorAll("[data-sig]").forEach(b=>b.addEventListener("click",()=>{lab.signature=b.getAttribute("data-sig"); renderLab();})); if($("sigHint")) $("sigHint").textContent= unlocked.length? "— "+unlocked.length+" unlocked":"— unlock via R&D"; }
+  const colEl=$("colourOpts"); if(colEl){ colEl.innerHTML = '<button class="opt' + (!lab.colour ? " sel" : "") + '" data-colour=""><span class="o-name" style="font-size:.88rem">Natural</span><span class="o-desc">Liquid tinted by the base note family.</span></button>' + COLOURS.map(c=>'<button class="opt' + (lab.colour===c.name ? " sel" : "") + '" data-colour="' + c.name + '"><span class="swatch" style="background:' + c.css + '"></span><span class="o-name" style="font-size:.88rem">' + c.name + '</span></button>').join(""); colEl.querySelectorAll("[data-colour]").forEach(b=>b.addEventListener("click",()=>{ lab.colour=b.getAttribute("data-colour"); renderLab(); })); }
+  const tpEl=$("testPanel"); if(tpEl){ tpEl.innerHTML = testPanelHtml(); const tb=$("btnTestPanel"); if(tb) tb.addEventListener("click", ()=>{ runTestPanel(); renderLab(); }); }
+  renderVault();
   updateLabPreview();
 }
 function labCost(){
@@ -966,15 +1503,49 @@ function syncLabPrice(resetToSuggested){
   $("labPrice").max = labCap();
   $("labPrice").value = lab.price;
 }
+/* ---------- v6: Test Panel ---------- */
+function testPanelHtml(){
+  const ready = !!(lab.top && lab.heart && lab.base);
+  if(!ready) return '<p style="color:var(--faint);font-size:.82rem;line-height:1.5;margin:0">Pick a top, heart and base note, and twenty virtual testers will rate the draft before you spend a franc on launch.</p>';
+  if(!lab.test) return '<button class="btn block" id="btnTestPanel">Run Test Panel</button><p style="color:var(--faint);font-size:.78rem;line-height:1.5;margin:8px 0 0">Informational only — the panel never blocks a launch.</p>';
+  const t = lab.test;
+  return '<div class="kv"><span>Tester Score</span><span style="color:var(--gold-bright);font-weight:600">' + t.score.toFixed(1) + ' / 10</span></div>' +
+    '<div class="kv"><span>Predicted Segment Fit</span><span>' + t.seg + ' · ' + t.fit + '%</span></div>' +
+    '<p style="color:var(--muted);font-size:.86rem;line-height:1.55;margin:8px 0 0">“' + t.verdict + '”</p>' +
+    '<button class="btn block" id="btnTestPanel" style="margin-top:10px">Re-run Test Panel</button>';
+}
+function runTestPanel(){
+  if(!lab.top || !lab.heart || !lab.base) return;
+  const c = labCost();
+  const temp = { price: lab.price, cost: c, bottleCls: BOTTLES[lab.bottle].cls, conc: lab.conc, limited: lab.limited, signature: lab.signature, topFam: lab.top.fam, heartFam: lab.heart.fam, baseFam: lab.base.fam };
+  const fit = segmentFit(temp);
+  const best = Object.keys(fit).map(k=>({ seg:k, fit:fit[k] })).sort((a,b)=>b.fit-a.fit)[0];
+  let score = 5.2;
+  if(hasSynergy([lab.top.name, lab.heart.name, lab.base.name])) score += 1.0;
+  score += (BOTTLES[lab.bottle].prestige || 0) * 0.16;
+  score += lab.conc === "Extrait" ? 0.7 : lab.conc === "EDP" ? 0.3 : 0;
+  if(hasRare({ top: lab.top.name, heart: lab.heart.name, base: lab.base.name })) score += 0.6;
+  score += clamp((best.fit - 45) / 30, -1, 1.2);
+  score += rnd(-0.4, 0.4);
+  score = clamp(Math.round(score*10)/10, 1, 10);
+  const verdict = score >= 8.5 ? "A future icon — testers reached for the bottle twice and asked for the name."
+    : score >= 7 ? "Strong and sellable — a confident launch with a clear audience."
+    : score >= 5.5 ? "Pleasant and polished, if a little safe — price and trend will decide it."
+    : score >= 4 ? "Divisive — a niche few adore it, most shrug. Launch only with a plan."
+    : "Testers passed the blotter along quickly. Rethink a note before you commit.";
+  lab.test = { score, seg: best.seg, fit: best.fit, verdict };
+}
 function updateLabPreview(){
   const bottle = BOTTLES[lab.bottle];
   const cap = $("bCap"), body = $("bBody"), liquid = $("bLiquid");
   cap.className = "cap" + (bottle.cls ? " " + bottle.cls : "");
   body.className = "body" + (bottle.cls==="crystal" ? " crystal" : "") + (bottle.cls==="gold" ? " goldframe" : "");
   const famForColor = lab.base ? lab.base.fam : (lab.heart ? lab.heart.fam : null);
-  liquid.style.background = famForColor ? FAM_COLORS[famForColor] : "linear-gradient(180deg, rgba(200,162,74,.25), rgba(200,162,74,.55))";
+  liquid.style.background = lab.colour ? colourCss(lab.colour) : (famForColor ? FAM_COLORS[famForColor] : "linear-gradient(180deg, rgba(200,162,74,.25), rgba(200,162,74,.55))");
   $("bLabel").innerHTML = "MAISON D'OR<br/>" + (lab.name ? escapeHtml(lab.name).toUpperCase().slice(0,22) : "— — —");
   const c = labCost();
+  const synEl = $("labSynergy");
+  if(synEl) synEl.innerHTML = (c !== null && hasSynergy([lab.top.name, lab.heart.name, lab.base.name])) ? '<span class="badge hot">Golden Pairing ✦ +10% demand</span>' : "";
   if(c === null){
     $("labProfile").textContent = "Awaiting notes…";
     $("labCost").textContent = "—"; $("labSuggested").textContent = "—"; $("labFee").textContent = "—";
@@ -993,14 +1564,53 @@ function updateLabPreview(){
   }
   $("labPriceVal").textContent = fmt(lab.price);
   $("labCapNote").textContent = "The " + bottle.name + " caps this fragrance at " + fmt(bottle.cap) + (bottle.cls==="gold" ? " and lends VIP appeal in events and demand." : bottle.cls==="crystal" ? " and unlocks true luxury pricing." : ". Choose crystal or gold to price higher.");
-  const slots = S.perfumes.length;
-  $("labSlots").textContent = "Showroom slots: " + slots + " / 4 in use" + (slots>=4 ? " — discontinue a scent to launch another." : "");
-  $("btnLaunch").disabled = (c === null || slots >= 4 || S.cash < (c||0)*25);
-  $("btnLaunch").textContent = slots>=4 ? "Showroom Full (4/4)" : "Launch Fragrance";
+  const slots = S.perfumes.length, capSlots = scentCap();
+  $("labSlots").textContent = "Showroom slots: " + slots + " / " + capSlots + " in use" + (slots>=capSlots ? " — discontinue a scent" + (S.juniorPerfumer ? "" : " or hire a Junior Perfumer in Empire") + " to launch another." : "");
+  $("btnLaunch").disabled = (c === null || slots >= capSlots || S.cash < (c||0)*25);
+  $("btnLaunch").textContent = slots>=capSlots ? "Showroom Full (" + slots + "/" + capSlots + ")" : "Launch Fragrance";
+  /* v6 Wave 2: blind draft indicator */
+  const bn = $("blindNote");
+  if(bn) bn.style.display = lab.blind ? "block" : "none";
+  /* v6 Name Check — warn on lookalike names (never blocks) */
+  const nw = $("nameWarn");
+  if(nw){
+    const nm = (lab.name || "").trim().toLowerCase();
+    let warn = "";
+    if(nm.length >= 3){
+      const sim = other => { const o = String(other||"").trim().toLowerCase(); if(!o) return false; return o === nm || o.includes(nm) || nm.includes(o) || o.split(" ")[0] === nm.split(" ")[0]; };
+      const own = S.perfumes.find(p => sim(p.name));
+      const rivalHit = Object.keys(RIVAL_HITS).map(k => RIVAL_HITS[k]).find(h => sim(h.name));
+      const rivalHouse = S.rivals.find(r => sim(r.name));
+      if(own) warn = "⚠ Name Check: “" + lab.name.trim() + "” is very similar to your own scent “" + own.name + "” — customers may confuse them.";
+      else if(rivalHit) warn = "⚠ Name Check: “" + lab.name.trim() + "” is very similar to the rival bestseller “" + rivalHit.name + "” — expect comparisons.";
+      else if(rivalHouse) warn = "⚠ Name Check: “" + lab.name.trim() + "” echoes the rival house “" + rivalHouse.name + "”.";
+    }
+    nw.textContent = warn;
+    nw.style.display = warn ? "block" : "none";
+  }
 }
 
 /* ---------- Empire ---------- */
 function renderEmpire(){
+  const pfEl = $("perfumerPanel");
+  if(pfEl){
+    /* v6 Wave 2: Senior Perfumer — a named character with Morale (item 27) */
+    const morale = Math.round(S.perfumer ? S.perfumer.morale : 70);
+    const seniorHtml = '<article class="card up-card" style="margin-bottom:14px"><h4>Senior Perfumer — ' + escapeHtml(S.perfumer ? S.perfumer.name : SENIOR_PERFUMER_NAME) + '</h4>' +
+      '<div class="kv"><span>Morale</span><span>' + morale + ' / 100</span></div>' +
+      '<div class="meter" style="margin:8px 0"><div class="meter-fill" style="width:' + clamp(morale,0,100) + '%;background:' + (morale >= 40 ? "linear-gradient(90deg,#8a6d2a,#ecd28a)" : "#d98a7e") + '"></div></div>' +
+      '<p>The maison\'s nose. Her morale bends every scent\'s demand — up to <b style="color:var(--cream)">+8%</b> when inspired, <b style="color:var(--cream)">−8%</b> when miserable. Brutal weeks (110+ units sold) exhaust her (−5); quiet weeks restore her (+3). Poaching attempts and bonuses move her most.</p>' +
+      '<button class="btn block" id="btnPerfumerBonus" ' + (S.cash < 500 || morale >= 100 ? "disabled" : "") + '>Give a Bonus — $500 (+12 Morale)</button></article>';
+    pfEl.innerHTML = seniorHtml + (S.juniorPerfumer
+      ? '<article class="card up-card"><h4>Junior Perfumer — Amara Chen</h4><span class="owned-pill">Employed</span><p>Salary <b style="color:var(--cream)">' + fmt(PERFUMER_SALARY) + '/week</b>, deducted on every Advance. While she is on the team, your active scent cap is <b style="color:var(--cream)">5</b> instead of 4.</p>' + (S.perfumes.length > 4 ? '<p style="color:var(--muted)">You currently run 5 scents. If you let her go, the five stay on sale — but you cannot launch another until you are back below 4.</p>' : '') + '<button class="btn danger block" id="btnFirePerfumer">Let Go (Fire)</button></article>'
+      : '<article class="card up-card"><h4>Hire a Junior Perfumer</h4><span class="price-line">' + fmt(PERFUMER_FEE) + ' signing fee</span><p>A second nose in the lab raises your active scent cap from <b style="color:var(--cream)">4 → 5</b> while employed, for a salary of ' + fmt(PERFUMER_SALARY) + '/week.</p><button class="btn block" id="btnHirePerfumer" ' + (S.cash < PERFUMER_FEE ? "disabled" : "") + '>Hire Junior Perfumer</button></article>');
+    const pb = $("btnPerfumerBonus");
+    if(pb) pb.addEventListener("click", ()=>{ if(S.cash < 500 || !S.perfumer) return; S.cash -= 500; S.perfumer.morale = clamp(S.perfumer.morale + 12, 0, 100); logEvent("💐 A <b>$500 bonus</b> for Senior Perfumer <b>" + escapeHtml(S.perfumer.name) + "</b> — her morale rises to " + Math.round(S.perfumer.morale) + "."); toast("💐 Bonus given — <b>" + escapeHtml(S.perfumer.name) + "</b>'s morale is now <b>" + Math.round(S.perfumer.morale) + "</b>. Inspired noses sell more.", "good"); save(); renderAll(); });
+    const hb = $("btnHirePerfumer");
+    if(hb) hb.addEventListener("click", ()=>{ if(S.cash < PERFUMER_FEE) return; S.cash -= PERFUMER_FEE; S.juniorPerfumer = true; logEvent("👃 Hired a <b>Junior Perfumer</b> (" + fmt(PERFUMER_FEE) + " signing fee, " + fmt(PERFUMER_SALARY) + "/wk) — showroom cap is now 5 scents."); toast("👃 <b>Junior Perfumer hired</b> — you can now run <b>5 active scents</b>. Salary " + fmt(PERFUMER_SALARY) + "/week.", "good"); save(); renderAll(); });
+    const fb = $("btnFirePerfumer");
+    if(fb) fb.addEventListener("click", ()=>{ S.juniorPerfumer = false; logEvent("The Junior Perfumer was let go — showroom cap returns to 4 for new launches."); toast("Junior Perfumer let go. Scent cap for new launches is back to 4."); save(); renderAll(); });
+  }
   $("campaignList").innerHTML = CAMPAIGNS.map(c => {
     const active = S.campaigns.find(a=>a.id===c.id);
     return '<article class="card camp-card"><h4>' + c.name + '</h4>' +
@@ -1009,8 +1619,14 @@ function renderEmpire(){
       (active ? '<span class="active-pill">Active · ' + active.weeksLeft + ' wk left</span>'
               : '<button class="btn block" data-campaign="' + c.id + '"' + ((S.cash < c.cost || S.challenge==="nomarketing") ? " disabled" : "") + '>'+(S.challenge==="nomarketing"?"Disabled — No Marketing Run":"Launch Campaign")+'</button>') +
     '</article>';
-  }).join("");
+  }).join("") + /* v6 Wave 2: Collab Drop with a fashion brand (item 22) */
+    '<article class="card camp-card"><h4>Collab Drop — Atelier Vasseur</h4>' +
+    (S.collab ? '<span class="active-pill">Live · ' + S.collab.weeksLeft + ' wk left</span><p>The fashion collab is running: <b style="color:var(--cream)">+50% demand hype</b> on everything, and Atelier Vasseur takes a <b style="color:var(--cream)">15% revenue share</b> — shown as its own line in the Weekly Report.</p>'
+              : '<span class="price-line">$6,000</span> <span style="color:var(--faint); font-size:.8rem">· runs 4 weeks</span><p>A joint drop with the fashion house Atelier Vasseur: shared upfront cost, a large hype boost (+50% demand) for 4 weeks — they keep 15% of revenue while it runs.</p><button class="btn block" id="btnCollab"' + ((S.cash < 6000 || S.challenge==="nomarketing") ? " disabled" : "") + '>' + (S.challenge==="nomarketing" ? "Disabled — No Marketing Run" : "Sign the Collab") + '</button>') +
+    '</article>';
   document.querySelectorAll("[data-campaign]").forEach(btn => btn.addEventListener("click", () => launchCampaign(btn.getAttribute("data-campaign"))));
+  const cb = $("btnCollab");
+  if(cb) cb.addEventListener("click", ()=>{ if(S.cash < 6000 || S.collab) return; S.cash -= 6000; S.collab = { weeksLeft: 4 }; logEvent("👗 Signed the <b>Atelier Vasseur Collab Drop</b> — +50% demand hype for 4 weeks; they take a 15% revenue share."); toast("👗 <b>Collab Drop signed</b> — hype +50% for 4 weeks, 15% revenue share to Atelier Vasseur.", "good"); save(); renderAll(); });
 
   $("tierList").innerHTML = TIERS.map((t,i) => {
     const owned = i <= S.tier, next = i === S.tier+1;
@@ -1037,20 +1653,115 @@ function renderEmpire(){
 
   // Seasonal
   const sEl=$("seasonalList"); if(sEl){ sEl.innerHTML=SEASONAL_CAMPS.map(c=>{ const inSeason=seasonOf(S.week)===c.season; const active=S.seasonalBoost===c.id && S.seasonalBoostWeeks>0; return '<article class="card camp-card"><h4>'+c.name+'</h4><span class="price-line">'+fmt(c.cost)+'</span> <span style="color:var(--faint)">· '+c.weeks+' wks · window: '+c.season+'</span><p>'+c.desc+'</p>'+(active?'<span class="active-pill">Active · '+S.seasonalBoostWeeks+' wk left</span>': '<button class="btn block" data-seasonal="'+c.id+'" '+((!inSeason||S.cash<c.cost||S.challenge==="nomarketing")?"disabled":"")+'>'+(inSeason?"Launch Seasonal Campaign":"Available in "+c.season)+'</button>')+'</article>'; }).join(""); sEl.querySelectorAll("[data-seasonal]").forEach(b=>b.addEventListener("click",()=>{ const c=SEASONAL_CAMPS.find(x=>x.id===b.getAttribute("data-seasonal")); if(!c||S.cash<c.cost) return; S.cash-=c.cost; S.seasonalBoost=c.id; S.seasonalBoostWeeks=c.weeks; logEvent("Seasonal campaign <b>"+c.name+"</b> launched."); save(); renderAll(); toast("<b>"+c.name+"</b> live — demand spike active.","good"); })); }
-  const cEl=$("cityList"); if(cEl){ cEl.innerHTML=CITIES.map(c=>{ const owned=(S.cities||[]).includes(c.id); return '<article class="card up-card"><h4>'+c.name+' Boutique</h4><span class="price-line">'+fmt(c.cost)+'</span><p>'+c.desc+'</p>'+(owned?'<span class="owned-pill">Open · Buff Active</span>':'<button class="btn block" data-city="'+c.id+'" '+(S.cash<c.cost?"disabled":"")+'>Expand to '+c.name+'</button>')+'</article>'; }).join(""); cEl.querySelectorAll("[data-city]").forEach(b=>b.addEventListener("click",()=>{ const c=CITIES.find(x=>x.id===b.getAttribute("data-city")); if(!c||S.cash<c.cost) return; S.cash-=c.cost; S.cities.push(c.id); logEvent("Opened boutique in <b>"+c.name+"</b> — buff: "+c.fams.join(", ")+"."); save(); renderAll(); toast("Now open in <b>"+c.name+"</b>.","good"); })); if($("cityBuffs")) $("cityBuffs").textContent=(S.cities&&S.cities.length)? "Active city buffs: "+S.cities.map(id=>{const cc=CITIES.find(x=>x.id===id); return cc.name+" ("+cc.fams.join("/")+" +30%)";}).join(" · ") : "No city buffs yet — expand to Dubai, Paris or Tokyo."; }
+  const cEl=$("cityList"); if(cEl){ cEl.innerHTML=CITIES.map(c=>{ const owned=(S.cities||[]).includes(c.id); const mgr=(S.cityManagers||{})[c.id]||CITY_MANAGERS[c.id]; return '<article class="card up-card"><h4>'+c.name+' Boutique</h4><span class="price-line">'+fmt(c.cost)+'</span><p>'+c.desc+'</p>'+(owned?'<span class="owned-pill">Open · Buff Active</span><p style="margin-top:8px">🏙 Managed by <b style="color:var(--cream)">'+escapeHtml(mgr)+'</b> — expect a small bonus or mishap from '+c.name+' in the Weekly Report.</p>':'<button class="btn block" data-city="'+c.id+'" '+(S.cash<c.cost?"disabled":"")+'>Expand to '+c.name+'</button>')+'</article>'; }).join(""); cEl.querySelectorAll("[data-city]").forEach(b=>b.addEventListener("click",()=>{ const c=CITIES.find(x=>x.id===b.getAttribute("data-city")); if(!c||S.cash<c.cost) return; S.cash-=c.cost; S.cities.push(c.id); if(!S.cityManagers) S.cityManagers={}; S.cityManagers[c.id]=CITY_MANAGERS[c.id]; logEvent("Opened boutique in <b>"+c.name+"</b> — buff: "+c.fams.join(", ")+". <b>"+escapeHtml(CITY_MANAGERS[c.id])+"</b> appointed city manager."); save(); renderAll(); toast("Now open in <b>"+c.name+"</b> — managed by <b>"+escapeHtml(CITY_MANAGERS[c.id])+"</b>.","good"); })); if($("cityBuffs")) $("cityBuffs").textContent=(S.cities&&S.cities.length)? "Active city buffs: "+S.cities.map(id=>{const cc=CITIES.find(x=>x.id===id); return cc.name+" ("+cc.fams.join("/")+" +30%)";}).join(" · ") : "No city buffs yet — expand to Dubai, Paris or Tokyo."; }
   const fEl=$("financePanel"); if(fEl){ fEl.innerHTML='<article class="card"><h4 style="font-family:var(--serif)">Bank Loan</h4><p style="color:var(--muted)">Take $10,000 at 5% weekly interest. Debt: <b style="color:var(--cream)">'+fmt(S.debt||0)+'</b></p><div class="flex-row"><button class="btn" id="btnLoan" '+((S.debt>0)?"disabled":"")+'>Take $10k Loan</button><button class="btn" id="btnRepay" '+(!(S.debt>0&&S.cash>0)?"disabled":"")+'>Repay Loan</button></div></article><article class="card"><h4 style="font-family:var(--serif)">Investor Offer</h4><p style="color:var(--muted)">Sell 10% equity for $15,000 cash — costs −4 Prestige. Equity sold: <b style="color:var(--cream)">'+(S.equitySold||0)+'%</b></p><button class="btn" id="btnEquity" '+((S.equitySold>=30)?"disabled":"")+'>Sell 10% for $15,000</button></article>'; const bl=$("btnLoan"); if(bl) bl.addEventListener("click",()=>{S.debt=(S.debt||0)+10000; S.cash+=10000; logEvent("Took a <b>$10,000 loan</b> at 5% weekly interest."); save(); renderAll();}); const br=$("btnRepay"); if(br) br.addEventListener("click",()=>{ const pay=Math.min(S.debt,S.cash); S.cash-=pay; S.debt-=pay; logEvent("Repaid <b>"+fmt(pay)+"</b> of loan."); save(); renderAll();}); const be=$("btnEquity"); if(be) be.addEventListener("click",()=>{S.cash+=15000; S.equitySold+=10; S.prestige=clamp(S.prestige-4,0,100); logEvent("Sold <b>10% equity</b> for $15,000 (−4 Prestige)."); save(); renderAll();}); }
   const prEl=$("prPanel"); if(prEl){ const v=Math.round(S.prMeter||0); prEl.innerHTML='<div class="kv"><span>PR Meter (−100 Scandal … +100 Buzz)</span><span>'+v+'</span></div><div class="meter" style="margin:10px 0"><div class="meter-fill" style="width:'+clamp(v+100,0,200)/2+'%;background:'+(v>=0?"linear-gradient(90deg,#8a6d2a,#ecd28a)":"#d98a7e")+'"></div></div><p style="color:var(--muted);font-size:.86rem">Buzz lifts prestige growth; scandal drags it down each week. Good event choices and reviews build buzz.</p>'; }
   const arcEl=$("arcPanel"); if(arcEl){ arcEl.innerHTML=(S.arcs&&S.arcs.length)? S.arcs.map(a=>'<div class="kv"><span>'+a.name+'</span><span>Week '+a.progress+' / '+a.total+' — '+a.desc+'</span></div>').join("") : '<p style="color:var(--muted)">No active story arcs. Arcs appear through events — a rival lawsuit (3 weeks) or a bespoke VIP commission (4 weeks).</p>'; }
   const season = seasonOf(S.week);
   $("trendIntel").innerHTML =
     '<div class="kv"><span>Current Season</span><span>' + season + ' (favours ' + SEASON_FAMS[season].join(", ") + ')</span></div>' +
-    '<div class="kv"><span>Hot Profiles · 2× demand</span><span>' + S.hot.map(escapeHtml).join(" · ") + '</span></div>' +
-    '<div class="kv"><span>Oversaturated · 0.5× demand</span><span>' + S.saturated.map(escapeHtml).join(" · ") + '</span></div>' +
+    '<div class="kv"><span>Hot Profiles ▲ · 2× demand</span><span>' + S.hot.map(f=>"▲ " + escapeHtml(f)).join(" · ") + '</span></div>' +
+    '<div class="kv"><span>Oversaturated ▼ · 0.5× demand</span><span>' + S.saturated.map(f=>"▼ " + escapeHtml(f)).join(" · ") + '</span></div>' +
     '<div class="kv"><span>Next Trend Shift</span><span>' + S.trendTimer + ' week(s)</span></div>' +
     '<div class="kv"><span>Weekly Foot Traffic</span><span>' + TIERS[S.tier].traffic + ' visitors at ' + TIERS[S.tier].name + '</span></div>' +
     '<div class="kv"><span>Production Cost Modifier</span><span>' + Math.round(rdCostMult()*100) + '% of base (R&amp;D Level ' + S.rd + ')</span></div>' +
     (S.oudStock>0 ? '<div class="kv"><span>Rare Oud Reserve</span><span>Active for ' + S.oudStock + ' more week(s) — Aged Oud blends discounted</span></div>' : "") +
     '<p style="color:var(--muted); font-size:.86rem; line-height:1.6; margin:12px 0 0">Reading the market: a fragrance earns the 2× bonus when <em>any</em> of its three note families is hot, and suffers the 0.5× penalty when any is oversaturated. Seasonal fit stacks on top — fresh florals sing in spring, dark woods in winter.</p>';
+  renderUpgrades();
+  renderScandal();
+  renderArch();
+}
+/* ---------- v6 Wave 2: House Upgrades (items 20, 21, 23, 24) ---------- */
+function renderUpgrades(){
+  const el = $("upgradeList"); if(!el) return;
+  const members = Math.round(S.prestige * 10);
+  const activeCount = S.perfumes.length;
+  const tierOk = S.tier >= TIERS.length - 1;
+  el.innerHTML =
+    '<article class="card up-card"><h4>Loyalty Club</h4>' +
+      (S.loyaltyClub ? '<span class="owned-pill">Active</span><p><b style="color:var(--cream)">' + members.toLocaleString("en-US") + ' members</b> (the club grows with Prestige) currently pay <b style="color:var(--cream)">' + fmt(members * 2) + '/week</b> — its own line in the Weekly Report. Members buy first: rival steal pressure and arch-rival pressure no longer touch your demand.</p>'
+                     : '<span class="price-line">$8,000</span><p>Launch the MAISON D\'OR Loyalty Club: members grow with Prestige and pay a small steady weekly amount, and your scents ignore rival steal effects while the club runs.</p><button class="btn block" id="btnBuyLoyalty" ' + (S.cash < 8000 ? "disabled" : "") + '>Launch Loyalty Club</button>') + '</article>' +
+    '<article class="card up-card"><h4>Airport Duty-Free Counter</h4>' +
+      (S.dutyFree ? '<span class="owned-pill">Open</span><p>Your Clean &amp; Fresh scents sell extra volume through the duty-free counter every week — no rent, and its own line in the Weekly Report.</p>'
+                  : '<span class="price-line">$25,000</span><p>' + (tierOk ? 'Open a counter at the international terminal: Clean &amp; Fresh profile scents sell at volume every week, rent-free.' : 'Unlocks only at the highest retail tier — <b style="color:var(--cream)">Global Luxury House</b>.') + '</p><button class="btn block" id="btnBuyDutyFree" ' + ((!tierOk || S.cash < 25000) ? "disabled" : "") + '>Open Duty-Free Counter</button>') + '</article>' +
+    '<article class="card up-card"><h4>Scent of the Month · Subscription Box</h4>' +
+      (S.subBox ? (activeCount >= 3 ? '<span class="owned-pill">Running</span><p>Subscribers currently pay <b style="color:var(--cream)">' + fmt(activeCount * 150 + Math.round(S.prestige) * 10) + '/week</b> — scaled by your ' + activeCount + ' active scents and Prestige ' + Math.round(S.prestige) + '. Its own line in the Weekly Report.</p>'
+                                    : '<span class="active-pill">Paused</span><p>The box needs <b style="color:var(--cream)">3+ active scents</b> — you currently have ' + activeCount + '. Launch another scent and the income resumes automatically.</p>')
+                : '<span class="price-line">$3,500</span><p>' + (activeCount >= 3 ? 'A monthly discovery box for subscribers: steady weekly income scaled by your active scent count + Prestige.' : 'Unlocks when you run <b style="color:var(--cream)">3+ active scents</b> — you currently have ' + activeCount + '.') + '</p><button class="btn block" id="btnBuySub" ' + ((activeCount < 3 || S.cash < 3500) ? "disabled" : "") + '>Launch Subscription Box</button>') + '</article>' +
+    '<article class="card up-card"><h4>Quality Control Upgrade</h4>' +
+      (S.qc ? '<span class="owned-pill">Installed</span><p>Every batch is inspected twice before it ships. Negative events are often caught before they reach you — and when one lands, its Prestige and PR damage is halved.</p>'
+            : '<span class="price-line">$5,000</span><p>A permanent QC laboratory that reduces the odds and the severity of negative events, forever.</p><button class="btn block" id="btnBuyQC" ' + (S.cash < 5000 ? "disabled" : "") + '>Install Quality Control</button>') + '</article>';
+  const bl = $("btnBuyLoyalty");
+  if(bl) bl.addEventListener("click", ()=>{ if(S.cash < 8000) return; S.cash -= 8000; S.loyaltyClub = true; logEvent("💳 The <b>Loyalty Club</b> launched — members pay weekly and shield the maison from rival steal effects."); toast("💳 <b>Loyalty Club launched</b> — " + Math.round(S.prestige * 10) + " founding members, and rival steal pressure no longer touches you.", "good"); save(); renderAll(); });
+  const bd = $("btnBuyDutyFree");
+  if(bd) bd.addEventListener("click", ()=>{ if(S.cash < 25000 || S.tier < TIERS.length - 1) return; S.cash -= 25000; S.dutyFree = true; logEvent("✈️ The <b>Airport Duty-Free Counter</b> opened — Clean &amp; Fresh scents now sell at volume, rent-free."); toast("✈️ <b>Duty-Free Counter open</b> — watch for its line in the Weekly Report.", "good"); save(); renderAll(); });
+  const bs = $("btnBuySub");
+  if(bs) bs.addEventListener("click", ()=>{ if(S.cash < 3500 || S.perfumes.length < 3) return; S.cash -= 3500; S.subBox = true; logEvent("📦 The <b>Scent of the Month Subscription Box</b> launched — steady weekly income while 3+ scents stay active."); toast("📦 <b>Subscription Box launched</b> — steady income in every Weekly Report while you run 3+ scents.", "good"); save(); renderAll(); });
+  const bq = $("btnBuyQC");
+  if(bq) bq.addEventListener("click", ()=>{ if(S.cash < 5000) return; S.cash -= 5000; S.qc = true; logEvent("🛡 <b>Quality Control</b> installed — negative events will be rarer and gentler from now on."); toast("🛡 <b>Quality Control installed</b> — bad events are less likely, and half as damaging.", "good"); save(); renderAll(); });
+}
+/* ---------- v6 Wave 2: Scandal Recovery Arc (item 30) ---------- */
+function renderScandal(){
+  const el = $("scandalPanel"); if(!el) return;
+  const sc = S.scandal || { active:false, step:0, lastWeek:0 };
+  const STEPS = [
+    { t:"Step 1 · Own the story", a:{ label:"Public apology tour — $800", cost:800, pr:10 }, b:{ label:"Silent rebrand — $400", cost:400, pr:6 } },
+    { t:"Step 2 · Show, don't tell", a:{ label:"Headline a charity gala — $1,200", cost:1200, pr:12 }, b:{ label:"Press tell-all exclusive — Free", cost:0, pr:8 } },
+    { t:"Step 3 · The comeback drop", a:{ label:"Comeback collection launch — $1,500", cost:1500, pr:15 }, b:{ label:"Loyalists' private evening — $300", cost:300, pr:10 } }
+  ];
+  if(sc.active){
+    const canStep = sc.lastWeek !== S.week;
+    const st = STEPS[Math.min(sc.step, 2)];
+    el.innerHTML = '<div class="card" style="border-color:rgba(217,138,126,.55);margin-bottom:16px"><h4 style="font-family:var(--serif);margin:0 0 4px;font-size:1.18rem">🕊 Scandal Recovery — Comeback Campaign</h4>' +
+      '<p style="color:var(--muted);font-size:.87rem;line-height:1.55;margin:4px 0 10px">Week ' + (sc.step + 1) + ' of 3 · <b style="color:var(--cream)">' + st.t + '</b>. ' + (canStep ? 'Choose this week\'s move:' : 'This week\'s move is made — advance the week to continue the comeback.') + '</p>' +
+      (canStep ? '<div class="small-btns"><button class="btn" data-scandal="a" ' + (S.cash < st.a.cost ? "disabled" : "") + '>' + st.a.label + ' · PR +' + st.a.pr + '</button><button class="btn" data-scandal="b" ' + (S.cash < st.b.cost ? "disabled" : "") + '>' + st.b.label + ' · PR +' + st.b.pr + '</button></div>' : '') + '</div>';
+    el.querySelectorAll("[data-scandal]").forEach(b=>b.addEventListener("click", ()=>{
+      const ch = b.getAttribute("data-scandal") === "a" ? st.a : st.b;
+      if(S.cash < ch.cost) return;
+      S.cash -= ch.cost;
+      S.prMeter = clamp(S.prMeter + ch.pr, -100, 100);
+      sc.step += 1; sc.lastWeek = S.week;
+      logEvent("🕊 Comeback campaign — <b>" + ch.label + "</b> (PR +" + ch.pr + "). Step " + sc.step + " of 3.");
+      if(sc.step >= 3){
+        sc.active = false; sc.step = 0;
+        S.prMeter = Math.max(S.prMeter, -5);
+        S.prestige = clamp(S.prestige + 6, 0, 100);
+        logEvent("🕊 <b>Comeback complete</b> — the scandal is behind the maison. PR restored toward neutral at " + Math.round(S.prMeter) + ", <b>+6 Prestige</b>.");
+        toast("🕊 <b>Comeback complete!</b> PR restored to " + Math.round(S.prMeter) + " and +6 Prestige.", "good");
+        confettiBurst(false);
+      } else {
+        toast("🕊 Comeback step done — PR now " + Math.round(S.prMeter) + ". Next step next week.", "good");
+      }
+      S.scandal = sc; save(); renderAll();
+    }));
+  } else if((S.prMeter || 0) <= -60){
+    el.innerHTML = '<div class="card" style="border-color:rgba(217,138,126,.55);margin-bottom:16px"><h4 style="font-family:var(--serif);margin:0 0 4px;font-size:1.18rem">🕊 Scandal Recovery — Comeback Campaign</h4>' +
+      '<p style="color:var(--muted);font-size:.87rem;line-height:1.55;margin:4px 0 10px">The PR meter is in crisis (' + Math.round(S.prMeter) + '). A 3-week comeback campaign — one move per week, chosen here in Empire — restores PR toward neutral and pays a Prestige reward on completion.</p>' +
+      '<button class="btn solid block" id="btnStartScandal" ' + (S.cash < 2000 ? "disabled" : "") + '>Begin Comeback Campaign — $2,000</button></div>';
+    const b = $("btnStartScandal");
+    if(b) b.addEventListener("click", ()=>{ if(S.cash < 2000) return; S.cash -= 2000; S.scandal = { active:true, step:0, lastWeek:0 }; logEvent("🕊 The <b>Comeback Campaign</b> begins — three weeks to rebuild the maison's name."); save(); renderAll(); toast("🕊 Comeback Campaign started — make one move per week here in Empire.", "good"); });
+  } else {
+    el.innerHTML = "";
+  }
+}
+/* ---------- v6 Wave 2: Arch-Rival (item 31) ---------- */
+function renderArch(){
+  const el = $("archPanel"); if(!el) return;
+  const names = (S.rivals || []).map(r=>r.name);
+  el.innerHTML = '<p style="color:var(--muted);font-size:.87rem;line-height:1.55;margin:0 0 10px">Name one house your nemesis. Their pressure on your demand runs heavier (<b style="color:var(--cream)">−7%</b>, unless the Loyalty Club shields you) and they grow faster — but <b style="color:var(--cream)">outsell them in a week</b> and you take a cash bonus and +0.5 Prestige. You may change your pick <b style="color:var(--cream)">once</b>.</p>' +
+    (S.archRival ? '<p style="margin:0 0 10px">Current arch-rival: <b style="color:var(--gold-bright)">' + escapeHtml(S.archRival) + '</b>' + (S.archChanged ? ' · your one change has been used.' : ' · one change remaining.') + '</p>'
+                 : '<p style="margin:0 0 10px;color:var(--faint)">No arch-rival chosen yet.</p>') +
+    '<div class="small-btns">' + names.map(n=>'<button class="btn" data-arch="' + escapeHtml(n) + '"' + ((S.archRival === n || (S.archRival && S.archChanged)) ? ' disabled' : '') + '>⚔ ' + escapeHtml(n) + (S.archRival === n ? ' (current)' : '') + '</button>').join("") + '</div>';
+  el.querySelectorAll("[data-arch]").forEach(b=>b.addEventListener("click", ()=>{
+    const n = b.getAttribute("data-arch");
+    if(S.archRival === n) return;
+    if(S.archRival && S.archChanged) return;
+    if(S.archRival) S.archChanged = true;
+    S.archRival = n;
+    logEvent("⚔️ <b>" + escapeHtml(n) + "</b> is now the maison's arch-rival. The feud is personal.");
+    toast("⚔️ <b>" + escapeHtml(n) + "</b> is your arch-rival — outsell them each week for a bonus.", "good");
+    save(); renderAll();
+  }));
 }
 
 /* ---------- Ledger ---------- */
@@ -1065,6 +1776,7 @@ function renderLedger(){
     ["Units Sold (All Time)", S.totalUnits.toLocaleString("en-US")],
     ["Best Week", best ? "Wk " + best.week + " · " + fmt(best.revenue) : "—"],
     ["Debt / Equity Sold", fmt(S.debt||0)+" · "+(S.equitySold||0)+"%"],
+    ["Investor Rescue", S.rescueTaken ? "🛟 Used — +$20,000 for 20% equity" : (S.rescueUsed ? "Offered & declined" : "Not used")],
     ["PR Meter", Math.round(S.prMeter||0)],
     ["Awards Won", (S.awards||[]).length]
   ];
@@ -1097,7 +1809,18 @@ function renderChart(){
     '<div style="display:flex; gap:18px; font-size:.78rem; color:var(--muted); margin-top:6px"><span><span style="color:#c8a24a">■</span> Revenue</span><span><span style="color:#9dc08b">■</span> Profit</span><span><span style="color:#d98a7e">■</span> Loss</span><span><span style="color:#ecd28a">—</span> Net Worth line</span><span><span style="color:#b3a68d">- -</span> Prestige line</span><span style="margin-left:auto">Peak scale ' + fmt(maxV) + '</span></div>';
 }
 function renderTrophies(){ const g=$("trophyGrid"); if(g){ g.innerHTML=ACHIEVEMENTS.map(a=>{ const un=S.achievements.includes(a.id); return '<article class="card trophy'+(un?" unlocked":"")+'"><h4 style="font-family:var(--serif);margin:0 0 4px">'+(un?"🏆 ":"🔒 ")+a.name+'</h4><p style="color:var(--muted);font-size:.85rem">'+a.desc+'</p>'+(un?'<span class="owned-pill">Unlocked</span>':'<span class="badge">Locked</span>')+'</article>'; }).join("") + ((S.challengeBadge)?'<article class="card trophy unlocked"><h4 style="font-family:var(--serif)">🎖 '+S.challengeBadge+'</h4><p style="color:var(--muted)">Challenge completed</p></article>':""); } const ap=$("awardPanel"); if(ap){ ap.innerHTML=(S.awards&&S.awards.length)? S.awards.map(a=>'<div class="kv"><span>Week '+a.week+'</span><span>🏆 '+escapeHtml(a.name)+' — '+escapeHtml(a.scent)+'</span></div>').join("") : '<p style="color:var(--muted)">Fragrance Awards run every 12 weeks. Win for +15 Prestige and a trophy here.</p>'; } }
-function renderAll(){ renderHUD(); renderTrends(); renderShowroom(); renderLab(); renderEmpire(); renderLedger(); renderTrophies(); }
+/* v6 Wave 3 (item 43): Personal Best Board — kept across New Games and slots */
+function renderBests(){
+  const bp = $("bestsPanel"); if(!bp) return;
+  const row = (label, val) => '<div class="kv"><span>' + label + '</span><span>' + val + '</span></div>';
+  bp.innerHTML =
+    row("Best Single-Week Profit", bests.bestWeekProfit ? fmt(bests.bestWeekProfit) + (bests.bestWeekProfitWeek ? " · Week " + bests.bestWeekProfitWeek : "") : "—") +
+    row("Best Scent · Lifetime Revenue", bests.bestScentRevenue ? escapeHtml(bests.bestScentName || "—") + " · " + fmt(bests.bestScentRevenue) : "—") +
+    row("Fastest Win", bests.fastestWin ? bests.fastestWin + " weeks" : "Not yet — reach 100 Prestige + $1M net worth") +
+    row("Highest Net Worth", bests.highestNetWorth ? fmt(bests.highestNetWorth) : "—") +
+    '<p style="color:var(--faint);font-size:.8rem;margin:10px 0 0">Personal bests are kept across New Games and shared across all three save slots.</p>';
+}
+function renderAll(){ renderHUD(); renderTrends(); renderShowroom(); renderLab(); renderEmpire(); renderLedger(); renderTrophies(); renderBests(); }
 </script>
 
 <script>
@@ -1111,7 +1834,7 @@ function randomName(){
 function launchPerfume(){
   const c = labCost();
   if(c === null) { toast("Select a top, heart and base note first.", "bad"); return; }
-  if(S.perfumes.length >= 4) { toast("The showroom holds four fragrances at most. Discontinue one first.", "bad"); return; }
+  if(S.perfumes.length >= scentCap()) { toast("The showroom holds " + scentCap() + " fragrances at most. Discontinue one first" + (S.juniorPerfumer ? "." : " — or hire a Junior Perfumer in Empire for a 5th slot."), "bad"); return; }
   const fee = c * 25;
   if(S.cash < fee) { toast("You need " + fmt(fee) + " for the initial production run.", "bad"); return; }
   const bottle = BOTTLES[lab.bottle];
@@ -1127,16 +1850,20 @@ function launchPerfume(){
     profile: profileOf(lab.top, lab.heart, lab.base),
     cost: c, price: lab.price, stock: 25,
     lastUnits: null, lifetimeUnits: 0, lifetimeRevenue: 0, bornWeek: S.week,
-    conc: lab.conc, signature: lab.signature || "", limited: !!isLimited, leWeeksLeft: isLimited?3:0
+    conc: lab.conc, signature: lab.signature || "", limited: !!isLimited, leWeeksLeft: isLimited?3:0,
+    colour: lab.colour || "", synergy: hasSynergy([lab.top.name, lab.heart.name, lab.base.name]),
+    autoRestock: false, restockTarget: 0, priceHistory: [],
+    blind: !!lab.blind, blindBonus: false, heritage: false
   };
   if(isLimited) S.launchedLimited = true;
+  if(p.synergy) toast("✦ <b>Golden Pairing</b> — this formula carries the +10% synergy demand bonus.", "good");
   S.perfumes.push(p);
   S.uid = uidC;
   if(bottle.prestige){ S.prestige = clamp(S.prestige + bottle.prestige, 0, 100); }
   logEvent("Launched <b>" + escapeHtml(name) + "</b> — a " + p.profile + " in " + bottle.name + " at " + fmt(p.price) + ".");
   toast("<b>" + escapeHtml(name) + "</b> has entered the showroom. " + (bottle.prestige ? "+" + bottle.prestige + " Prestige from the flacon." : ""), "good");
   confettiBurst(false);
-  lab = { top:null, heart:null, base:null, bottle:2, price:120, name:"", conc:"EDP", signature:"" };
+  lab = { top:null, heart:null, base:null, bottle:2, price:120, name:"", conc:"EDP", signature:"", colour:"", test:null, blind:false };
   lab.limited=false; const _llb=$("labLimitedBtn"); if(_llb){_llb.textContent="Limited Edition: OFF — tap for 3-week 1.5× drop"; _llb.classList.remove("solid");}
   $("labName").value = "";
   save(); renderAll();
@@ -1185,26 +1912,24 @@ function simulateWeek(){
   let prestigeDelta = 0;
 
   let lostSales=0, storageCost=0;
-  // Rival share steal
-  const rivalSteal = 0.88 + rnd(-0.03,0.03);
+  const famSold = {};
+  /* v6 Auto-Restock — restock to target (capped by retail tier) before sales open */
+  let autoCost = 0; const autoLines = [];
   for(const p of S.perfumes){
-    let demand = traffic * 0.185; /* v4: ~15% stronger baseline demand — faster net-worth growth */
-    demand *= 0.55 + S.prestige/100;
-    demand *= trendMult(p);
-    demand *= seasonMult(p);
-    demand *= campaignMult(p);
-    demand *= valueMult(p);
-    demand *= cityMult(p);
-    demand *= rivalSteal;
-    const concObj = CONCS.find(x=>x.id===p.conc) || CONCS[1]; demand *= concObj.demand;
-    if(p.signature) demand *= 1.2;
-    if(p.limited) demand *= 1.5;
-    if(p.bottleCls === "gold") demand *= 1.15 + S.prestige/400;
-    if(S.rd >= 2 && hasRare(p)) demand *= 1.25;
-    if(S.rd >= 3) demand *= 1.1;
-    demand *= rnd(0.82, 1.18);
-    let wanted = Math.max(0, Math.round(demand));
-    if(S.perfumes.length > 1) wanted = Math.round(wanted * 0.72);
+    if(p.autoRestock && (p.restockTarget||0) > 0){
+      const target = Math.min(p.restockTarget, stockCap());
+      const need = target - (p.stock||0);
+      if(need > 0){
+        const afford = Math.floor(Math.max(0, S.cash) / Math.max(1, p.cost));
+        const make = Math.min(need, afford);
+        if(make > 0){ const cst = make * p.cost; S.cash -= cst; p.stock = (p.stock||0) + make; autoCost += cst; autoLines.push(p.name + ": +" + make + " units (" + fmt(cst) + ")"); }
+        else autoLines.push(p.name + ": skipped — cash too low to restock");
+      }
+    }
+  }
+  production = autoCost;
+  for(const p of S.perfumes){
+    let wanted = Math.max(0, Math.round(computeDemand(p) * rnd(0.82, 1.18)));
     let units = Math.min(wanted, p.stock||0);
     const lost = wanted - units; lostSales += lost;
     const rev = units * p.price;
@@ -1214,7 +1939,18 @@ function simulateWeek(){
     p.lifetimeUnits += units;
     p.lifetimeRevenue += rev;
     revenue += rev; unitsTotal += units;
+    /* v6 Wave 2 (item 17): Blind Creation bonus — 50+ lifetime units, once */
+    if(p.blind && !p.blindBonus && p.lifetimeUnits >= 50){
+      p.blindBonus = true; prestigeDelta += 4;
+      logEvent("🎲 <b>Blind Creation vindicated</b> — " + escapeHtml(p.name) + " reached 50 lifetime units. Bonus <b>+4 Prestige</b>.");
+      setTimeout(()=>toast("🎲 <b>Blind Creation vindicated!</b> " + escapeHtml(p.name) + " passed 50 lifetime units — <b>+4 Prestige</b> bonus, once only.", "good"), 700);
+    }
     rows.push({ name:p.name, units, revenue:rev, wanted, lost });
+    /* v6 Price History + per-family sales for the Weekly Mission */
+    if(!Array.isArray(p.priceHistory)) p.priceHistory = [];
+    p.priceHistory.push({ price:p.price, units });
+    if(p.priceHistory.length > 6) p.priceHistory.shift();
+    [p.topFam, p.heartFam, p.baseFam].forEach(f => { famSold[f] = (famSold[f]||0) + units; });
     /* prestige drift from performance — v4: gains raised ~25% for faster progression */
     if(units >= 40) prestigeDelta += 0.75;
     if(p.price >= 250 && units >= 12) prestigeDelta += 0.65;
@@ -1222,10 +1958,40 @@ function simulateWeek(){
     if(p.price >= 450){ p.highWeeks = (p.highWeeks||0) + 1; if(p.highWeeks >= 2) prestigeDelta -= 0.3; }
     else p.highWeeks = 0;
   }
+  /* v6 Gift Set — sells as its own line, one bottle drawn from each paired scent */
+  let giftRow = null;
+  if(S.giftSet){
+    const gA = S.perfumes.find(p=>p.id===S.giftSet.a), gB = S.perfumes.find(p=>p.id===S.giftSet.b);
+    if(gA && gB && gA !== gB){
+      const festive = seasonOf(weekPlayed) === "Winter" || S.seasonalBoost === "eid";
+      const boost = festive ? 1.6 : 1;
+      const priceFactor = clamp(((gA.price + gB.price) * 1.05) / Math.max(S.giftSet.price, 1), 0.5, 1.5);
+      const want = Math.max(0, Math.round(((computeDemand(gA) + computeDemand(gB)) / 2) * 0.25 * boost * priceFactor));
+      const gu = Math.min(want, gA.stock||0, gB.stock||0);
+      gA.stock -= gu; gB.stock -= gu;
+      const gRev = gu * S.giftSet.price;
+      revenue += gRev; unitsTotal += gu;
+      giftRow = { name: "🎁 Gift Set — " + gA.name + " + " + gB.name, units: gu, revenue: gRev, wanted: want, lost: want - gu };
+      if(want - gu > 0) lostSales += (want - gu);
+    }
+  }
+  /* v6 Wave 2 (item 21): Airport Duty-Free — Clean/Fresh scents sell extra volume, no rent */
+  let dutyRow = null;
+  if(S.dutyFree){
+    let dUnits = 0, dRev = 0;
+    for(const p of S.perfumes){
+      if([p.topFam, p.heartFam, p.baseFam].some(f => f === "Clean" || f === "Fresh")){
+        const du = Math.min(p.stock || 0, Math.max(2, Math.round(traffic * 0.04)));
+        if(du > 0){ p.stock -= du; p.lifetimeUnits += du; p.lifetimeRevenue += du * p.price; dUnits += du; dRev += du * p.price; }
+      }
+    }
+    if(dUnits > 0){ revenue += dRev; unitsTotal += dUnits; dutyRow = { units: dUnits, revenue: dRev }; }
+  }
   const overhead = TIERS[S.tier].overhead;
   const interest = Math.round((S.debt||0)*0.05);
+  const salary = S.juniorPerfumer ? PERFUMER_SALARY : 0;
   // rivals move
-  (S.rivals||[]).forEach(r=>{ r.trend = Math.round(rnd(-400,900)); r.sales=Math.max(800, (r.sales||2000)+r.trend); r.prestige=clamp(r.prestige+rnd(-1.5,2.2),5,98); });
+  (S.rivals||[]).forEach(r=>{ r.trend = Math.round(rnd(-400,900)) + ((S.archRival && r.name===S.archRival) ? 200 : 0); r.sales=Math.max(800, (r.sales||2000)+r.trend); r.prestige=clamp(r.prestige+rnd(-1.5,2.2),5,98); });
   // PR meter effect prep
   const prEffect = (S.prMeter||0)/100;
   let campaignPrestige = 0;
@@ -1239,11 +2005,63 @@ function simulateWeek(){
   if(revenue > 3000) prestigeDelta += 0.65;
   if(revenue > 12000) prestigeDelta += 0.65;
   prestigeDelta += rnd(-0.4, 0.4);
+  /* v6 Wave 2 (items 29, 31): successor dynasty drift + arch-rival outsell bonus */
+  if(S.heir && S.heir.buff === "dynasty") prestigeDelta += 0.5;
+  let archBonus = 0, archLine = "";
+  if(S.archRival){
+    const ar = (S.rivals||[]).find(r=>r.name===S.archRival);
+    if(ar && revenue > ar.sales){ archBonus = Math.min(800, Math.round(revenue * 0.03)); prestigeDelta += 0.5; archLine = "⚔️ You outsold your arch-rival " + ar.name + " (" + fmt(revenue) + " vs " + fmt(ar.sales) + ") — bonus " + fmt(archBonus) + " · +0.5 Prestige."; }
+  }
   S.prestige = clamp(Math.round((S.prestige + prestigeDelta)*10)/10, 0, 100);
 
-  const profit = revenue - production - overhead - storageCost - interest;
+  /* v6 Wave 2 incomes & shares (items 20, 22, 23, 25, 26, 29) */
+  const collabShare = (S.collab && S.collab.weeksLeft > 0) ? Math.round(revenue * 0.15) : 0;
+  const loyaltyMembers = S.loyaltyClub ? Math.round(S.prestige * 10) : 0;
+  const loyaltyInc = S.loyaltyClub ? loyaltyMembers * 2 : 0;
+  const subActive = S.subBox && S.perfumes.length >= 3;
+  const subInc = subActive ? S.perfumes.length * 150 + Math.round(S.prestige) * 10 : 0;
+  const subPaused = S.subBox && S.perfumes.length < 3;
+  let royalties = 0; const royaltyLines = [];
+  if(Array.isArray(S.licenses)) for(const L of S.licenses){ if(L.weeksLeft > 0){ royalties += L.amount; royaltyLines.push(L.name + " (" + L.rival + "): " + fmt(L.amount) + " · " + L.weeksLeft + " wk left"); } }
+  let managerNet = 0; const managerLines = [];
+  (S.cities||[]).forEach(cid => {
+    const city = CITIES.find(x=>x.id===cid); if(!city) return;
+    const mgr = (S.cityManagers||{})[cid] || CITY_MANAGERS[cid] || "The manager";
+    if(Math.random() < 0.65){
+      const amt = Math.round(rnd(-150, 380) / 5) * 5;
+      managerNet += amt;
+      managerLines.push(mgr + " in " + city.name + " " + pick(amt >= 0 ? MGR_GOOD : MGR_BAD) + " (" + fmt(amt) + ").");
+    }
+  });
+  const heirInc = (S.heir && S.heir.buff === "empire") ? Math.round(revenue * 0.03) : 0;
+  const profit = revenue - production - overhead - storageCost - interest - salary - collabShare + loyaltyInc + subInc + royalties + managerNet + archBonus + heirInc;
   if(interest>0) S.debt = Math.round((S.debt||0)*1.0); // interest paid in cash, principal unchanged
   S.cash += profit;
+  /* v6 Weekly Mission resolution */
+  let missionLine = "";
+  if(S.mission && typeof S.mission === "object" && S.mission.desc){
+    const m = S.mission;
+    let prog = 0;
+    if(m.kind === "fam") prog = famSold[m.fam] || 0;
+    else if(m.kind === "units") prog = unitsTotal;
+    else if(m.kind === "revenue") prog = revenue;
+    if(prog >= (m.target||0)){
+      S.cash += m.rewardCash || 0;
+      if(m.rewardPrestige) S.prestige = clamp(S.prestige + m.rewardPrestige, 0, 100);
+      missionLine = "🎯 Weekly Mission complete — " + m.desc + ": +" + fmt(m.rewardCash||0) + (m.rewardPrestige ? " · +" + m.rewardPrestige + " Prestige" : "");
+      logEvent("🎯 <b>Weekly Mission complete</b> — " + escapeHtml(m.desc) + " (" + prog + " / " + m.target + "). Reward " + fmt(m.rewardCash||0) + ".");
+    } else {
+      missionLine = "🎯 Weekly Mission missed — " + m.desc + " (" + prog + " / " + m.target + "). No reward this week.";
+    }
+  }
+  S.mission = genMission();
+  /* v6 Wave 2 (item 27): perfumer morale drifts with the week's weight */
+  if(S.perfumer){
+    if(unitsTotal >= 110) S.perfumer.morale = clamp(S.perfumer.morale - 5, 0, 100);
+    else if(unitsTotal <= 15 && S.perfumes.length) S.perfumer.morale = clamp(S.perfumer.morale + 3, 0, 100);
+  }
+  /* v6 Bankruptcy Safety Net — one-time rescue offer when cash falls below $0 */
+  if(S.cash < 0 && !S.rescueUsed) S.rescuePending = true;
   S.lastProfit = profit;
   S.totalRevenue += revenue;
   S.totalUnits += unitsTotal;
@@ -1253,7 +2071,7 @@ function simulateWeek(){
   // Limited edition tick + arcs + seasonal
   let leExpired=[];
   S.perfumes.forEach(pp=>{ if(pp.limited){ pp.leWeeksLeft=(pp.leWeeksLeft||3)-1; if(pp.leWeeksLeft<=0) leExpired.push(pp); }});
-  if(leExpired.length){ leExpired.forEach(pp=>{ logEvent("Limited Edition <b>"+escapeHtml(pp.name)+"</b> auto-discontinued after 3 weeks."); toast("Limited Edition <b>"+escapeHtml(pp.name)+"</b> has ended and been discontinued.","bad"); }); S.perfumes=S.perfumes.filter(pp=>!leExpired.includes(pp)); }
+  if(leExpired.length){ leExpired.forEach(pp=>{ logEvent("Limited Edition <b>"+escapeHtml(pp.name)+"</b> auto-discontinued after 3 weeks."); toast("Limited Edition <b>"+escapeHtml(pp.name)+"</b> has ended and been discontinued.","bad"); }); S.perfumes=S.perfumes.filter(pp=>!leExpired.includes(pp)); if(S.giftSet && (!S.perfumes.some(p=>p.id===S.giftSet.a) || !S.perfumes.some(p=>p.id===S.giftSet.b))) S.giftSet=null; }
   if(S.seasonalBoostWeeks>0){ S.seasonalBoostWeeks-=1; if(S.seasonalBoostWeeks<=0) S.seasonalBoost=null; }
   (S.arcs||[]).forEach(a=>{ a.progress+=1; if(a.progress>=a.total){ a.done=true; if(a.id==="vip"){ S.cash+=12000; toast("🎉 Bespoke VIP commission complete — <b>+$12,000</b> payout!","good"); logEvent("Bespoke VIP commission arc complete — <b>+$12,000</b>."); } if(a.id==="lawsuit"){ S.prestige=clamp(S.prestige+4,0,100); toast("⚖️ Rival lawsuit arc resolved in your favour — +4 Prestige.","good"); } }});
   S.arcs=(S.arcs||[]).filter(a=>!a.done);
@@ -1263,16 +2081,28 @@ function simulateWeek(){
   const expired = [];
   S.campaigns = S.campaigns.filter(c => { c.weeksLeft -= 1; if(c.weeksLeft <= 0){ expired.push(c.id); return false; } return true; });
   if(S.oudStock > 0) S.oudStock -= 1;
+  /* v6 Wave 2 ticks: collab countdown + license royalties countdown */
+  if(S.collab){ S.collab.weeksLeft -= 1; if(S.collab.weeksLeft <= 0){ S.collab = null; logEvent("The <b>Atelier Vasseur Collab Drop</b> concluded after 4 weeks."); } }
+  if(Array.isArray(S.licenses) && S.licenses.length){ S.licenses.forEach(L => { L.weeksLeft -= 1; }); const endedLic = S.licenses.filter(L => L.weeksLeft <= 0); endedLic.forEach(L => logEvent("🤝 The <b>" + escapeHtml(L.name) + "</b> license with " + escapeHtml(L.rival) + " expired — royalties ended.")); S.licenses = S.licenses.filter(L => L.weeksLeft > 0); }
 
   /* trends tick */
   S.trendTimer -= 1;
   let trendShifted = false;
   if(S.trendTimer <= 0){ rollTrends(); trendShifted = true; }
 
+  /* v6 Wave 2 story triggers: Fashion Week (Autumn Week 1) + Heir arc readiness */
+  if(seasonOf(weekPlayed) === "Autumn" && ((weekPlayed - 1) % 16) === 8) S.fwPending = true;
+  if(S.heir && !S.heir.done){
+    if(S.heir.step === 0 && S.prestige >= 90) S.heirReady = true;
+    else if(S.heir.step > 0 && (weekPlayed + 1) >= (S.heir.nextWeek || 0)) S.heirReady = true;
+  }
+
   /* advance the calendar */
   S.week += 1;
 
-  const report = { week:weekPlayed, season:seasonOf(weekPlayed), rows, revenue, production, overhead, profit, unitsTotal, prestigeDelta, expired, trendShifted, lostSales, storageCost, interest };
+  const report = { week:weekPlayed, season:seasonOf(weekPlayed), rows, revenue, production, overhead, profit, unitsTotal, prestigeDelta, expired, trendShifted, lostSales, storageCost, interest, autoLines, giftRow, missionLine, salary, salvageNotes:(S.salvageNotes||[]).slice(),
+    dutyRow, collabShare, loyaltyInc, loyaltyMembers, subInc, subPaused, royalties, royaltyLines, managerLines, managerNet, archBonus, archLine, heirInc };
+  S.salvageNotes = [];
   checkAchievements();
   if(revenue>=8000) setTimeout(()=>confettiBurst(true),300);
   logEvent("Week " + weekPlayed + " closed — revenue <b>" + fmt(revenue) + "</b>, net <b>" + fmt(profit) + "</b>.");
@@ -1282,32 +2112,56 @@ function simulateWeek(){
   });
   if(trendShifted) logEvent("Market trends shifted — now hot: <b>" + S.hot.join(", ") + "</b>; oversaturated: <b>" + S.saturated.join(", ") + "</b>.");
   if(unitsTotal >= 100) toast("A landmark week — <b>" + unitsTotal + " bottles</b> left the maison.", "good");
+  /* v6 Wave 3: personal bests update + gold edge flash scaled to this week's profit */
+  updateBestsFromWeek(profit, weekPlayed);
+  goldFlash(profit);
   save();
   return report;
 }
+let lastReport = null;
 function showReport(r){
+  lastReport = r;
   $("reportKicker").textContent = "Weekly Financial Report · " + r.season;
   $("reportTitle").textContent = "Week " + r.week + " at the Maison";
   let html = "";
   if(r.rows.length){
-    html += '<table class="report-table"><tr><th>Fragrance</th><th>Units</th><th>Revenue</th></tr>' +
-      r.rows.map(x => '<tr><td>' + escapeHtml(x.name) + '</td><td style="text-align:right">' + x.units + '</td><td>' + fmt(x.revenue) + '</td></tr>').join("") + '</table>';
+    html += '<div class="rep-frag-list"><div class="rep-frag-head"><span>Fragrance</span><span class="rep-frag-nums"><span class="rep-frag-units">Units</span><span class="rep-frag-rev">Revenue</span></span></div>' +
+      (r.giftRow ? r.rows.concat([r.giftRow]) : r.rows).map(x => '<div class="rep-frag-row"><span class="rep-frag-name">' + escapeHtml(x.name) + '</span><span class="rep-frag-nums"><span class="rep-frag-units">' + x.units + '<i class="rep-units-label"> units</i></span><span class="rep-frag-sep"> · </span><span class="rep-frag-rev">' + fmt(x.revenue) + '</span></span></div>').join("") + '</div>';
   } else {
     html += '<p style="color:var(--muted); line-height:1.6">No fragrances were on the market this week — the boutique earned nothing while overhead kept running. Compose a scent in the Scent Lab to start selling.</p>';
   }
-  html += '<table class="report-table">' +
-    '<tr><td>Total Revenue (' + r.unitsTotal + ' units)</td><td>' + fmt(r.revenue) + '</td></tr>' +
-    '<tr><td>Production &amp; Restock</td><td>−' + fmt(r.production) + '</td></tr>' +
-    '<tr><td>Overhead · ' + TIERS[S.tier].name + '</td><td>−' + fmt(r.overhead) + '</td></tr>' +
-    (r.lostSales? '<tr><td>Stockouts — lost sales</td><td>' + r.lostSales + ' units lost</td></tr>':'') +
-    (r.storageCost? '<tr><td>Overstock storage</td><td>−' + fmt(r.storageCost) + '</td></tr>':'') +
-    (r.interest? '<tr><td>Loan interest (5%)</td><td>−' + fmt(r.interest) + '</td></tr>':'') +
-    '<tr><td>Rivals</td><td>' + (S.rivals||[]).map(x=>x.name+" "+fmt(x.sales)).join(" · ") + '</td></tr>' +
-    '<tr><td>PR Meter</td><td>' + Math.round(S.prMeter||0) + '</td></tr></table>';
+  if(r.lostSales > 0){
+    html += '<div class="stockout-warning" role="alert">⚠ You lost ' + r.lostSales + ' sales to stockouts — increase stock in the Showroom</div>';
+  }
+  html += '<div class="rep-summary">' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">Total Revenue (' + r.unitsTotal + ' units)</span><span class="rep-sum-val">' + fmt(r.revenue) + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">Production &amp; Restock</span><span class="rep-sum-val">−' + fmt(r.production) + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">Overhead · ' + TIERS[S.tier].name + '</span><span class="rep-sum-val">−' + fmt(r.overhead) + '</span></div>' +
+    (r.lostSales? '<div class="rep-sum-row"><span class="rep-sum-label">Stockouts — lost sales</span><span class="rep-sum-val">' + r.lostSales + ' units lost</span></div>':'') +
+    (r.storageCost? '<div class="rep-sum-row"><span class="rep-sum-label">Overstock storage</span><span class="rep-sum-val">−' + fmt(r.storageCost) + '</span></div>':'') +
+    (r.interest? '<div class="rep-sum-row"><span class="rep-sum-label">Loan interest (5%)</span><span class="rep-sum-val">−' + fmt(r.interest) + '</span></div>':'') +
+    (r.salary? '<div class="rep-sum-row"><span class="rep-sum-label">Junior Perfumer salary</span><span class="rep-sum-val">−' + fmt(r.salary) + '</span></div>':'') +
+    (r.dutyRow? '<div class="rep-sum-row"><span class="rep-sum-label">Airport Duty-Free (' + r.dutyRow.units + ' units)</span><span class="rep-sum-val">+' + fmt(r.dutyRow.revenue) + '</span></div>':'') +
+    (r.collabShare? '<div class="rep-sum-row"><span class="rep-sum-label">Collab revenue share — Atelier Vasseur (15%)</span><span class="rep-sum-val">−' + fmt(r.collabShare) + '</span></div>':'') +
+    (r.loyaltyInc? '<div class="rep-sum-row"><span class="rep-sum-label">Loyalty Club (' + (r.loyaltyMembers||0).toLocaleString("en-US") + ' members)</span><span class="rep-sum-val">+' + fmt(r.loyaltyInc) + '</span></div>':'') +
+    (r.subInc? '<div class="rep-sum-row"><span class="rep-sum-label">Subscription Box</span><span class="rep-sum-val">+' + fmt(r.subInc) + '</span></div>':'') +
+    (r.subPaused? '<div class="rep-sum-row"><span class="rep-sum-label">Subscription Box</span><span class="rep-sum-val">Paused — needs 3+ active scents</span></div>':'') +
+    (r.royalties? '<div class="rep-sum-row"><span class="rep-sum-label">Formula Royalties</span><span class="rep-sum-val">+' + fmt(r.royalties) + '</span></div>':'') +
+    (r.managerNet? '<div class="rep-sum-row"><span class="rep-sum-label">City Managers (net)</span><span class="rep-sum-val">' + fmt(r.managerNet) + '</span></div>':'') +
+    (r.archBonus? '<div class="rep-sum-row"><span class="rep-sum-label">Arch-Rival Outsold Bonus</span><span class="rep-sum-val">+' + fmt(r.archBonus) + '</span></div>':'') +
+    (r.heirInc? '<div class="rep-sum-row"><span class="rep-sum-label">Successor\'s Enterprise (3% of revenue)</span><span class="rep-sum-val">+' + fmt(r.heirInc) + '</span></div>':'') +
+    '<div class="rep-sum-row"><span class="rep-sum-label">Rivals</span><span class="rep-sum-val rep-rivals-val">' + (S.rivals||[]).map(x=>'<span class="rep-rival-line">' + escapeHtml(x.name) + ' ' + fmt(x.sales) + '</span>').join("") + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">PR Meter</span><span class="rep-sum-val">' + Math.round(S.prMeter||0) + '</span></div></div>';
   html += '<div class="report-total"><span>Net ' + (r.profit>=0 ? "Profit" : "Loss") + '</span><span style="color:' + (r.profit>=0 ? "var(--green)" : "var(--red)") + '">' + fmt(r.profit) + '</span></div>';
   html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:10px">Prestige ' + (r.prestigeDelta>=0 ? "rose" : "slipped") + ' by ' + Math.abs(Math.round(r.prestigeDelta*10)/10) + ' to <b style="color:var(--cream)">' + Math.round(S.prestige) + '</b>. Cash now stands at <b style="color:var(--cream)">' + fmt(S.cash) + '</b>.' +
     (r.trendShifted ? ' The market has shifted — check the Trend Forecast before composing your next scent.' : '') +
     (S.cash < 0 ? ' <span style="color:var(--red)">The maison is overdrawn — prestige and sales must recover quickly, or sell nothing and cut losses.</span>' : '') + '</p>';
+  if(r.autoLines && r.autoLines.length) html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:10px">🔄 <b style="color:var(--cream)">Auto-Restock:</b> ' + r.autoLines.map(escapeHtml).join(" · ") + '</p>';
+  if(r.missionLine) html += '<p style="color:var(--gold-bright); font-size:.9rem; line-height:1.6; margin-top:8px">' + escapeHtml(r.missionLine) + '</p>';
+  if(r.managerLines && r.managerLines.length) html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:8px">🏙 <b style="color:var(--cream)">City Managers:</b><br/>' + r.managerLines.map(escapeHtml).join("<br/>") + '</p>';
+  if(r.royaltyLines && r.royaltyLines.length) html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:6px">🤝 <b style="color:var(--cream)">Formula Royalties:</b> ' + r.royaltyLines.map(escapeHtml).join(" · ") + '</p>';
+  if(r.archLine) html += '<p style="color:var(--gold-bright); font-size:.9rem; line-height:1.6; margin-top:8px">' + escapeHtml(r.archLine) + '</p>';
+  if(r.salvageNotes && r.salvageNotes.length) html += r.salvageNotes.map(n=>'<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:6px">♻ ' + escapeHtml(n) + '</p>').join("");
   $("reportBody").innerHTML = html;
   $("reportOverlay").classList.add("open");
 }
@@ -1325,7 +2179,7 @@ const EVENTS = [
     ]
   },
   {
-    kicker:"Rivalry", title:"A Rival House Copied Your Bestseller",
+    kicker:"Rivalry", neg:true, title:"A Rival House Copied Your Bestseller",
     text:"Maison Verre has launched a scent suspiciously identical to your top seller — same heart, same dry-down, half the price. Your lawyers and your perfumers are both waiting for your word.",
     cond(){ return S.perfumes.length > 0; },
     choices:[
@@ -1362,7 +2216,7 @@ const EVENTS = [
     ]
   },
   {
-    kicker:"Supply Shock", title:"Saffron Prices Have Tripled Overnight",
+    kicker:"Supply Shock", neg:true, title:"Saffron Prices Have Tripled Overnight",
     text:"Drought in the saffron fields has sent prices vertical. Your suppliers offer a choice: lock in stock now at a premium, or gamble that prices settle.",
     choices:[
       { label:"Lock in supply — $1,100", desc:"Pay the premium and keep blending without interruption.",
@@ -1406,16 +2260,16 @@ const EVENTS = [
   }
 ];
 const NEW_EVENTS=[
- {kicker:"Counterfeit",title:"Counterfeit Copies Flood the Market",text:"Fake MAISON D'OR bottles appear in bazaars at a tenth of the price.",choices:[{label:"Fund anti-counterfeit seals — $1,200",desc:"+4 Prestige, PR buzz up.",apply(){ if(S.cash<1200) return failMsg("Cannot afford seals."); S.cash-=1200; S.prestige=clamp(S.prestige+4,0,100); S.prMeter=clamp(S.prMeter+15,-100,100); return okMsg("Seals restore trust. <b>+$15 PR · +4 Prestige</b>");}},{label:"Ignore the fakes",desc:"Scandal builds.",apply(){ S.prMeter=clamp(S.prMeter-18,-100,100); document.body.classList.add("shake"); setTimeout(()=>document.body.classList.remove("shake"),600); return badMsg("Fakes damage trust. <b>PR −18</b>");}}]},
+ {kicker:"Counterfeit",neg:true,title:"Counterfeit Copies Flood the Market",text:"Fake MAISON D'OR bottles appear in bazaars at a tenth of the price.",choices:[{label:"Fund anti-counterfeit seals — $1,200",desc:"+4 Prestige, PR buzz up.",apply(){ if(S.cash<1200) return failMsg("Cannot afford seals."); S.cash-=1200; S.prestige=clamp(S.prestige+4,0,100); S.prMeter=clamp(S.prMeter+15,-100,100); return okMsg("Seals restore trust. <b>+$15 PR · +4 Prestige</b>");}},{label:"Ignore the fakes",desc:"Scandal builds.",apply(){ S.prMeter=clamp(S.prMeter-18,-100,100); document.body.classList.add("shake"); setTimeout(()=>document.body.classList.remove("shake"),600); return badMsg("Fakes damage trust. <b>PR −18</b>");}}]},
  {kicker:"Celebrity Moment",title:"A Celebrity Wears Your Scent Unprompted",text:"Paparazzi shots show a superstar wearing your fragrance — no deal, pure love.",choices:[{label:"Amplify it — $600",desc:"Boost the moment.",apply(){ if(S.cash<600) return failMsg("No cash."); S.cash-=600; S.prestige=clamp(S.prestige+6,0,100); S.prMeter=clamp(S.prMeter+20,-100,100); return okMsg("The moment goes viral. <b>+6 Prestige · PR +20</b>");}},{label:"Let it be organic",desc:"+3 Prestige free.",apply(){ S.prestige=clamp(S.prestige+3,0,100); return okMsg("Organic love. <b>+3 Prestige</b>");}}]},
- {kicker:"Regulation",title:"An Ingredient Is Banned",text:"Regulators ban a minor ingredient. Reformulation is required.",choices:[{label:"Reformulate fast — $1,400",desc:"Stay compliant, gain trust.",apply(){ if(S.cash<1400) return failMsg("No cash."); S.cash-=1400; S.prMeter=clamp(S.prMeter+10,-100,100); return okMsg("Compliant and praised. <b>PR +10</b>");}},{label:"Delay and hope",desc:"Risk scandal.",apply(){ S.prMeter=clamp(S.prMeter-22,-100,100); return badMsg("Press notices. <b>PR −22</b>");}}]},
+ {kicker:"Regulation",neg:true,title:"An Ingredient Is Banned",text:"Regulators ban a minor ingredient. Reformulation is required.",choices:[{label:"Reformulate fast — $1,400",desc:"Stay compliant, gain trust.",apply(){ if(S.cash<1400) return failMsg("No cash."); S.cash-=1400; S.prMeter=clamp(S.prMeter+10,-100,100); return okMsg("Compliant and praised. <b>PR +10</b>");}},{label:"Delay and hope",desc:"Risk scandal.",apply(){ S.prMeter=clamp(S.prMeter-22,-100,100); return badMsg("Press notices. <b>PR −22</b>");}}]},
  {kicker:"Fashion Week",title:"Fashion Week Invite — Front Row",text:"You are invited to scent a major show's after-party.",choices:[{label:"Attend & gift — $800",desc:"+5 Prestige.",apply(){ if(S.cash<800) return failMsg("No cash."); S.cash-=800; S.prestige=clamp(S.prestige+5,0,100); return okMsg("Front row impact. <b>+5 Prestige</b>");}},{label:"Decline",desc:"No change.",apply(){ return okMsg("You stay in the lab.");}}]},
- {kicker:"Review",title:"A Harsh Review Goes Viral",text:"A critic calls your latest 'beautiful but safe' — the clip spreads.",choices:[{label:"Respond with a bold flanker tease",desc:"Turn it into buzz.",apply(){ S.prMeter=clamp(S.prMeter+12,-100,100); return okMsg("Witty response wins fans. <b>PR +12</b>");}},{label:"Argue online",desc:"Scandal risk.",apply(){ S.prMeter=clamp(S.prMeter-20,-100,100); document.body.classList.add("shake"); setTimeout(()=>document.body.classList.remove("shake"),600); return badMsg("The argument backfires. <b>PR −20</b>");}}]},
- {kicker:"Supply",title:"Glass Supplier Strike",text:"Flacon deliveries stall.",choices:[{label:"Pay premium freight — $900",desc:"Keep shelves full.",apply(){ if(S.cash<900) return failMsg("No cash."); S.cash-=900; return okMsg("Bottles arrive on time.");}},{label:"Accept delays",desc:"Lose goodwill.",apply(){ S.prestige=clamp(S.prestige-3,0,100); return badMsg("<b>−3 Prestige</b>");}}]},
+ {kicker:"Review",neg:true,title:"A Harsh Review Goes Viral",text:"A critic calls your latest 'beautiful but safe' — the clip spreads.",choices:[{label:"Respond with a bold flanker tease",desc:"Turn it into buzz.",apply(){ S.prMeter=clamp(S.prMeter+12,-100,100); return okMsg("Witty response wins fans. <b>PR +12</b>");}},{label:"Argue online",desc:"Scandal risk.",apply(){ S.prMeter=clamp(S.prMeter-20,-100,100); document.body.classList.add("shake"); setTimeout(()=>document.body.classList.remove("shake"),600); return badMsg("The argument backfires. <b>PR −20</b>");}}]},
+ {kicker:"Supply",neg:true,title:"Glass Supplier Strike",text:"Flacon deliveries stall.",choices:[{label:"Pay premium freight — $900",desc:"Keep shelves full.",apply(){ if(S.cash<900) return failMsg("No cash."); S.cash-=900; return okMsg("Bottles arrive on time.");}},{label:"Accept delays",desc:"Lose goodwill.",apply(){ S.prestige=clamp(S.prestige-3,0,100); return badMsg("<b>−3 Prestige</b>");}}]},
  {kicker:"VIP",title:"A Sheikh Requests a Private Viewing",text:"A Gulf VIP wants an exclusive evening.",choices:[{label:"Host lavishly — $2,000",desc:"Chance of a huge order.",apply(){ if(S.cash<2000) return failMsg("No cash."); S.cash-=2000; S.cash+=5200; S.prestige=clamp(S.prestige+4,0,100); return okMsg("He orders for his palaces. <b>+$3,200 net · +4 Prestige</b>");}},{label:"Send a gift set",desc:"+2 Prestige.",apply(){ S.prestige=clamp(S.prestige+2,0,100); return okMsg("<b>+2 Prestige</b>");}}]},
  {kicker:"Trend",title:"Your Scent Trends on Social Media",text:"A short video featuring your bottle explodes overnight.",choices:[{label:"Boost it — $500",desc:"+PR and prestige.",apply(){ if(S.cash<500) return failMsg("No cash."); S.cash-=500; S.prMeter=clamp(S.prMeter+18,-100,100); S.prestige=clamp(S.prestige+3,0,100); return okMsg("<b>PR +18 · +3 Prestige</b>");}},{label:"Ride it free",desc:"+8 PR.",apply(){ S.prMeter=clamp(S.prMeter+8,-100,100); return okMsg("<b>PR +8</b>");}}]},
  {kicker:"Charity",title:"Charity Gala Auction",text:"Donate a one-off flacon to a gala auction.",choices:[{label:"Donate a gold flacon",desc:"+6 Prestige, great PR.",apply(){ S.prestige=clamp(S.prestige+6,0,100); S.prMeter=clamp(S.prMeter+15,-100,100); return okMsg("<b>+6 Prestige · PR +15</b>");}},{label:"Skip this year",desc:"No change.",apply(){ return okMsg("Maybe next year.");}}]},
- {kicker:"Rival",title:"Rival Poaches Your Perfumer",text:"Noir Paris offers your senior perfumer double pay.",choices:[{label:"Counter-offer — $1,600",desc:"Keep the nose.",apply(){ if(S.cash<1600) return failMsg("No cash."); S.cash-=1600; return okMsg("Your perfumer stays, loyal.");}},{label:"Let them go",desc:"−4 Prestige.",apply(){ S.prestige=clamp(S.prestige-4,0,100); return badMsg("<b>−4 Prestige</b>");}}]},
+ {kicker:"Rival",neg:true,title:"Rival Poaches Your Perfumer",text:"Noir Paris offers your senior perfumer double pay.",choices:[{label:"Counter-offer — $1,600",desc:"Keep the nose — her morale soars (+15).",apply(){ if(S.cash<1600) return failMsg("No cash."); S.cash-=1600; if(S.perfumer) S.perfumer.morale=clamp(S.perfumer.morale+15,0,100); return okMsg("Your perfumer stays, loyal — and flattered. <b>Morale +15</b> (now "+Math.round(S.perfumer?S.perfumer.morale:70)+").");}},{label:"Let them go",desc:"−4 Prestige, and the slight crushes her morale (−25).",apply(){ S.prestige=clamp(S.prestige-4,0,100); if(S.perfumer) S.perfumer.morale=clamp(S.perfumer.morale-25,0,100); return badMsg("<b>−4 Prestige · Morale −25</b> — word spreads that the maison let its nose be courted away.");}}]},
  {kicker:"Discovery",title:"A Rare Flower Blooms Early",text:"A short window to buy a rare floral essence cheaply.",choices:[{label:"Buy the harvest — $700",desc:"+PR, future goodwill.",apply(){ if(S.cash<700) return failMsg("No cash."); S.cash-=700; S.prMeter=clamp(S.prMeter+6,-100,100); return okMsg("Secured. <b>PR +6</b>");}},{label:"Pass",desc:"No change.",apply(){ return okMsg("You pass.");}}]},
  {kicker:"Award Buzz",title:"Shortlisted for a Design Award",text:"Your flacon design is shortlisted internationally.",choices:[{label:"Campaign for votes — $400",desc:"+4 Prestige.",apply(){ if(S.cash<400) return failMsg("No cash."); S.cash-=400; S.prestige=clamp(S.prestige+4,0,100); return okMsg("<b>+4 Prestige</b>");}},{label:"Let design speak",desc:"+2 Prestige.",apply(){ S.prestige=clamp(S.prestige+2,0,100); return okMsg("<b>+2 Prestige</b>");}}]}
 ];
@@ -1429,6 +2283,13 @@ function maybeEvent(){
   const pool = EVENTS.filter(e => !e.cond || e.cond());
   if(!pool.length) return;
   pendingEvent = pick(pool);
+  /* v6 Wave 2 (item 24): Quality Control can quietly avert a negative event */
+  if(S.qc && pendingEvent.neg && Math.random() < 0.4){
+    S.nextEventWeek = S.week + 2;
+    pendingEvent = null;
+    toast("🛡 <b>Quality Control</b> caught a problem in inspection — a negative event was quietly averted.", "good");
+    return;
+  }
   S.nextEventWeek = S.week + 2 + Math.floor(Math.random()*2);
   $("eventKicker").textContent = pendingEvent.kicker;
   $("eventTitle").textContent = pendingEvent.title;
@@ -1439,7 +2300,13 @@ function maybeEvent(){
     b.className = "choice-btn";
     b.innerHTML = '<span class="c-label">' + ch.label + '</span><span class="c-desc">' + ch.desc + '</span>';
     b.addEventListener("click", () => {
+      const prBefore = S.prMeter || 0, presBefore = S.prestige;
       const res = ch.apply();
+      /* v6 Wave 2 (item 24): QC halves the Prestige/PR damage of negative events */
+      if(S.qc && pendingEvent && pendingEvent.neg){
+        if((S.prMeter || 0) < prBefore) S.prMeter = prBefore + Math.round(((S.prMeter || 0) - prBefore) / 2);
+        if(S.prestige < presBefore) S.prestige = Math.round((presBefore + (S.prestige - presBefore) / 2) * 10) / 10;
+      }
       if(res.fail){ toast(res.html, "bad"); return; }
       logEvent("<b>" + pendingEvent.title + "</b> — " + ch.label + ".");
       $("eventOverlay").classList.remove("open");
@@ -1453,10 +2320,112 @@ function maybeEvent(){
   $("eventOverlay").classList.add("open");
 }
 
+/* ==================== v6 Wave 2: STORY MODALS (items 28, 29) ==================== */
+function wireStoryChoices(logTitle, choices){
+  pendingEvent = null;
+  $("eventChoices").innerHTML = "";
+  choices.forEach(ch => {
+    const b = document.createElement("button");
+    b.className = "choice-btn";
+    b.innerHTML = '<span class="c-label">' + ch.label + '</span><span class="c-desc">' + ch.desc + '</span>';
+    b.addEventListener("click", () => {
+      const res = ch.apply();
+      if(res.fail){ toast(res.html, "bad"); return; }
+      logEvent("<b>" + logTitle + "</b> — " + ch.label + ".");
+      $("eventOverlay").classList.remove("open");
+      save(); renderAll();
+      toast(res.html, res.ok ? "good" : "bad");
+      checkWin();
+      if(!$("winOverlay").classList.contains("open")) afterStory();
+    });
+    $("eventChoices").appendChild(b);
+  });
+  $("eventOverlay").classList.add("open");
+}
+function afterStory(){
+  if(S.heirReady){ S.heirReady = false; save(); showHeirStep(); }
+  else maybeEvent();
+}
+/* Item 28: Fashion Week — every Autumn Week 1 */
+function showFashionWeek(){
+  $("eventKicker").textContent = "Fashion Week · Autumn Week 1";
+  $("eventTitle").textContent = "Paris Fashion Week — Your Moment";
+  $("eventText").textContent = "The whole industry is in Paris, the cameras are warm, and MAISON D'OR has a seat at the table. How the maison shows up this week will echo all year — the prestige at stake is outsized.";
+  wireStoryChoices("Fashion Week", [
+    { label:"Send your star scent down the runway — $1,500", desc:"+10 Prestige. Every editor in Paris breathes your work for an evening.",
+      apply(){ if(S.cash < 1500) return failMsg("The runway package is beyond your cash today."); S.cash -= 1500; S.prestige = clamp(S.prestige + 10, 0, 100); return okMsg("The finale walks through a cloud of your creation, and the reviews name the scent. <b>+10 Prestige</b>"); } },
+    { label:"Host the press suite — $800", desc:"+6 Prestige and +15 PR buzz.",
+      apply(){ if(S.cash < 800) return failMsg("No cash for the press suite."); S.cash -= 800; S.prestige = clamp(S.prestige + 6, 0, 100); S.prMeter = clamp(S.prMeter + 15, -100, 100); return okMsg("Journalists leave with full flacons and fuller notebooks. <b>+6 Prestige · PR +15</b>"); } },
+    { label:"A quiet atelier showing — Free", desc:"+3 Prestige. Understated, unforgettable.",
+      apply(){ S.prestige = clamp(S.prestige + 3, 0, 100); return okMsg("Twelve perfect guests, one perfect evening. <b>+3 Prestige</b>"); } }
+  ]);
+}
+/* Item 29: Heir / Successor Arc — 3 steps across weeks at Prestige 90+ */
+const HEIR_STEPS = [
+  { title:"The Successor Question", text:"At the summit of the industry, the board asks the question every founder dreads: who carries MAISON D'OR after you? Three visions of the future are on the table.",
+    choices:[
+      { label:"Groom your protégé perfumer", desc:"The craft comes first — the maison stays an atelier at heart.", style:"craft", res:"Your protégé begins signing blends beside you, and the lab feels young again." },
+      { label:"Raise a family dynasty", desc:"The name becomes an inheritance — prestige above all.", style:"dynasty", res:"The next generation takes the front row at every show, and the photographers learn their name." },
+      { label:"Build an empire machine", desc:"Systems, scale, revenue — the maison becomes an institution.", style:"empire", res:"Your successor drafts expansion plans before dessert is served." } ] },
+  { title:"The Handover Trials", text:"Your chosen successor faces their first season under the press's eye. How do you let them prove themselves?",
+    choices:[
+      { label:"Let them compose the season's hero scent", desc:"Trust the nose you trained.", style:"craft", res:"Their first composition sells out its launch run." },
+      { label:"Put them on the gala circuit", desc:"Let the name do the work.", style:"dynasty", res:"The society pages adopt them within a month." },
+      { label:"Give them a boutique to run", desc:"Profit is the only diploma.", style:"empire", res:"Their boutique posts the house's best margin of the season." } ] },
+  { title:"The Signature of the Heir", text:"One final act seals the succession: the heir's mark on the maison — permanent, and public.",
+    choices:[
+      { label:"A Heritage Edition in their name", desc:"Craft, honoured and bottled.", style:"craft", res:"The Heritage Edition becomes a collector's piece within the year." },
+      { label:"A founding charter, framed in gold", desc:"The dynasty is written into the house's walls.", style:"dynasty", res:"Visitors photograph the charter daily; the name feels eternal." },
+      { label:"A bold new flagship under their name", desc:"The empire expands its flag.", style:"empire", res:"Queues form before the doors even open." } ] }
+];
+function showHeirStep(){
+  const h = S.heir; if(!h || h.done) { maybeEvent(); return; }
+  const step = HEIR_STEPS[Math.min(h.step, HEIR_STEPS.length - 1)];
+  $("eventKicker").textContent = "Heir / Successor Arc · Step " + (h.step + 1) + " of 3";
+  $("eventTitle").textContent = step.title;
+  $("eventText").textContent = step.text;
+  const choices = step.choices.map(c => ({ label: c.label, desc: c.desc, apply(){
+    if(h.step === 0) h.style = c.style;
+    h.step += 1;
+    if(h.step >= 3){
+      h.done = true; h.buff = h.style || "craft";
+      const buffTxt = h.buff === "craft" ? "the atelier way — every scent gains +6% demand, permanently" : h.buff === "dynasty" ? "the dynasty way — +0.5 Prestige drifts in every week" : "the empire way — +3% of revenue lands every week";
+      logEvent("👑 <b>Succession resolved</b> — the maison continues " + buffTxt + ". The Chronicle records the heir's name.");
+      return okMsg("The succession is sealed. " + c.res + " The maison gains a lasting buff: <b>" + buffTxt + "</b>.");
+    }
+    h.nextWeek = S.week + 2;
+    return okMsg(c.res + " The succession continues — the next chapter arrives in two weeks.");
+  } }));
+  wireStoryChoices("Heir / Successor Arc", choices);
+}
+
 /* ==================== WIN ==================== */
+/* Item 32: Ending variants — chosen from how the empire was built */
+const ENDINGS = {
+  icon: { title:"Ending · The Icon", text:"You did not merely build a business — you became a symbol. MAISON D'OR reached the summit at a speed the industry will study for decades: the fastest ascent from a boutique pop-up to an icon in fragrance history." },
+  empire: { title:"Ending · The Empire", text:"Boutiques on five continents and a fortune beyond counting. MAISON D'OR closes this chapter not as a perfume house but as an empire — the wealth ending, earned bottle by bottle." },
+  artisan: { title:"Ending · The Artisan", text:"Heritage editions, golden pairings and a perfumer's bench at the heart of it all. MAISON D'OR reached the summit the artisan's way — proof that craft, patiently kept, outshines everything." }
+};
+function pickEnding(){
+  const iconScore = Math.max(0, 90 - S.week);
+  const empireScore = Math.round(netWorth() / 40000);
+  const synergyScents = (S.perfumes || []).filter(p => p.synergy).length;
+  const artisanScore = (S.heritageLaunches || 0) * 18 + (S.qc ? 12 : 0) + (S.juniorPerfumer ? 8 : 0) + ((S.perfumer && S.perfumer.morale >= 75) ? 10 : (S.perfumer && S.perfumer.morale >= 50) ? 5 : 0) + synergyScents * 6;
+  if(iconScore >= empireScore && iconScore >= artisanScore) return "icon";
+  if(empireScore >= artisanScore) return "empire";
+  return "artisan";
+}
 function checkWin(){
   if(!S.won && S.prestige >= 100 && netWorth() >= 1000000){
     S.won = true;
+    S.ending = pickEnding();
+    /* v6 Wave 3 (item 43): fastest win joins the Personal Best Board */
+    const wksToWin = S.ledger.length;
+    if(wksToWin > 0 && (!bests.fastestWin || wksToWin < bests.fastestWin)){ bests.fastestWin = wksToWin; saveBests(); }
+    const en = ENDINGS[S.ending] || ENDINGS.empire;
+    const wt = $("winEndingTitle"), wx = $("winEndingText");
+    if(wt) wt.textContent = en.title;
+    if(wx) wx.textContent = en.text;
     if(S.challenge && S.challenge!=="normal") S.challengeBadge = S.challenge==="hard"?"Hard Mode Champion": S.challenge==="nomarketing"?"No Marketing Master":"Winter-Only House";
     confettiBurst(true);
     logEvent("👑 <b>MAISON D'OR becomes a Global Luxury Empire</b> — 100 Prestige and a million-dollar net worth.");
@@ -1493,7 +2462,7 @@ function importSave(file){
       S = Object.assign(defaultState(), data);
       sanitizeState();
       uidC = S.uid || 1; displayedCash = S.cash;
-      save(); renderAll();
+      save(); renderAll(); renderMenuSlots();
       toast("<b>Empire restored.</b> Welcome back to Week " + S.week + " — " + fmt(S.cash) + ", Prestige " + Math.round(S.prestige) + ".", "good");
     }catch(e){
       toast("That file is not a valid MAISON D'OR save. Nothing was changed.", "bad");
@@ -1507,6 +2476,8 @@ document.querySelectorAll(".tab-btn").forEach(b => b.addEventListener("click", (
 $("btnGoLab").addEventListener("click", () => switchTab("lab"));
 $("btnLaunch").addEventListener("click", launchPerfume);
 const llb=$("labLimitedBtn"); if(llb) llb.addEventListener("click",()=>{ lab.limited=!lab.limited; llb.textContent=lab.limited?"Limited Edition: ON — 3 weeks only, 1.5× appeal":"Limited Edition: OFF — tap for 3-week 1.5× drop"; llb.classList.toggle("solid",lab.limited); });
+/* v6 Wave 2: Blind Creation Mode — fate picks the three notes */
+const blb=$("labBlindBtn"); if(blb) blb.addEventListener("click",()=>{ const inS = n => !n.season || n.season === seasonOf(S.week); lab.top = pick(TOPS.filter(inS)); lab.heart = pick(HEARTS.filter(inS)); lab.base = pick(BASES); lab.blind = true; lab.test = null; syncLabPrice(true); renderLab(); toast("🎲 <b>Blind Creation</b> — fate chose <b>" + lab.top.name + " · " + lab.heart.name + " · " + lab.base.name + "</b>. Launch it and sell 50+ lifetime units for a +4 Prestige bonus.", "good"); });
 $("btnRandomName").addEventListener("click", () => { lab.name = randomName(); $("labName").value = lab.name; updateLabPreview(); });
 $("labName").addEventListener("input", e => { lab.name = e.target.value; updateLabPreview(); });
 $("labPrice").addEventListener("input", e => { lab.price = parseInt(e.target.value,10); updateLabPreview(); });
@@ -1521,20 +2492,46 @@ $("btnReportClose").addEventListener("click", () => {
   const lastW = S.ledger.length? S.ledger[S.ledger.length-1].week:0;
   if(lastW>0 && lastW%12===0 && S.perfumes.length){ const best=[...S.perfumes].sort((a,b)=>b.lifetimeRevenue-a.lifetimeRevenue)[0]; if(best && best.lifetimeRevenue>5000){ S.prestige=clamp(S.prestige+15,0,100); S.awards.push({week:lastW,name:"Fragrance of the Year",scent:best.name}); logEvent("🏆 <b>Fragrance Awards</b> — "+escapeHtml(best.name)+" wins! +15 Prestige."); toast("🏆 <b>Fragrance Awards!</b> "+escapeHtml(best.name)+" wins — +15 Prestige + trophy in Ledger/Trophies.","good"); confettiBurst(true); save(); renderAll(); } else { toast("Fragrance Awards held — no scent qualified this season.","bad"); } }
   checkAchievements(); checkWin();
+  if(S.rescuePending && !S.rescueUsed){ $("rescueOverlay").classList.add("open"); }
+  else if(!$("winOverlay").classList.contains("open")){
+    if(S.fwPending){ S.fwPending = false; save(); showFashionWeek(); }
+    else if(S.heirReady){ S.heirReady = false; save(); showHeirStep(); }
+    else maybeEvent();
+  }
+});
+/* v6 Bankruptcy Safety Net — one-time investor rescue */
+$("btnRescueAccept").addEventListener("click", () => {
+  S.cash += 20000;
+  S.equitySold = Math.min(90, (S.equitySold||0) + 20);
+  S.prestige = clamp(S.prestige - 5, 0, 100);
+  S.rescueUsed = true; S.rescueTaken = true; S.rescuePending = false;
+  logEvent("🛟 <b>Investor rescue accepted</b> — +$20,000 injected for 20% equity (−5 Prestige). Flagged in the Ledger.");
+  $("rescueOverlay").classList.remove("open");
+  save(); renderAll();
+  toast("🛟 <b>Rescue accepted</b> — +$20,000 cash for 20% equity. The maison survives.", "good");
   if(!$("winOverlay").classList.contains("open")) maybeEvent();
 });
-$("btnWinClose").addEventListener("click", () => { $("winOverlay").classList.remove("open"); maybeEvent(); });
+$("btnRescueDecline").addEventListener("click", () => {
+  S.rescueUsed = true; S.rescuePending = false;
+  logEvent("The investor rescue offer was <b>declined</b> — the maison trades on alone.");
+  $("rescueOverlay").classList.remove("open");
+  save(); renderAll();
+  toast("Rescue declined. The offer will not come again — trade carefully.", "bad");
+  if(!$("winOverlay").classList.contains("open")) maybeEvent();
+});
+$("btnWinClose").addEventListener("click", () => { $("winOverlay").classList.remove("open"); if(S.fwPending){ S.fwPending = false; save(); showFashionWeek(); } else if(S.heirReady){ S.heirReady = false; save(); showHeirStep(); } else maybeEvent(); });
 $("btnNewGame").addEventListener("click", () => $("confirmOverlay").classList.add("open"));
 $("btnCancelReset").addEventListener("click", () => $("confirmOverlay").classList.remove("open"));
 $("btnConfirmReset").addEventListener("click", () => {
   localStorage.removeItem(SAVE_KEY);
   const chEl=document.querySelector('input[name="challenge"]:checked'); const ch=chEl?chEl.value:"normal";
   S = defaultState(); S.challenge=ch; if(ch==="hard") S.cash=1000; uidC = 1; displayedCash = S.cash;
-  lab = { top:null, heart:null, base:null, bottle:2, price:120, name:"", conc:"EDP", signature:"" };
+  lab = { top:null, heart:null, base:null, bottle:2, price:120, name:"", conc:"EDP", signature:"", colour:"", test:null, limited:false, blind:false };
+  S.mission = genMission();
   $("labName").value = "";
   rollTrends();
   logEvent("The maison is founded — a boutique pop-up, $5,000, and a perfumer's ambition.");
-  save(); renderAll();
+  save(); renderAll(); renderMenuSlots();
   $("confirmOverlay").classList.remove("open");
   switchTab("lab");
   toast("A new maison is founded. Compose your first fragrance.", "good");
@@ -1554,17 +2551,302 @@ $("btnNewGameTop").addEventListener("click", () => $("confirmOverlay").classList
   dd.querySelectorAll(".menu-item").forEach(it => it.addEventListener("click", closeMenu));
   const upd = $("btnCheckUpdates");
   if(upd) upd.addEventListener("click", () => {
-    toast("Reloading the latest version (v4)…");
+    toast("Reloading the latest version (v6)…");
     setTimeout(() => {
-      if(/[?&]v=4(&|$)/.test(window.location.search)) window.location.reload();
-      else window.location.search = "?v=4";
+      if(/[?&]v=6(&|$)/.test(window.location.search)) window.location.reload();
+      else window.location.search = "?v=6";
     }, 350);
   });
 })();
 $("importFile").addEventListener("change", e => { if(e.target.files && e.target.files[0]) importSave(e.target.files[0]); e.target.value = ""; });
 
+/* ==================== v6 Wave 3 WIRING (items 33-48) ==================== */
+let pendingComeback = null;
+let shareBlob = null, shareFileName = "maison-dor.png";
+let deferredInstallPrompt = null;
+
+/* Item 48: Save Slots — migration + switching */
+function initSlots(){
+  try{
+    let a = parseInt(localStorage.getItem(ACTIVE_SLOT_KEY) || "", 10);
+    if(a !== 1 && a !== 2 && a !== 3){
+      a = 1;
+      const legacy = localStorage.getItem(LEGACY_SAVE_KEY);
+      if(legacy && !localStorage.getItem(slotKey(1))){ try{ localStorage.setItem(slotKey(1), legacy); }catch(e){} }
+      try{ localStorage.setItem(ACTIVE_SLOT_KEY, "1"); }catch(e){}
+    }
+    activeSlot = a; SAVE_KEY = slotKey(a);
+  }catch(e){ activeSlot = 1; SAVE_KEY = slotKey(1); }
+}
+function slotSummary(n){
+  try{
+    const raw = localStorage.getItem(slotKey(n));
+    if(!raw) return "Empty slot";
+    const d = JSON.parse(raw);
+    if(!d || typeof d.week !== "number") return "Empty slot";
+    return "Week " + d.week + " · " + fmt(d.cash || 0) + " · Prestige " + Math.round(d.prestige || 0);
+  }catch(e){ return "Empty slot"; }
+}
+function renderMenuSlots(){
+  const wrap = $("slotList"); if(!wrap) return;
+  wrap.innerHTML = [1,2,3].map(n => '<button class="menu-item slot-item" data-slot="' + n + '">' + (n === activeSlot ? "● " : "○ ") + "Save Slot " + n + (n === activeSlot ? " (active)" : "") + '<span class="slot-sum">' + escapeHtml(slotSummary(n)) + '</span></button>').join("");
+  wrap.querySelectorAll("[data-slot]").forEach(b => b.addEventListener("click", () => {
+    const dd = $("menuDropdown"); if(dd) dd.hidden = true;
+    const bb = $("btnMenu"); if(bb) bb.setAttribute("aria-expanded", "false");
+    switchSlot(parseInt(b.getAttribute("data-slot"), 10));
+  }));
+  const csn = $("confirmSlotNote"); if(csn) csn.textContent = "Save Slot " + activeSlot;
+  updateSavedStamp();
+}
+function switchSlot(n){
+  if(n === activeSlot){ toast("Save Slot " + n + " is already active."); return; }
+  save();
+  activeSlot = n; SAVE_KEY = slotKey(n);
+  try{ localStorage.setItem(ACTIVE_SLOT_KEY, String(n)); }catch(e){}
+  const had = load();
+  if(!had){
+    S = defaultState(); uidC = 1;
+    S.mission = genMission();
+    rollTrends();
+    logEvent("The maison is founded — a boutique pop-up, $5,000, and a perfumer's ambition.");
+  }
+  displayedCash = S.cash;
+  save(); renderAll(); renderMenuSlots();
+  toast("Switched to <b>Save Slot " + n + "</b> — Week " + S.week + ", " + fmt(S.cash) + ", Prestige " + Math.round(S.prestige) + ".", "good");
+}
+
+/* Items 35-36: persisted display prefs */
+function applyPrefs(){
+  document.body.classList.toggle("big-numbers", !!prefs.bigNumbers);
+  const bb = $("btnBigNumbers"); if(bb) bb.textContent = "Big Numbers: " + (prefs.bigNumbers ? "On" : "Off");
+  const vt = $("btnViewToggle"); if(vt) vt.textContent = prefs.compact ? "View: Compact" : "View: Detailed";
+}
+
+/* Item 37: One-Hand Quick Week — condensed one-screen summary */
+function doQuickWeek(){
+  const r = simulateWeek();
+  renderAll();
+  $("quickTitle").textContent = "Week " + r.week + " — In Brief";
+  $("quickBody").innerHTML =
+    '<div class="report-total"><span>Net ' + (r.profit >= 0 ? "Profit" : "Loss") + '</span><span style="color:' + (r.profit >= 0 ? "var(--green)" : "var(--red)") + '">' + fmt(r.profit) + '</span></div>' +
+    '<div class="rep-summary">' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">Revenue</span><span class="rep-sum-val">' + fmt(r.revenue) + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">Units Sold</span><span class="rep-sum-val">' + r.unitsTotal + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">Prestige Change</span><span class="rep-sum-val">' + (r.prestigeDelta >= 0 ? "+" : "−") + Math.abs(Math.round(r.prestigeDelta * 10) / 10) + ' → ' + Math.round(S.prestige) + ' · ' + prestigeTitle(S.prestige) + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">Cash Now</span><span class="rep-sum-val">' + fmt(S.cash) + '</span></div></div>' +
+    (r.lostSales > 0 ? '<div class="stockout-warning" role="alert">⚠ You lost ' + r.lostSales + ' sales to stockouts — increase stock in the Showroom</div>' : '');
+  lastReport = r;
+  $("quickOverlay").classList.add("open");
+}
+
+/* Items 41-42: Share cards — drawn entirely in-browser on canvas */
+function drawCardFrame(x, W, H){
+  const g = x.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, "#1a140d"); g.addColorStop(0.5, "#0d0a07"); g.addColorStop(1, "#14100b");
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  x.strokeStyle = "#c8a24a"; x.lineWidth = 4; x.strokeRect(26, 26, W - 52, H - 52);
+  x.strokeStyle = "rgba(200,162,74,.4)"; x.lineWidth = 1.5; x.strokeRect(44, 44, W - 88, H - 88);
+}
+function cardRow(x, W, y, label, value, valueColor){
+  x.textAlign = "center";
+  x.fillStyle = "#b3a68d"; x.font = '600 25px "Jost", sans-serif';
+  x.fillText(label.toUpperCase(), W / 2, y);
+  x.fillStyle = valueColor || "#f3ead8"; x.font = '700 52px "Playfair Display", Georgia, serif';
+  x.fillText(value, W / 2, y + 58);
+}
+function openShareImage(cv, title, fname){
+  shareFileName = fname;
+  $("shareTitle").textContent = title;
+  $("shareImg").src = cv.toDataURL("image/png");
+  shareBlob = null;
+  const nb = $("btnShareNative"); if(nb) nb.style.display = "none";
+  if(cv.toBlob){
+    cv.toBlob(b => {
+      shareBlob = b;
+      if(nb){
+        let can = false;
+        try{ can = !!(b && navigator.canShare && navigator.canShare({ files: [new File([b], fname, { type: "image/png" })] })); }catch(e){ can = false; }
+        nb.style.display = can ? "" : "none";
+      }
+    }, "image/png");
+  }
+  $("shareOverlay").classList.add("open");
+}
+function shareEmpireCard(){
+  const W = 1080, H = 1080;
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const x = cv.getContext("2d");
+  drawCardFrame(x, W, H);
+  x.textAlign = "center";
+  x.fillStyle = "#ecd28a"; x.font = '900 76px "Playfair Display", Georgia, serif';
+  x.fillText("MAISON D'OR", W / 2, 168);
+  x.fillStyle = "#f3ead8"; x.font = '600 32px "Jost", sans-serif';
+  x.fillText(prestigeTitle(S.prestige).toUpperCase() + "  ·  PRESTIGE " + Math.round(S.prestige) + " / 100", W / 2, 228);
+  x.strokeStyle = "rgba(200,162,74,.65)"; x.lineWidth = 2;
+  x.beginPath(); x.moveTo(300, 272); x.lineTo(W - 300, 272); x.stroke();
+  cardRow(x, W, 348, "Net Worth", fmt(netWorth()), "#ecd28a");
+  cardRow(x, W, 486, "Cash on Hand", fmt(S.cash));
+  cardRow(x, W, 624, "The Season", seasonOf(S.week) + " · Year " + yearOf(S.week) + " · Week " + S.week);
+  const best = (S.perfumes || []).slice().sort((a, b) => (b.lifetimeRevenue || 0) - (a.lifetimeRevenue || 0))[0];
+  if(best){
+    cardRow(x, W, 762, "Signature Scent", best.name.length > 26 ? best.name.slice(0, 25) + "…" : best.name);
+    x.fillStyle = "#b3a68d"; x.font = '400 28px "Jost", sans-serif'; x.textAlign = "center";
+    x.fillText("Lifetime revenue " + fmt(best.lifetimeRevenue), W / 2, 884);
+  }
+  x.fillStyle = "#7d7261"; x.font = '500 24px "Jost", sans-serif'; x.textAlign = "center";
+  x.fillText("A LUXURY PERFUME EMPIRE", W / 2, H - 84);
+  openShareImage(cv, "Share My Empire", "maison-dor-empire-week" + S.week + ".png");
+}
+function shareRecapCard(){
+  const r = lastReport;
+  if(!r){ toast("Advance a week first — the recap card is made from a Weekly Report.", "bad"); return; }
+  const W = 1080, H = 1080;
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const x = cv.getContext("2d");
+  drawCardFrame(x, W, H);
+  x.textAlign = "center";
+  x.fillStyle = "#ecd28a"; x.font = '900 70px "Playfair Display", Georgia, serif';
+  x.fillText("MAISON D'OR", W / 2, 168);
+  x.fillStyle = "#f3ead8"; x.font = '600 34px "Jost", sans-serif';
+  x.fillText("WEEK " + r.week + " RECAP · " + String(r.season || "").toUpperCase(), W / 2, 228);
+  x.strokeStyle = "rgba(200,162,74,.65)"; x.lineWidth = 2;
+  x.beginPath(); x.moveTo(300, 272); x.lineTo(W - 300, 272); x.stroke();
+  cardRow(x, W, 348, "Net " + (r.profit >= 0 ? "Profit" : "Loss"), fmt(r.profit), r.profit >= 0 ? "#9dc08b" : "#d98a7e");
+  cardRow(x, W, 486, "Revenue", fmt(r.revenue), "#ecd28a");
+  cardRow(x, W, 624, "Units Sold", String(r.unitsTotal));
+  const pd = Math.round((r.prestigeDelta || 0) * 10) / 10;
+  cardRow(x, W, 762, "Prestige", (pd >= 0 ? "+" : "−") + Math.abs(pd) + "  →  " + Math.round(S.prestige) + " · " + prestigeTitle(S.prestige));
+  x.fillStyle = "#7d7261"; x.font = '500 24px "Jost", sans-serif'; x.textAlign = "center";
+  x.fillText("A LUXURY PERFUME EMPIRE", W / 2, H - 84);
+  openShareImage(cv, "Week " + r.week + " Recap", "maison-dor-week" + r.week + "-recap.png");
+}
+
+/* Item 33: thumb bar hides while any modal sheet is open */
+function initModalWatcher(){
+  const sync = () => document.body.classList.toggle("modal-open", !!document.querySelector(".overlay.open"));
+  try{
+    const mo = new MutationObserver(sync);
+    document.querySelectorAll(".overlay").forEach(o => mo.observe(o, { attributes: true, attributeFilter: ["class"] }));
+  }catch(e){}
+  sync();
+}
+/* Item 34: swipe between tabs — clear horizontal threshold, sliders/scrolls untouched */
+function initSwipe(){
+  const order = ["showroom", "lab", "empire", "ledger", "trophies"];
+  let sx = null, sy = 0;
+  document.addEventListener("touchstart", e => {
+    if(e.touches.length !== 1){ sx = null; return; }
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener("touchend", e => {
+    if(sx === null) return;
+    const startX = sx; sx = null;
+    const t = e.changedTouches && e.changedTouches[0]; if(!t) return;
+    const dx = t.clientX - startX, dy = t.clientY - sy;
+    if(Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.6) return;
+    if(document.querySelector(".overlay.open")) return;
+    const tgt = e.target;
+    if(tgt && tgt.closest && (tgt.closest(".sticky-stack") || tgt.closest(".overlay") || tgt.closest("#thumbBar") || tgt.closest("input, select, textarea"))) return;
+    const active = document.querySelector(".tab-btn.active");
+    const cur = active ? order.indexOf(active.getAttribute("data-tab")) : 0;
+    if(cur < 0) return;
+    const nxt = dx < 0 ? Math.min(order.length - 1, cur + 1) : Math.max(0, cur - 1);
+    if(nxt !== cur) switchTab(order[nxt]);
+  }, { passive: true });
+}
+/* Item 47: Auto Version Check — best-effort, fails silently everywhere it cannot run */
+function startVersionCheck(){
+  try{
+    if(window.location.protocol === "file:") return;
+    if(window.location.hostname !== "farrakhimtiaz74.github.io") return;
+    if(window.self !== window.top) return;
+    if(!("fetch" in window)) return;
+    setTimeout(() => {
+      try{
+        const ctl = ("AbortController" in window) ? new AbortController() : null;
+        let timer = 0;
+        if(ctl) timer = setTimeout(() => { try{ ctl.abort(); }catch(e){} }, 6000);
+        fetch("https://farrakhimtiaz74.github.io/maison-d-or/?_vc=" + Date.now(), { cache: "no-store", signal: ctl ? ctl.signal : undefined })
+          .then(r => r.text())
+          .then(txt => {
+            if(timer) clearTimeout(timer);
+            const m = txt.match(/name="game-version" content="(\d+)"/) || txt.match(/ver-badge">v(\d+)/);
+            if(m){
+              const live = parseInt(m[1], 10);
+              if(live > GAME_VERSION){
+                const n = $("updateNotice");
+                if(n){ n.setAttribute("data-ver", String(live)); n.hidden = false; }
+              }
+            }
+          })
+          .catch(() => {});
+      }catch(e){}
+    }, 3000);
+  }catch(e){}
+}
+
+/* Item 46: capture the browser's install prompt when offered */
+window.addEventListener("beforeinstallprompt", e => { try{ e.preventDefault(); }catch(err){} deferredInstallPrompt = e; });
+
+$("btnAdvanceThumb").addEventListener("click", () => { $("btnAdvance").click(); });
+$("btnQuickWeek").addEventListener("click", doQuickWeek);
+$("btnQuickWeekMenu").addEventListener("click", doQuickWeek);
+$("btnQuickClose").addEventListener("click", () => { $("quickOverlay").classList.remove("open"); $("btnReportClose").click(); });
+$("btnViewToggle").addEventListener("click", () => { prefs.compact = !prefs.compact; savePrefs(); applyPrefs(); renderShowroom(); toast(prefs.compact ? "Showroom: <b>Compact</b> one-line rows." : "Showroom: <b>Detailed</b> cards."); });
+$("btnBigNumbers").addEventListener("click", () => { prefs.bigNumbers = !prefs.bigNumbers; savePrefs(); applyPrefs(); toast("Big Numbers " + (prefs.bigNumbers ? "<b>on</b> — HUD figures enlarged." : "<b>off</b>.")); });
+$("btnShareEmpire").addEventListener("click", shareEmpireCard);
+$("btnShareEmpireMenu").addEventListener("click", shareEmpireCard);
+$("btnShareRecap").addEventListener("click", shareRecapCard);
+$("btnShareClose").addEventListener("click", () => $("shareOverlay").classList.remove("open"));
+$("btnShareDownload").addEventListener("click", () => {
+  if(!shareBlob){ toast("The card is still rendering — try again in a moment.", "bad"); return; }
+  const url = URL.createObjectURL(shareBlob);
+  const a = document.createElement("a");
+  a.href = url; a.download = shareFileName;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  toast("Share card downloaded — <b>" + shareFileName + "</b>.", "good");
+});
+$("btnShareNative").addEventListener("click", () => {
+  if(!shareBlob || !navigator.share) return;
+  try{
+    navigator.share({ files: [new File([shareBlob], shareFileName, { type: "image/png" })], title: "MAISON D'OR" }).catch(() => {});
+  }catch(e){}
+});
+$("btnInstall").addEventListener("click", () => {
+  if(deferredInstallPrompt){
+    try{
+      deferredInstallPrompt.prompt();
+      if(deferredInstallPrompt.userChoice) deferredInstallPrompt.userChoice.then(() => { deferredInstallPrompt = null; }).catch(() => {});
+    }catch(e){ $("installOverlay").classList.add("open"); }
+  } else {
+    $("installOverlay").classList.add("open");
+  }
+});
+$("btnInstallClose").addEventListener("click", () => $("installOverlay").classList.remove("open"));
+$("btnComebackCollect").addEventListener("click", () => {
+  if(pendingComeback){
+    S.cash += pendingComeback.bonus;
+    logEvent("🏠 <b>Welcome-back bonus</b> — loyal customers granted <b>" + fmt(pendingComeback.bonus) + "</b> after " + pendingComeback.days + " days away.");
+    toast("🏠 Welcome back! Loyalty bonus <b>+" + fmt(pendingComeback.bonus) + "</b> collected.", "good");
+    pendingComeback = null;
+  }
+  $("comebackOverlay").classList.remove("open");
+  save(); renderAll();
+});
+$("btnUpdateNow").addEventListener("click", () => {
+  const n = $("updateNotice");
+  const v = (n && n.getAttribute("data-ver")) || String(GAME_VERSION + 1);
+  toast("Updating to the latest version…");
+  setTimeout(() => { window.location.search = "?v=" + v; }, 300);
+});
+$("btnUpdateDismiss").addEventListener("click", () => { const n = $("updateNotice"); if(n) n.hidden = true; });
+
 /* ==================== INIT ==================== */
 (function init(){
+  initSlots();
+  loadPrefs(); loadBests();
+  const PREV_SEEN = (function(){ try{ return Number(localStorage.getItem(LASTSEEN_KEY) || 0); }catch(e){ return 0; } })();
   const had = load();
   if(!had || !S.hot || !S.hot.length){
     rollTrends();
@@ -1573,8 +2855,27 @@ $("importFile").addEventListener("change", e => { if(e.target.files && e.target.
   }
   // Daily login bonus (real calendar days)
   try{ const today=new Date().toISOString().slice(0,10); if(S.lastLoginDate && S.lastLoginDate!==today){ const yest=new Date(Date.now()-86400000).toISOString().slice(0,10); S.loginStreak = (S.lastLoginDate===yest)? (S.loginStreak||0)+1 : 1; const bonusCash=250+(S.loginStreak*50); S.cash+=bonusCash; S.prestige=clamp(S.prestige+1,0,100); S.lastLoginDate=today; setTimeout(()=>toast("🎁 Daily bonus — Day "+S.loginStreak+" streak: <b>+"+fmt(bonusCash)+"</b> cash & +1 Prestige hype. Come back tomorrow to keep the streak.","good"),700); save(); } else if(!S.lastLoginDate){ S.lastLoginDate=today; S.loginStreak=1; save(); } }catch(e){}
+  if(!S.mission) { S.mission = genMission(); save(); }
   displayedCash = S.cash;
   renderAll(); checkAchievements();
+  /* v6 Wave 3 init: prefs, slot menu, bests seed, swipe, modal watcher, version check */
+  applyPrefs(); renderMenuSlots(); updateSavedStamp();
+  updateBestsFromWeek(null, S.week);
+  initModalWatcher(); initSwipe(); startVersionCheck();
+  /* Item 44: Comeback Bonus — last played 3+ real days ago, granted once per absence */
+  try{
+    if(had && PREV_SEEN > 0 && (Date.now() - PREV_SEEN) >= 3 * 86400000){
+      const daysAway = Math.floor((Date.now() - PREV_SEEN) / 86400000);
+      const bonusAmt = clamp(Math.round(netWorth() * 0.05), 500, 10000);
+      pendingComeback = { days: daysAway, bonus: bonusAmt };
+      setTimeout(() => {
+        if(!pendingComeback) return;
+        const ct = $("comebackText");
+        if(ct) ct.innerHTML = "You were away for <b style=\"color:var(--cream)\">" + daysAway + " days</b>. Your loyal customers kept the maison in their thoughts — and their loyalty is worth a welcome-back bonus of <b style=\"color:var(--gold-bright)\">" + fmt(bonusAmt) + "</b>.";
+        $("comebackOverlay").classList.add("open");
+      }, 1000);
+    }
+  }catch(e){}
   if(!had) setTimeout(() => toast("Welcome to <b>MAISON D'OR</b>. Compose a fragrance in the Scent Lab, then advance the week to sell it."), 500);
 })();
 </script>
