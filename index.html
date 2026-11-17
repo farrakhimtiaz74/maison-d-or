@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="icon" href="data:," />
     <title>MAISON D'OR — Luxury Perfume Empire Tycoon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,37 +44,72 @@
       }
       .wrap{ max-width:1120px; margin:0 auto; padding:0 16px 90px; }
 
-      /* ---------- HUD ---------- */
-      .hud{
-        position:sticky; top:0; z-index:40;
-        background:rgba(11,9,8,.88); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+      /* ---------- Compact sticky HUD + tab stack (v4) ---------- */
+      .sticky-stack{
+        position:sticky; top:0; z-index:60;
+        background:rgba(11,9,8,.95); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
         border-bottom:1px solid var(--line);
       }
-      .hud-in{ max-width:1120px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
-      .brand{ font-family:var(--serif); font-weight:900; letter-spacing:.14em; font-size:1.15rem; color:var(--cream); white-space:nowrap; }
-      .brand em{ color:var(--gold-bright); font-style:normal; }
-      .brand small{ display:block; font-family:var(--sans); font-weight:400; letter-spacing:.34em; font-size:.52rem; color:var(--muted); text-transform:uppercase; margin-top:1px; }
-      .hud-stats{ display:flex; gap:20px; flex-wrap:wrap; align-items:center; flex:1; }
-      .stat label{ display:block; font-size:.58rem; letter-spacing:.26em; text-transform:uppercase; color:var(--faint); }
-      .stat .val{ font-size:1.02rem; font-weight:500; color:var(--cream); font-variant-numeric:tabular-nums; }
-      .stat .val.gold{ color:var(--gold-bright); }
-      .stat .val.up{ color:var(--green); } .stat .val.down{ color:var(--red); }
-      .prestige-wrap{ min-width:130px; flex:1; max-width:210px; }
-      .prestige-bar{ height:6px; border-radius:99px; background:rgba(243,234,216,.12); overflow:hidden; margin-top:5px; }
-      .prestige-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-bright)); transition:width .8s cubic-bezier(.22,1,.36,1); box-shadow:0 0 10px rgba(200,162,74,.55); }
+      .hud{ background:transparent; }
+      .hud-in{ max-width:1120px; margin:0 auto; padding:6px 12px 7px; display:flex; flex-direction:column; gap:4px; }
+      .hud-line1{ display:flex; align-items:center; gap:10px; min-height:22px; }
+      .brand-compact{ font-family:var(--serif); font-weight:900; letter-spacing:.1em; font-size:.95rem; color:var(--cream); white-space:nowrap; }
+      .brand-compact em{ color:var(--gold-bright); font-style:normal; }
+      .ver-badge{ display:inline-block; vertical-align:2px; margin-left:7px; font-family:var(--sans); font-weight:600; font-size:.58rem; letter-spacing:.14em; color:#191104; background:linear-gradient(120deg,#ecd28a,var(--gold)); border-radius:99px; padding:2px 7px; }
+      .hud-week{ margin-left:auto; font-size:.8rem; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums; }
+      .hud-week b{ color:var(--cream); font-weight:500; }
+      .menu-wrap{ position:relative; flex:none; }
+      .menu-btn{
+        font-family:var(--sans); cursor:pointer; white-space:nowrap; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; font-weight:600;
+        color:var(--gold-bright); background:rgba(200,162,74,.08); border:1px solid var(--line); border-radius:3px; padding:6px 11px; min-height:2rem;
+      }
+      .menu-btn:hover{ background:rgba(200,162,74,.18); }
+      .menu-dropdown{
+        position:absolute; right:0; top:calc(100% + 6px); z-index:90; min-width:218px;
+        background:linear-gradient(180deg,#1e1811,#14100b); border:1px solid var(--line); border-radius:6px;
+        box-shadow:0 16px 40px rgba(0,0,0,.6); padding:6px; display:flex; flex-direction:column; gap:2px;
+      }
+      .menu-dropdown[hidden]{ display:none; }
+      .menu-ver{ font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); padding:6px 10px 4px; white-space:nowrap; }
+      .menu-item{
+        font-family:var(--sans); cursor:pointer; text-align:left; white-space:nowrap; width:100%;
+        font-size:.82rem; font-weight:500; letter-spacing:.04em; color:var(--cream);
+        background:none; border:none; border-radius:4px; padding:10px; min-height:2.5rem;
+      }
+      .menu-item:hover{ background:rgba(200,162,74,.13); color:var(--gold-bright); }
+      .hud-line2{ display:flex; align-items:center; gap:16px; }
+      .hstat{ display:flex; flex-direction:column; line-height:1.15; }
+      .hstat label{ font-size:.54rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); white-space:nowrap; }
+      .hstat .val{ font-size:.98rem; font-weight:500; color:var(--cream); font-variant-numeric:tabular-nums; white-space:nowrap; }
+      .hstat .val.gold{ color:var(--gold-bright); }
+      .hstat .val.up{ color:var(--green); } .hstat .val.down{ color:var(--red); }
+      .hstat.prestige-inline{ margin-left:auto; align-items:flex-end; }
+      .prestige-row{ display:flex; align-items:center; gap:7px; }
+      .prestige-bar{ height:4px; width:64px; border-radius:99px; background:rgba(243,234,216,.14); overflow:hidden; flex:none; }
+      .prestige-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-bright)); transition:width .8s cubic-bezier(.22,1,.36,1); }
+      .goal-line{ display:flex; align-items:center; gap:10px; font-size:.72rem; color:var(--muted); white-space:nowrap; }
+      .goal-line b{ color:var(--cream); font-weight:500; }
+      .goal-line .goal-bar{ flex:1; min-width:60px; height:4px; background:rgba(243,234,216,.1); border-radius:99px; overflow:hidden; }
+      .goal-line .goal-fill{ display:block; height:100%; background:linear-gradient(90deg, var(--gold-deep), var(--gold-bright)); transition:width .8s ease; }
       .btn-advance{
-        font-family:var(--sans); font-weight:600; letter-spacing:.22em; text-transform:uppercase; font-size:.78rem;
-        color:#191104; border:1px solid var(--gold-bright); cursor:pointer; padding:12px 26px; border-radius:2px;
+        font-family:var(--sans); font-weight:600; letter-spacing:.22em; text-transform:uppercase; font-size:.76rem;
+        color:#191104; border:1px solid var(--gold-bright); cursor:pointer; height:44px; width:100%; padding:0 16px; border-radius:2px;
         background:linear-gradient(160deg, #f0d896, var(--gold) 45%, #a37f33);
         box-shadow:0 4px 22px rgba(200,162,74,.35), inset 0 1px 0 rgba(255,255,255,.5);
         transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
       }
-      .btn-advance:hover{ filter:brightness(1.07); transform:translateY(-1px); box-shadow:0 8px 28px rgba(200,162,74,.45), inset 0 1px 0 rgba(255,255,255,.5); }
+      .btn-advance:hover{ filter:brightness(1.07); }
       .btn-advance:active{ transform:translateY(1px) scale(.99); }
+      .status-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px 18px; }
+      .status-grid .stat label{ display:block; font-size:.58rem; letter-spacing:.24em; text-transform:uppercase; color:var(--faint); }
+      .status-grid .stat .val{ font-size:1rem; font-weight:500; color:var(--cream); font-variant-numeric:tabular-nums; }
+      .status-grid .stat .val.gold{ color:var(--gold-bright); }
+      .status-grid .stat .val.up{ color:var(--green); } .status-grid .stat .val.down{ color:var(--red); }
+      .drag-hint{ margin-top:10px; font-size:.76rem; line-height:1.45; color:#e0b184; background:rgba(217,138,126,.08); border:1px solid rgba(217,138,126,.3); border-radius:4px; padding:7px 10px; }
 
       /* ---------- Trend bar ---------- */
       .trendbar{
-        margin:16px 0 0; border:1px solid var(--line); border-radius:4px; padding:10px 14px;
+        margin:10px 0 0; border:1px solid var(--line); border-radius:4px; padding:8px 12px;
         background:linear-gradient(120deg, rgba(200,162,74,.10), rgba(243,234,216,.03));
         display:flex; gap:10px 22px; flex-wrap:wrap; align-items:center; font-size:.86rem;
       }
@@ -81,19 +119,13 @@
       .chip.sat{ background:rgba(217,138,126,.12); color:var(--red); border:1px solid rgba(217,138,126,.4); }
       .chip.season{ background:rgba(157,192,139,.12); color:var(--green); border:1px solid rgba(157,192,139,.35); }
 
-      /* ---------- Goal strip ---------- */
-      .goalstrip{ margin-top:12px; display:flex; gap:14px; flex-wrap:wrap; align-items:center; font-size:.8rem; color:var(--muted); }
-      .goalstrip b{ color:var(--cream); font-weight:500; }
-      .goal-bar{ flex:1; min-width:140px; height:5px; background:rgba(243,234,216,.1); border-radius:99px; overflow:hidden; }
-      .goal-fill{ height:100%; background:linear-gradient(90deg, var(--gold-deep), var(--gold-bright)); transition:width .8s ease; }
-
-      /* ---------- Tabs ---------- */
-      .tabs{ display:flex; gap:4px; margin:22px 0 18px; border-bottom:1px solid var(--line-soft); overflow-x:auto; scrollbar-width:none; }
+      /* ---------- Tabs: one scrollable row, sticky under the HUD (v4) ---------- */
+      .tabs{ display:flex; flex-wrap:nowrap; gap:2px; max-width:1120px; margin:0 auto; padding:0 6px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
       .tabs::-webkit-scrollbar{ display:none; }
       .tab-btn{
-        font-family:var(--sans); background:none; border:none; color:var(--muted); cursor:pointer;
-        font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; font-weight:500;
-        padding:12px 16px; border-bottom:2px solid transparent; white-space:nowrap; transition:color .2s, border-color .2s;
+        font-family:var(--sans); background:none; border:none; color:var(--muted); cursor:pointer; flex:none;
+        font-size:13px; letter-spacing:.1em; text-transform:uppercase; font-weight:500;
+        padding:10px 12px; border-bottom:2px solid transparent; white-space:nowrap; transition:color .2s, border-color .2s;
       }
       .tab-btn:hover{ color:var(--cream); }
       .tab-btn.active{ color:var(--gold-bright); border-bottom-color:var(--gold); }
@@ -102,10 +134,10 @@
       @keyframes fadeUp{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:none;} }
       @media (prefers-reduced-motion: reduce){ .panel{ animation:none; } *{ transition:none !important; } }
 
-      h2.sec{ font-family:var(--serif); font-weight:700; font-size:1.55rem; margin:6px 0 4px; }
+      h2.sec{ font-family:var(--serif); font-weight:700; font-size:1.55rem; margin:2px 0 4px; }
       h2.sec i{ color:var(--gold-bright); }
-      .sec-sub{ color:var(--muted); font-size:.92rem; margin:0 0 18px; max-width:640px; }
-      h3.step{ font-size:.68rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold-bright); font-weight:600; margin:26px 0 10px; }
+      .sec-sub{ color:var(--muted); font-size:.92rem; margin:0 0 12px; max-width:640px; }
+      h3.step{ font-size:.68rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold-bright); font-weight:600; margin:20px 0 10px; }
       h3.step span{ color:var(--faint); letter-spacing:.1em; }
 
       /* ---------- Cards ---------- */
@@ -167,7 +199,7 @@
       .opt .o-cost{ display:block; margin-top:6px; font-size:.74rem; color:var(--faint); }
       .opt-grid{max-height:360px;overflow-y:auto;padding-right:4px} .lab-layout{ display:grid; grid-template-columns:1fr 320px; gap:22px; align-items:start; }
       @media (max-width:860px){ .lab-layout{ grid-template-columns:1fr; } }
-      .lab-side{ position:sticky; top:118px; }
+      .lab-side{ position:sticky; top:186px; }
       @media (max-width:860px){ .lab-side{ position:static; } }
 
       /* CSS perfume bottle */
@@ -242,13 +274,6 @@
 
       /* ---------- Toasts ---------- */
       #toasts{ position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:120; display:flex; flex-direction:column; gap:8px; width:min(92vw, 430px); pointer-events:none; }
-      .hud-menu{ display:flex; gap:6px; flex-wrap:wrap; }
-      .mini-btn{
-        font-family:var(--sans); cursor:pointer; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; font-weight:500;
-        color:var(--muted); background:none; border:1px solid var(--line-soft); border-radius:3px; padding:7px 10px; min-height:2.25rem;
-        transition:color .2s, border-color .2s;
-      }
-      .mini-btn:hover{ color:var(--gold-bright); border-color:var(--gold); }
       .toast{
         background:rgba(24,19,13,.95); border:1px solid var(--line); border-left:3px solid var(--gold);
         color:var(--cream); padding:11px 14px; border-radius:5px; font-size:.88rem; box-shadow:0 10px 30px rgba(0,0,0,.5);
@@ -263,14 +288,26 @@
       .flex-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
       .grow{ flex:1; }
       @media (max-width:640px){
-        .hud-in{ gap:10px 14px; }
-        .brand{ font-size:1rem; }
-        .btn-advance{ width:100%; order:5; }
-        .hud-menu{ order:6; width:100%; }
-        .hud-menu .mini-btn{ flex:1; }
-        .prestige-wrap{ max-width:none; }
-        .tabs{ flex-wrap:wrap; overflow-x:visible; }
-        .tab-btn{ font-size:.7rem; letter-spacing:.1em; padding:11px 9px; }
+        .wrap{ padding:0 12px 70px; }
+        .hud-in{ padding:5px 10px 6px; gap:3px; }
+        .brand-compact{ font-size:.88rem; }
+        .hud-week{ font-size:.74rem; }
+        .hud-line2{ gap:12px; }
+        .hstat .val{ font-size:.92rem; }
+        .prestige-bar{ width:48px; }
+        .goal-line{ font-size:.68rem; gap:8px; }
+        .btn-advance{ height:44px; font-size:.72rem; }
+        .tabs{ flex-wrap:nowrap; overflow-x:auto; }
+        .tab-btn{ font-size:13px; letter-spacing:.08em; padding:10px 12px; }
+        h2.sec{ font-size:24px; margin:0 0 2px; }
+        .sec-sub{ font-size:.85rem; margin-bottom:10px; line-height:1.45; }
+        h3.step{ margin:16px 0 8px; }
+        .card{ padding:14px; }
+        .shelf{ padding:10px 12px; gap:12px; margin-bottom:12px; }
+        .shelf-bottle{ width:58px; }
+        .shelf-bottle .sb-body{ width:42px; height:50px; }
+        .trendbar{ font-size:.8rem; padding:7px 10px; }
+        .empty{ padding:26px 16px; }
       }
     
       .shake{animation:shake .5s ease}
@@ -299,66 +336,67 @@
   </head>
   <body>
 
-    <!-- ================= HUD ================= -->
-    <header class="hud">
-      <div class="hud-in">
-        <div class="brand">MAISON <em>D'OR</em><small>Luxury Perfume Empire</small></div>
-        <div class="hud-stats">
-          <div class="stat"><label id="hudWeekLabel">Week 1</label><span class="val" id="hudSeason">Spring · Year 1</span></div>
-          <div class="stat"><label>Cash</label><span class="val gold" id="hudCash">$5,000</span></div>
-          <div class="stat"><label>Net Worth</label><span class="val" id="hudWorth">$5,000</span></div>
-          <div class="stat"><label>Last Week</label><span class="val" id="hudProfit">—</span></div>
-          <div class="stat prestige-wrap"><label>Brand Prestige · <span id="hudPrestigeVal">10</span>/100</label>
-            <div class="prestige-bar"><div class="prestige-fill" id="hudPrestigeBar" style="width:10%"></div></div>
+    <!-- ================= COMPACT HUD + TABS (v4) ================= -->
+    <div class="sticky-stack">
+      <header class="hud">
+        <div class="hud-in">
+          <div class="hud-line1">
+            <div class="brand-compact">MAISON <em>D'OR</em><span class="ver-badge">v4</span></div>
+            <div class="hud-week"><b id="hudWeekLabel">Week 1</b> · <span id="hudSeason">Spring · Year 1</span></div>
+            <div class="menu-wrap">
+              <button class="menu-btn" id="btnMenu" aria-haspopup="true" aria-expanded="false">Menu ⋯</button>
+              <div class="menu-dropdown" id="menuDropdown" hidden>
+                <div class="menu-ver">MAISON D'OR · Version v4</div>
+                <button class="menu-item" id="btnExportTop">⇩&nbsp; Export Save</button>
+                <button class="menu-item" id="btnImportTop">⇧&nbsp; Import Save</button>
+                <button class="menu-item" id="btnNewGameTop">New Game</button>
+                <button class="menu-item" id="btnCheckUpdates">Check for updates — reload</button>
+              </div>
+            </div>
           </div>
-          <div class="stat"><label>House Tier</label><span class="val" id="hudTier">Boutique Pop-Up</span></div>
-          <div class="stat"><label>Login Streak</label><span class="val" id="hudStreak">Day 1 🔥</span></div>
-          <div class="stat"><label>PR Buzz / Scandal</label><span class="val" id="hudPR">Neutral</span></div>
-          <div class="stat"><label>Debt / Equity Sold</label><span class="val" id="hudFinance">$0 · 0%</span></div>
+          <div class="hud-line2">
+            <div class="hstat"><label>Cash</label><span class="val gold" id="hudCash">$5,000</span></div>
+            <div class="hstat"><label>Net Worth</label><span class="val" id="hudWorth">$5,000</span></div>
+            <div class="hstat prestige-inline"><label>Prestige · <span id="hudPrestigeVal">10</span>/100</label>
+              <span class="prestige-row"><span class="prestige-bar"><span class="prestige-fill" id="hudPrestigeBar" style="display:block;width:10%"></span></span></span>
+            </div>
+          </div>
+          <button class="btn-advance" id="btnAdvance">Advance Week ▸</button>
         </div>
-        <button class="btn-advance" id="btnAdvance">Advance Week ▸</button>
-        <div class="hud-menu">
-          <button class="mini-btn" id="btnExportTop">⇩ Export Save</button>
-          <button class="mini-btn" id="btnImportTop">⇧ Import Save</button>
-          <button class="mini-btn" id="btnNewGameTop">New Game</button>
-        </div>
-      </div>
-    </header>
-
-    <div class="wrap">
-      <!-- Trend forecast -->
-      <div class="trendbar" id="trendBar"></div>
-
-      <!-- Goal -->
-      <div class="goalstrip" id="goalStrip"></div>
-
-      <!-- ================= TABS ================= -->
-      <nav class="tabs" role="tablist">
+      </header>
+      <nav class="tabs" role="tablist" aria-label="Game sections">
         <button class="tab-btn active" data-tab="showroom" role="tab">Showroom</button>
-        <button class="tab-btn" data-tab="lab" role="tab">Scent Lab</button>
-        <button class="tab-btn" data-tab="empire" role="tab">Marketing &amp; Empire</button>
-        <button class="tab-btn" data-tab="ledger" role="tab">Ledger &amp; History</button>
+        <button class="tab-btn" data-tab="lab" role="tab">Lab</button>
+        <button class="tab-btn" data-tab="empire" role="tab">Empire</button>
+        <button class="tab-btn" data-tab="ledger" role="tab">Ledger</button>
         <button class="tab-btn" data-tab="trophies" role="tab">Trophies</button>
       </nav>
+    </div>
+
+    <div class="wrap">
+      <!-- Goal progress — one labelled line directly under the sticky HUD/tabs -->
+      <div class="goal-line" id="goalStrip" style="margin-top:10px"></div>
+      <!-- Trend forecast -->
+      <div class="trendbar" id="trendBar"></div>
 
       <!-- ================= SHOWROOM ================= -->
       <section class="panel active" id="panel-showroom">
         <h2 class="sec">The <i>Showroom</i></h2>
-        <p class="sec-sub">Your active collection — up to four fragrances on the market at once. Watch weekly sales, tune prices, and retire scents that have run their course.</p>
-        <h3 class="step">Bottle Collection Shelf</h3><div class="shelf" id="bottleShelf"></div>
-        <div class="grid perfumes" id="perfumeGrid"></div>
-        <h3 class="step">Rival Board · Weekly Movement</h3><div class="grid three" id="rivalBoard"></div>
+        <p class="sec-sub">Up to four fragrances on the market — tune prices, watch sales, retire faded scents.</p>
         <div class="empty" id="showroomEmpty" style="display:none">
           <div class="e-title">The shelves are bare</div>
           <p>Your boutique has nothing to sell. Compose your first fragrance in the Scent Lab and give the maison its signature.</p>
           <button class="btn solid" id="btnGoLab">Enter the Scent Lab</button>
         </div>
+        <h3 class="step" id="shelfHead">Bottle Collection Shelf</h3><div class="shelf" id="bottleShelf"></div>
+        <div class="grid perfumes" id="perfumeGrid"></div>
+        <h3 class="step" id="rivalHead">Rival Board · Weekly Movement</h3><div class="grid three" id="rivalBoard"></div>
       </section>
 
       <!-- ================= SCENT LAB ================= -->
       <section class="panel" id="panel-lab">
         <h2 class="sec">The <i>Scent Lab</i></h2>
-        <p class="sec-sub">Compose a fragrance in four movements — top, heart, base, and the flacon it deserves. The lab calculates its scent profile, production cost and a suggested price as you work.</p>
+        <p class="sec-sub">Compose in four movements — top, heart, base, flacon.</p>
         <div class="lab-layout">
           <div>
             <h3 class="step">I · Top Note <span>— the first impression</span></h3>
@@ -408,7 +446,18 @@
       <!-- ================= MARKETING & EMPIRE ================= -->
       <section class="panel" id="panel-empire">
         <h2 class="sec">Marketing &amp; <i>Empire</i></h2>
-        <p class="sec-sub">Campaigns run for a few weeks and bend demand in your favour. Upgrades are forever — each boutique raises your weekly foot traffic, and the R&amp;D lab sharpens your margins.</p>
+        <p class="sec-sub">Campaigns, boutiques and R&amp;D that bend demand in your favour.</p>
+
+        <h3 class="step">House Status</h3>
+        <div class="card">
+          <div class="status-grid">
+            <div class="stat"><label>House Tier</label><span class="val" id="hudTier">Boutique Pop-Up</span></div>
+            <div class="stat"><label>Last Week</label><span class="val" id="hudProfit">—</span></div>
+            <div class="stat"><label>Login Streak</label><span class="val" id="hudStreak">Day 1 🔥</span></div>
+            <div class="stat"><label>PR Buzz / Scandal</label><span class="val" id="hudPR">Neutral</span></div>
+            <div class="stat"><label>Debt / Equity Sold</label><span class="val" id="hudFinance">$0 · 0%</span></div>
+          </div>
+        </div>
 
         <h3 class="step">Campaigns</h3>
         <div class="grid three" id="campaignList"></div>
@@ -431,7 +480,7 @@
       <!-- ================= LEDGER ================= -->
       <section class="panel" id="panel-ledger">
         <h2 class="sec">Ledger &amp; <i>History</i></h2>
-        <p class="sec-sub">The maison's books — weekly revenue against profit, the milestones that built the house, and the road to a Global Luxury Empire.</p>
+        <p class="sec-sub">The maison's books — revenue, profit and milestones.</p>
         <div class="stat-grid" id="statGrid"></div>
         <div class="card" style="margin-bottom:20px">
           <h3 class="step" style="margin-top:0">Revenue vs Profit · last 14 weeks</h3>
@@ -452,8 +501,8 @@
         <p style="color:var(--faint); font-size:.82rem; margin-top:10px">Export downloads your empire as a JSON file — import it on any device to pick up exactly where you left off. New Game erases this maison and begins again at Week 1 with $5,000.</p>
       </section>
 
-      <section class="panel" id="panel-trophies"><h2 class="sec">Trophies &amp; <i>Achievements</i></h2><p class="sec-sub">Milestones of the maison — unlocked trophies glow in gold.</p><div class="trophy-grid" id="trophyGrid"></div><div class="divider"></div><h3 class="step">Award Season</h3><div class="card" id="awardPanel"></div></section>
-      <p class="foot">MAISON D'OR · A luxury perfume empire simulation · Progress saves automatically in this browser</p>
+      <section class="panel" id="panel-trophies"><h2 class="sec">Trophies &amp; <i>Achievements</i></h2><p class="sec-sub">Milestones of the maison — unlocked trophies glow gold.</p><div class="trophy-grid" id="trophyGrid"></div><div class="divider"></div><h3 class="step">Award Season</h3><div class="card" id="awardPanel"></div></section>
+      <p class="foot">MAISON D'OR · v4 · A luxury perfume empire simulation · Progress saves automatically in this browser</p>
     </div>
 
     <!-- ================= REPORT MODAL ================= -->
@@ -727,7 +776,14 @@ function cityMult(p){ let m=1; (S.cities||[]).forEach(cid=>{ const city=CITIES.f
 function valueMult(p){
   const fair = p.cost * 3.6;
   const ratio = fair / Math.max(p.price,1);
-  return clamp(0.45 + ratio*0.55, 0.35, 1.9);
+  let m = clamp(0.45 + ratio*0.55, 0.35, 1.9);
+  /* v4: progressive elasticity above $300 — demand falls off steeply toward the $500 ceiling,
+     so the best price depends on the scent's cost, trend and season instead of always being $500. */
+  if(p.price > 300){
+    const over = clamp((p.price - 300) / 200, 0, 1);
+    m *= 1 - Math.pow(over, 1.4) * 0.58;
+  }
+  return m;
 }
 
 /* ==================== RENDER ==================== */
@@ -754,11 +810,11 @@ function renderTrends(){
     '<span>Oversaturated <span class="chip sat">' + S.saturated.map(escapeHtml).join('</span><span class="chip sat">') + '</span> <span style="color:var(--faint)">0.5× demand</span></span>' +
     '<span>' + season + ' favours <span class="chip season">' + SEASON_FAMS[season].join('</span><span class="chip season">') + '</span></span>' +
     '<span style="color:var(--faint)">Trends shift in ' + S.trendTimer + ' wk</span>';
-  const nwGoal = clamp(netWorth()/1000000*100, 0, 100), prGoal = clamp(S.prestige,0,100);
+  const nwGoal = clamp(netWorth()/1000000*100, 0, 100);
   $("goalStrip").innerHTML =
-    '<span>Goal — <b>Global Luxury Empire</b>: Prestige <b>' + Math.round(S.prestige) + '/100</b> · Net Worth <b>' + fmt(netWorth()) + ' / $1,000,000</b></span>' +
-    '<span class="goal-bar"><span class="goal-fill" style="display:block;width:' + Math.min(nwGoal, prGoal) + '%"></span></span>' +
-    (S.won ? '<span style="color:var(--gold-bright)">Empire achieved — endless mode</span>' : '<span>' + Math.round(Math.min(nwGoal, prGoal)) + '% there</span>');
+    '<span>Goal <b>$1M Net Worth</b> — <b>' + fmt(netWorth()) + '</b> · ' + Math.round(nwGoal) + '%</span>' +
+    '<span class="goal-bar"><span class="goal-fill" style="width:' + nwGoal + '%"></span></span>' +
+    (S.won ? '<span style="color:var(--gold-bright)">Empire achieved — endless mode</span>' : '<span>Prestige ' + Math.round(S.prestige) + '/100</span>');
 }
 function perfumeBadges(p){
   const b = [];
@@ -774,7 +830,10 @@ function renderShelfAndRivals(){
 }
 function renderShowroom(){ renderShelfAndRivals();
   const grid = $("perfumeGrid");
-  $("showroomEmpty").style.display = S.perfumes.length ? "none" : "block";
+  const isEmpty = !S.perfumes.length;
+  $("showroomEmpty").style.display = isEmpty ? "block" : "none";
+  /* v4: with no scents on sale, hide the shelf/rival sections so the empty state sits at the top */
+  ["shelfHead","bottleShelf","rivalHead","rivalBoard"].forEach(id => { const el = $(id); if(el) el.style.display = isEmpty ? "none" : ""; });
   grid.innerHTML = S.perfumes.map(p => {
     const margin = p.price > 0 ? Math.round((p.price-p.cost)/p.price*100) : 0;
     return '<article class="card perfume-card'+([p.topFam,p.heartFam,p.baseFam].some(f=>S.hot.includes(f))?' pulse-hot':'')+'">' +
@@ -788,6 +847,7 @@ function renderShowroom(){ renderShelfAndRivals();
       '<div class="kv"><span>Sold Last Week</span><span>' + (p.lastUnits===null ? "—" : p.lastUnits + " units") + '</span></div>' +
       '<div class="kv"><span>Lifetime Revenue</span><span>' + fmt(p.lifetimeRevenue) + '</span></div>' +
       '<div class="kv"><span>Concentration / Signature</span><span>' + (p.conc||"EDP") + (p.signature? " · "+p.signature:"") + '</span></div>' +
+      (p.price >= 450 ? '<div class="drag-hint">Priced in the ultra-luxury drag zone ($450+) — demand softens sharply up here, and holding this price week after week slowly drags Prestige. A lower price may earn more.</div>' : (p.price > 300 ? '<div class="drag-hint" style="color:var(--muted);background:rgba(200,162,74,.06);border-color:rgba(200,162,74,.25)">Above $300, demand falls off progressively — the sweet spot shifts with trend and season.</div>' : '')) +
       (p.limited? '<div class="kv"><span>Limited Edition</span><span>'+(p.leWeeksLeft||0)+' wk left · 1.5× appeal</span></div>':'') +
       '<div style="margin-top:8px"><div class="seg"><span>VIPs fit</span><b>'+segmentFit(p).VIPs+'%</b></div><div class="seg"><span>Trendsetters fit</span><b>'+segmentFit(p).Trendsetters+'%</b></div><div class="seg"><span>Collectors fit</span><b>'+segmentFit(p).Collectors+'%</b></div></div>' +
       '<div class="price-btns"><button class="btn" data-autoprice="profit:'+escapeHtml(p.id)+'">Price for Profit</button><button class="btn" data-autoprice="volume:'+escapeHtml(p.id)+'">Price for Volume</button><button class="btn" data-autoprice="prestige:'+escapeHtml(p.id)+'">Price for Prestige</button></div>' +
@@ -830,7 +890,7 @@ function sanitizeState(){
   if(Array.isArray(S.log)) S.log = S.log.map(l=>({ week: Number(l && l.week)||1, text: strip(String((l && l.text)||"")) }));
   if(Array.isArray(S.awards)) S.awards = S.awards.map(a=>({ week: Number(a && a.week)||0, name: strip(String((a && a.name)||"")), scent: strip(String((a && a.scent)||"")) }));
   if(Array.isArray(S.rivals)) S.rivals = S.rivals.map(r=>({ name: strip(String((r && r.name)||"Rival")), prestige: Number(r && r.prestige)||10, sales: Number(r && r.sales)||0, trend: Number(r && r.trend)||0 }));
-  if(Array.isArray(S.perfumes)) S.perfumes.forEach((pp,idx)=>{ ["name","top","heart","base","bottle","profile","conc","signature","topFam","heartFam","baseFam"].forEach(k=>{ if(typeof pp[k]==="string") pp[k]=strip(pp[k]); }); pp.price=Number(pp.price)||100; pp.cost=Number(pp.cost)||10; pp.stock=Number(pp.stock)||0; pp.priceCap=Number(pp.priceCap)||500; pp.lastUnits=(pp.lastUnits===null||pp.lastUnits===undefined)?null:(Number(pp.lastUnits)||0); pp.lastWanted=Number(pp.lastWanted)||0; pp.lifetimeUnits=Number(pp.lifetimeUnits)||0; pp.lifetimeRevenue=Number(pp.lifetimeRevenue)||0; pp.leWeeksLeft=Number(pp.leWeeksLeft)||0; pp.bornWeek=Number(pp.bornWeek)||1; pp.limited=!!pp.limited; if(!/^p\d+$/.test(String(pp.id||""))) pp.id="p"+(1000+idx); if(!["","crystal","gold"].includes(pp.bottleCls)) pp.bottleCls=""; if(!CONCS.some(c=>c.id===pp.conc)) pp.conc="EDP"; });
+  if(Array.isArray(S.perfumes)) S.perfumes.forEach((pp,idx)=>{ ["name","top","heart","base","bottle","profile","conc","signature","topFam","heartFam","baseFam"].forEach(k=>{ if(typeof pp[k]==="string") pp[k]=strip(pp[k]); }); pp.price=Number(pp.price)||100; pp.cost=Number(pp.cost)||10; pp.stock=Number(pp.stock)||0; pp.priceCap=Number(pp.priceCap)||500; pp.lastUnits=(pp.lastUnits===null||pp.lastUnits===undefined)?null:(Number(pp.lastUnits)||0); pp.lastWanted=Number(pp.lastWanted)||0; pp.lifetimeUnits=Number(pp.lifetimeUnits)||0; pp.lifetimeRevenue=Number(pp.lifetimeRevenue)||0; pp.leWeeksLeft=Number(pp.leWeeksLeft)||0; pp.bornWeek=Number(pp.bornWeek)||1; pp.limited=!!pp.limited; pp.highWeeks=Math.max(0,Number(pp.highWeeks)||0); if(!/^p\d+$/.test(String(pp.id||""))) pp.id="p"+(1000+idx); if(!["","crystal","gold"].includes(pp.bottleCls)) pp.bottleCls=""; if(!CONCS.some(c=>c.id===pp.conc)) pp.conc="EDP"; });
   if(Array.isArray(S.arcs)) S.arcs = S.arcs.map(a=>({ id: strip(String((a && a.id)||"")), name: strip(String((a && a.name)||"")), progress: Number(a && a.progress)||0, total: Number(a && a.total)||1, desc: strip(String((a && a.desc)||"")) }));
   // Whitelist trend families against the known list
   if(Array.isArray(S.hot)) S.hot = S.hot.filter(f=>ALL_FAMS.includes(f)); if(!S.hot.length) S.hot=["Citrus"];
@@ -1128,7 +1188,7 @@ function simulateWeek(){
   // Rival share steal
   const rivalSteal = 0.88 + rnd(-0.03,0.03);
   for(const p of S.perfumes){
-    let demand = traffic * 0.16;
+    let demand = traffic * 0.185; /* v4: ~15% stronger baseline demand — faster net-worth growth */
     demand *= 0.55 + S.prestige/100;
     demand *= trendMult(p);
     demand *= seasonMult(p);
@@ -1155,9 +1215,12 @@ function simulateWeek(){
     p.lifetimeRevenue += rev;
     revenue += rev; unitsTotal += units;
     rows.push({ name:p.name, units, revenue:rev, wanted, lost });
-    /* prestige drift from performance */
-    if(units >= 40) prestigeDelta += 0.6;
-    if(p.price >= 250 && units >= 12) prestigeDelta += 0.5;
+    /* prestige drift from performance — v4: gains raised ~25% for faster progression */
+    if(units >= 40) prestigeDelta += 0.75;
+    if(p.price >= 250 && units >= 12) prestigeDelta += 0.65;
+    /* v4: sustained ultra-high pricing ($450+) drags prestige from the second week on */
+    if(p.price >= 450){ p.highWeeks = (p.highWeeks||0) + 1; if(p.highWeeks >= 2) prestigeDelta -= 0.3; }
+    else p.highWeeks = 0;
   }
   const overhead = TIERS[S.tier].overhead;
   const interest = Math.round((S.debt||0)*0.05);
@@ -1167,14 +1230,14 @@ function simulateWeek(){
   const prEffect = (S.prMeter||0)/100;
   let campaignPrestige = 0;
   for(const c of S.campaigns){
-    if(c.id==="magazine") campaignPrestige += 2;
-    if(c.id==="celebrity") campaignPrestige += 2;
+    if(c.id==="magazine") campaignPrestige += 2.5;
+    if(c.id==="celebrity") campaignPrestige += 2.5;
   }
-  prestigeDelta += campaignPrestige + prEffect*1.2;
+  prestigeDelta += campaignPrestige + prEffect*1.5;
   if(lostSales>10) prestigeDelta -= 0.4;
   if(S.perfumes.length === 0) prestigeDelta -= 1;
-  if(revenue > 3000) prestigeDelta += 0.5;
-  if(revenue > 12000) prestigeDelta += 0.5;
+  if(revenue > 3000) prestigeDelta += 0.65;
+  if(revenue > 12000) prestigeDelta += 0.65;
   prestigeDelta += rnd(-0.4, 0.4);
   S.prestige = clamp(Math.round((S.prestige + prestigeDelta)*10)/10, 0, 100);
 
@@ -1481,6 +1544,23 @@ $("btnImport").addEventListener("click", () => $("importFile").click());
 $("btnExportTop").addEventListener("click", exportSave);
 $("btnImportTop").addEventListener("click", () => $("importFile").click());
 $("btnNewGameTop").addEventListener("click", () => $("confirmOverlay").classList.add("open"));
+/* v4 Menu dropdown + cache-busting update check */
+(function(){
+  const btn = $("btnMenu"), dd = $("menuDropdown");
+  if(!btn || !dd) return;
+  function closeMenu(){ dd.hidden = true; btn.setAttribute("aria-expanded","false"); }
+  btn.addEventListener("click", e => { e.stopPropagation(); const open = dd.hidden; dd.hidden = !open; btn.setAttribute("aria-expanded", open ? "true" : "false"); });
+  document.addEventListener("click", e => { if(!dd.hidden && !dd.contains(e.target)) closeMenu(); });
+  dd.querySelectorAll(".menu-item").forEach(it => it.addEventListener("click", closeMenu));
+  const upd = $("btnCheckUpdates");
+  if(upd) upd.addEventListener("click", () => {
+    toast("Reloading the latest version (v4)…");
+    setTimeout(() => {
+      if(/[?&]v=4(&|$)/.test(window.location.search)) window.location.reload();
+      else window.location.search = "?v=4";
+    }, 350);
+  });
+})();
 $("importFile").addEventListener("change", e => { if(e.target.files && e.target.files[0]) importSave(e.target.files[0]); e.target.value = ""; });
 
 /* ==================== INIT ==================== */
