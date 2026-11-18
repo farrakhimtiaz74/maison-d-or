@@ -1,1 +1,14 @@
-{"background_color":"#0b0908","description":"Build a luxury perfume empire week by week: create scents, watch trends, outplay rival houses and reach 100 Prestige and $1,000,000.","display":"standalone","icons":[{"purpose":"any","sizes":"192x192","src":"icon-192.png","type":"image/png"},{"purpose":"any","sizes":"512x512","src":"icon-512.png","type":"image/png"},{"purpose":"maskable","sizes":"512x512","src":"icon-512.png","type":"image/png"}],"name":"MAISON D'OR — Luxury Perfume Empire Tycoon","orientation":"portrait","scope":".","short_name":"MAISON D'OR","start_url":".","theme_color":"#0b0908"}
+{
+  "name": "MAISON D'OR — Perfumery Tycoon",
+  "short_name": "MAISON D'OR",
+  "description": "Compose signature fragrances and build a global luxury perfume house.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0e0e10",
+  "theme_color": "#0b0b0d",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
