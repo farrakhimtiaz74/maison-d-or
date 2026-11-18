@@ -1,33 +1,43 @@
-# MAISON D'OR — Luxury Perfume Empire Tycoon
+# MAISON D'OR — Perfumery Tycoon
 
-**Play it free, no install, no sign-up:** https://farrakhimtiaz74.github.io/maison-d-or/
+A React + TypeScript + Vite luxury perfume-house tycoon game.
 
-Build a luxury perfume house from a $5,000 boutique pop-up to a $1,000,000 empire. Create scents in the Scent Lab, read the market's shifting trends, stock your showroom, run campaigns, open boutiques in Dubai, Paris and Tokyo, and outplay rival houses — one week at a time.
+## Project layout
 
-## The goal
-Reach **100 Prestige** and **$1,000,000 Net Worth** — then keep playing in endless mode.
+- `App.tsx` — game UI, economy and progression logic
+- `main.tsx` — React entry and production service-worker registration
+- `index.html` — app shell
+- `public/manifest.webmanifest` — install metadata
+- `public/icon.svg` — scalable app icon
+- `public/sw.js` — offline caching and update handling
+- `test_economy.py` — offline smoke tests and economic formula checks
+- `ECONOMY_TEST_PLAN.md` — playtesting checklist
 
-## How to play
-1. **Lab** — pick top, heart and base notes, choose a flacon, set your price, create a scent.
-2. **Advance Week** — the market simulates a week of sales. Trends double (or halve) a note family's demand; seasons matter.
-3. **Showroom** — watch stock, restock before you sell out (stockouts lose real sales), feature one scent in the window.
-4. **Empire** — upgrade your boutique tier, fund R&D, hire perfumers, expand to new cities, manage rivals.
-5. **Ledger & Trophies** — track every dollar and unlock achievements on the road to Icon.
+## Local development
 
-## Features
-- 25 fragrance notes, 3 flacons, concentrations (EDT / EDP / Extrait), signature accords and Golden Pairing synergies
-- Living market: weekly trends, seasons, a daily trend, customer segments and a demand forecast
-- Rival houses with a live Rivalry board, an arch-rival, scandals, story arcs and three endings
-- Weekly missions, limited editions, gift sets, a Formula Vault with licensing, loyalty & subscription income
-- Events, Week-12 Awards, Fashion Week, PR crises — and a one-time bankruptcy rescue if it all goes wrong
-- **3 save slots**, export/import saves, personal bests, play stats
-- Mobile-first design with a bottom thumb bar, Quick Week mode, shareable Empire/Recap cards and WhatsApp sharing
-- Interface in **English / اردو / Roman Urdu** (chrome), installable as an app (PWA), works offline after first load
+1. Install Node.js (current LTS recommended).
+2. Run `npm ci`.
+3. Run `npm run dev`.
+4. Open the Vite URL and test the game.
 
-## Tech
-One self-contained `index.html` (HTML + CSS + JavaScript, no build step, no backend) hosted on GitHub Pages, plus a service worker and web manifest for installability. Saves live in your browser's localStorage — nothing is uploaded anywhere.
+Production checks:
 
-## Version
-**v7** — 44px touch targets, guided first run, merged income lines, single Rivalry hub, install prompt after Week 3, daily trend, scripted first-week wins, play stats, EN/UR/Roman interface, full PWA.
+- `npm run build` — production build
+- `npm run test:economy` — offline economy/source smoke checks (Python 3)
 
-Made by Farrakh Imtiaz.
+## Android/PWA testing
+
+1. Build and deploy the production app over HTTPS.
+2. Open it in Chrome on Android and load the game while online.
+3. Use Chrome's menu → **Install app** or **Add to Home screen** (menu wording depends on Chrome version).
+4. Launch from the home-screen icon.
+5. Visit all four game tabs while online, then enable airplane mode and reload/continue to verify cached offline play.
+6. Test **Backup** and **Restore** in the footer. Keep a backup outside the browser/device.
+
+## Verification status (fixed 2026-11-18)
+
+- Fixed for GitHub Pages: Vite `base` set to `/maison-d-or/`, manifest/icon/service-worker paths made scope-relative, and the service worker is network-first for the page document (updates appear on the next launch).
+- `npm ci` and `npm run build` succeed; the production output is a single self-contained `dist/index.html` (~343 KB) plus `manifest.webmanifest`, `icon.svg` and `sw.js`.
+- All 8 Python economy smoke tests pass, and the built game was render- and play-tested (loads, renders all four tabs, Advance Week advances to Week 2 and writes a save).
+- Do NOT upload the raw source files to GitHub Pages — Pages cannot compile TypeScript. Upload the contents of `dist/` instead.
+- Note: this React version uses save key `maison-dor.atelier.v1`; saves from the previous single-file version do not carry over.
