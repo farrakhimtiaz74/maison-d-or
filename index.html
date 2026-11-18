@@ -4,14 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
-    <meta name="game-version" content="6" />
+    <meta name="game-version" content="7" />
     <meta name="theme-color" content="#0b0908" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="MAISON D'OR" />
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230b0908'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='%23c8a24a' font-family='Georgia'%3EM%3C/text%3E%3C/svg%3E" />
-    <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22MAISON%20D'OR%20%E2%80%94%20Luxury%20Perfume%20Empire%22%2C%22short_name%22%3A%22MAISON%20D'OR%22%2C%22start_url%22%3A%22.%22%2C%22scope%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b0908%22%2C%22theme_color%22%3A%22%230b0908%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg+xml%2C%253Csvg%20xmlns='http%3A//www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%253E%253Crect%20width='100'%20height='100'%20fill='%25230b0908'/%253E%253Ctext%20x='50'%20y='70'%20font-size='58'%20text-anchor='middle'%20fill='%2523c8a24a'%20font-family='Georgia'%253EM%253C/text%253E%253C/svg%253E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image/svg+xml%22%2C%22purpose%22%3A%22any%22%7D%5D%7D" />
+    <link rel="manifest" href="manifest.webmanifest" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -19,9 +19,11 @@
     <title>MAISON D'OR — Luxury Perfume Empire Tycoon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600;1,800&family=Jost:wght@400;600;800&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600;1,800&family=Jost:wght@400;600;800&display=swap" rel="stylesheet" />
     <style>
-      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.75rem; }
+      :focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
       * { box-sizing: border-box; }
       :root{
         --bg:#0b0908;
@@ -35,11 +37,12 @@
         --gold-deep:#8a6d2a;
         --cream:#f3ead8;
         --muted:#b3a68d;
-        --faint:#7d7261;
+        --faint:#9a8e79;
         --green:#9dc08b;
         --red:#d98a7e;
         --serif:"Playfair Display", Georgia, serif;
         --sans:"Jost", "Segoe UI", sans-serif;
+        --ease:cubic-bezier(.22,.9,.28,1); --dur:220ms;
       }
       html{ scrollbar-color: var(--gold-deep) var(--bg); }
       body{
@@ -70,7 +73,7 @@
       .menu-wrap{ position:relative; flex:none; }
       .menu-btn{
         font-family:var(--sans); cursor:pointer; white-space:nowrap; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; font-weight:600;
-        color:var(--gold-bright); background:rgba(200,162,74,.08); border:1px solid var(--line); border-radius:3px; padding:6px 11px; min-height:2rem;
+        color:var(--cream); background:rgba(200,162,74,.08); border:1px solid var(--line); border-radius:3px; padding:6px 11px; min-height:2.75rem;
       }
       .menu-btn:hover{ background:rgba(200,162,74,.18); }
       .menu-dropdown{
@@ -83,7 +86,7 @@
       .menu-item{
         font-family:var(--sans); cursor:pointer; text-align:left; white-space:nowrap; width:100%;
         font-size:.82rem; font-weight:500; letter-spacing:.04em; color:var(--cream);
-        background:none; border:none; border-radius:4px; padding:10px; min-height:2.5rem;
+        background:none; border:none; border-radius:4px; padding:10px; min-height:2.75rem;
       }
       .menu-item:hover{ background:rgba(200,162,74,.13); color:var(--gold-bright); }
       .hud-line2{ display:flex; align-items:center; gap:16px; }
@@ -122,7 +125,7 @@
         background:linear-gradient(120deg, rgba(200,162,74,.10), rgba(243,234,216,.03));
         display:flex; gap:10px 22px; flex-wrap:wrap; align-items:center; font-size:.86rem;
       }
-      .trendbar .tb-title{ font-size:.6rem; letter-spacing:.28em; text-transform:uppercase; color:var(--gold-bright); font-weight:600; }
+      .trendbar .tb-title{ font-size:.6rem; letter-spacing:.28em; text-transform:uppercase; color:var(--cream); font-weight:600; }
       .chip{ display:inline-block; padding:2px 10px; border-radius:99px; font-size:.74rem; font-weight:500; letter-spacing:.04em; margin-left:6px; }
       .chip.hot{ background:rgba(200,162,74,.18); color:var(--gold-bright); border:1px solid rgba(200,162,74,.5); }
       .chip.sat{ background:rgba(217,138,126,.12); color:var(--red); border:1px solid rgba(217,138,126,.4); }
@@ -133,20 +136,20 @@
       .tabs::-webkit-scrollbar{ display:none; }
       .tab-btn{
         font-family:var(--sans); background:none; border:none; color:var(--muted); cursor:pointer; flex:none;
-        font-size:13px; letter-spacing:.1em; text-transform:uppercase; font-weight:500;
-        padding:10px 12px; border-bottom:2px solid transparent; white-space:nowrap; transition:color .2s, border-color .2s;
+        font-size:.8125rem; letter-spacing:.1em; text-transform:uppercase; font-weight:500;
+        padding:12px; min-height:2.75rem; border-bottom:2px solid transparent; white-space:nowrap; transition:color var(--dur) var(--ease), border-color var(--dur) var(--ease);
       }
       .tab-btn:hover{ color:var(--cream); }
       .tab-btn.active{ color:var(--gold-bright); border-bottom-color:var(--gold); }
-      .panel{ display:none; animation:fadeUp .45s cubic-bezier(.22,1,.36,1); }
+      .panel{ display:none; animation:fadeUp var(--dur) var(--ease); }
       .panel.active{ display:block; }
       @keyframes fadeUp{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:none;} }
-      @media (prefers-reduced-motion: reduce){ .panel{ animation:none; } *{ transition:none !important; } }
+      @media (prefers-reduced-motion: reduce){ *, *::before, *::after{ animation:none !important; transition:none !important; } #splash{ display:none !important; } }
 
       h2.sec{ font-family:var(--serif); font-weight:700; font-size:1.55rem; margin:2px 0 4px; }
       h2.sec i{ color:var(--gold-bright); }
       .sec-sub{ color:var(--muted); font-size:.92rem; margin:0 0 12px; max-width:640px; }
-      h3.step{ font-size:.68rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold-bright); font-weight:600; margin:20px 0 10px; }
+      h3.step{ font-size:.68rem; letter-spacing:.3em; text-transform:uppercase; color:var(--cream); font-weight:600; margin:20px 0 10px; }
       h3.step span{ color:var(--faint); letter-spacing:.1em; }
 
       /* ---------- Cards ---------- */
@@ -162,7 +165,7 @@
       .perfume-card{ position:relative; overflow:hidden; }
       .perfume-card::before{ content:""; position:absolute; inset:0 0 auto 0; height:3px; background:linear-gradient(90deg, transparent, var(--gold), transparent); opacity:.7; }
       .perfume-card h4{ font-family:var(--serif); font-size:1.3rem; margin:2px 0 2px; font-weight:700; }
-      .profile-tag{ font-size:.62rem; letter-spacing:.24em; text-transform:uppercase; color:var(--gold-bright); font-weight:600; }
+      .profile-tag{ font-size:.62rem; letter-spacing:.24em; text-transform:uppercase; color:var(--cream); font-weight:600; }
       .notes-line{ color:var(--muted); font-size:.84rem; margin:8px 0 12px; line-height:1.5; }
       .kv{ display:flex; justify-content:space-between; font-size:.86rem; padding:5px 0; border-top:1px dashed rgba(243,234,216,.1); }
       .kv span:first-child{ color:var(--faint); letter-spacing:.06em; }
@@ -175,10 +178,10 @@
 
       .btn{
         font-family:var(--sans); cursor:pointer; border-radius:3px; font-weight:500; letter-spacing:.1em;
-        border:1px solid var(--line); background:rgba(200,162,74,.08); color:var(--gold-bright);
+        border:1px solid var(--line); background:rgba(200,162,74,.08); color:var(--cream);
         padding:9px 16px; font-size:.8rem; text-transform:uppercase; transition:background .2s, transform .15s;
       }
-      .btn:hover{ background:rgba(200,162,74,.18); }
+      .btn:hover{ background:rgba(200,162,74,.18); color:var(--gold-bright); }
       .btn:active{ transform:scale(.98); }
       .btn:disabled{ opacity:.38; cursor:not-allowed; }
       .btn.ghost{ background:none; border-color:var(--line-soft); color:var(--muted); }
@@ -203,7 +206,7 @@
       .opt:hover{ border-color:rgba(200,162,74,.5); transform:translateY(-1px); }
       .opt.sel{ border-color:var(--gold); background:rgba(200,162,74,.13); box-shadow:0 0 0 1px var(--gold), 0 6px 18px rgba(0,0,0,.35); }
       .opt .o-name{ font-family:var(--serif); font-weight:700; font-size:1rem; display:block; }
-      .opt .o-fam{ font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-bright); font-weight:600; }
+      .opt .o-fam{ font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--cream); font-weight:600; }
       .opt .o-desc{ display:block; color:var(--muted); font-size:.76rem; margin-top:5px; line-height:1.4; }
       .opt .o-cost{ display:block; margin-top:6px; font-size:.74rem; color:var(--faint); }
       .opt-grid{max-height:360px;overflow-y:auto;padding-right:4px} .lab-layout{ display:grid; grid-template-columns:1fr 320px; gap:22px; align-items:start; }
@@ -229,7 +232,7 @@
       .bottle .label{
         position:absolute; left:50%; transform:translateX(-50%); top:38%; width:74%; text-align:center;
         border:1px solid rgba(200,162,74,.6); background:rgba(10,8,6,.55); padding:6px 2px;
-        font-family:var(--serif); font-size:.58rem; letter-spacing:.14em; color:var(--gold-bright); text-transform:uppercase; line-height:1.5;
+        font-family:var(--serif); font-size:.58rem; letter-spacing:.14em; color:var(--cream); text-transform:uppercase; line-height:1.5;
       }
       .bottle-shadow{ width:120px; height:14px; border-radius:50%; background:radial-gradient(ellipse, rgba(0,0,0,.65), transparent 70%); margin-top:6px; }
       .margin-good{ color:var(--green); } .margin-bad{ color:var(--red); }
@@ -249,7 +252,7 @@
       .log-list{ list-style:none; margin:0; padding:0; }
       .log-list li{ padding:9px 2px; border-bottom:1px dashed rgba(243,234,216,.1); font-size:.9rem; color:var(--muted); display:flex; gap:12px; }
       .log-list li b{ color:var(--gold-bright); font-weight:500; white-space:nowrap; font-variant-numeric:tabular-nums; }
-      .empty{ text-align:center; padding:44px 20px; color:var(--faint); border:1px dashed var(--line-soft); border-radius:6px; }
+      .empty{ text-align:center; padding:44px 20px; color:var(--muted); border:1px dashed var(--line-soft); border-radius:6px; }
       .empty .e-title{ font-family:var(--serif); font-size:1.25rem; color:var(--muted); margin-bottom:6px; }
 
       /* ---------- Modals (v5: centred, viewport-safe, internally scrollable) ---------- */
@@ -264,14 +267,15 @@
         max-height:92vh; max-height:92dvh; overflow-y:auto; overflow-x:hidden;
         -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
         padding:24px 22px calc(26px + env(safe-area-inset-bottom, 0px));
-        animation:sheetUp .4s cubic-bezier(.22,1,.36,1);
+        position:relative;
+        animation:sheetUp var(--dur) var(--ease);
         overflow-wrap:break-word;
       }
       @media (min-width:640px){ .overlay{ padding:20px; } }
       @media (max-width:480px){ .sheet{ padding:20px 16px calc(24px + env(safe-area-inset-bottom, 0px)); } }
       @keyframes sheetUp{ from{ transform:translateY(34px); opacity:0;} to{ transform:none; opacity:1;} }
       .sheet h3{ font-family:var(--serif); font-size:1.5rem; margin:0 0 4px; font-weight:700; overflow-wrap:break-word; }
-      .sheet .kicker{ font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold-bright); font-weight:600; }
+      .sheet .kicker{ font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:var(--cream); font-weight:600; }
       .report-table{ width:100%; max-width:100%; border-collapse:collapse; margin:14px 0; font-size:.9rem; table-layout:fixed; }
       .report-table td, .report-table th{ padding:7px 4px; border-bottom:1px dashed rgba(243,234,216,.12); text-align:left; white-space:normal; overflow-wrap:break-word; word-break:break-word; }
       .report-table td:last-child, .report-table th:last-child{ text-align:right; font-variant-numeric:tabular-nums; }
@@ -322,7 +326,7 @@
       .toast{
         background:rgba(24,19,13,.95); border:1px solid var(--line); border-left:3px solid var(--gold);
         color:var(--cream); padding:11px 14px; border-radius:5px; font-size:.88rem; box-shadow:0 10px 30px rgba(0,0,0,.5);
-        animation:toastIn .35s cubic-bezier(.22,1,.36,1); line-height:1.45;
+        animation:toastIn var(--dur) var(--ease); line-height:1.45;
       }
       .toast.good{ border-left-color:var(--green); } .toast.bad{ border-left-color:var(--red); }
       @keyframes toastIn{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none;} }
@@ -343,8 +347,8 @@
         .goal-line{ font-size:.68rem; gap:8px; }
         .btn-advance{ height:44px; font-size:.72rem; }
         .tabs{ flex-wrap:nowrap; overflow-x:auto; }
-        .tab-btn{ font-size:13px; letter-spacing:.08em; padding:10px 12px; }
-        h2.sec{ font-size:24px; margin:0 0 2px; }
+        .tab-btn{ font-size:.8125rem; letter-spacing:.08em; padding:12px; }
+        h2.sec{ font-size:1.5rem; margin:0 0 2px; }
         .sec-sub{ font-size:.85rem; margin-bottom:10px; line-height:1.45; }
         h3.step{ margin:16px 0 8px; }
         .card{ padding:14px; }
@@ -357,10 +361,10 @@
     
       .swatch{display:inline-block;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);vertical-align:middle;margin-bottom:6px}
       details.ph{margin-top:12px;border-top:1px dashed rgba(243,234,216,.12);padding-top:8px}
-      details.ph summary{cursor:pointer;color:var(--gold-bright);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:4px 0}
+      details.ph summary{cursor:pointer;color:var(--cream);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:4px 0}
       .mission-card{border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:0 0 14px;background:linear-gradient(120deg, rgba(200,162,74,.12), rgba(243,234,216,.03));font-size:.92rem;line-height:1.55}
       .mission-card b{color:var(--gold-bright)}
-      select{background:rgba(0,0,0,.35);color:var(--cream);border:1px solid var(--line-soft);border-radius:3px;padding:9px 10px;font-family:var(--sans);font-size:.9rem;width:100%;min-height:2.25rem}
+      select{background:rgba(0,0,0,.35);color:var(--cream);border:1px solid var(--line-soft);border-radius:3px;padding:9px 10px;font-family:var(--sans);font-size:.9rem;width:100%;min-height:2.75rem}
       #nameWarn{color:#e0b184;font-size:.8rem;line-height:1.45;margin:8px 0 0;display:none}
       .shake{animation:shake .5s ease}
       @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
@@ -388,7 +392,7 @@
       /* ---------- v6 Wave 3 (items 33-48) ---------- */
       #thumbBar{ display:none; }
       @media (max-width:860px){
-        #thumbBar{ display:flex; gap:8px; align-items:stretch; position:fixed; left:0; right:0; bottom:0; z-index:65; padding:8px 10px calc(8px + env(safe-area-inset-bottom, 0px)); background:rgba(11,9,8,.96); border-top:1px solid var(--line); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+        #thumbBar{ display:flex; gap:8px; align-items:stretch; position:fixed; left:0; right:0; bottom:0; z-index:65; padding:10px 10px calc(12px + env(safe-area-inset-bottom, 0px)); background:rgba(11,9,8,.96); border-top:1px solid var(--line); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
         .wrap{ padding-bottom:180px; }
         #toasts{ bottom:86px; }
       }
@@ -415,42 +419,111 @@
       #updateNotice[hidden]{ display:none; }
       @media (max-width:860px){ #updateNotice{ bottom:84px; } body.modal-open #updateNotice{ bottom:18px; } }
       #updateNotice span{ flex:1; line-height:1.4; }
-      #btnUpdateNow{ font-family:var(--sans); cursor:pointer; font-weight:600; font-size:.78rem; letter-spacing:.06em; color:#191104; background:linear-gradient(160deg,#ecd28a,var(--gold)); border:1px solid var(--gold-bright); border-radius:3px; padding:8px 12px; white-space:nowrap; min-height:2.25rem; }
-      #btnUpdateDismiss{ font-family:var(--sans); cursor:pointer; background:none; border:none; color:var(--muted); font-size:1rem; padding:6px 8px; min-height:2.25rem; }
+      #btnUpdateNow{ font-family:var(--sans); cursor:pointer; font-weight:600; font-size:.78rem; letter-spacing:.06em; color:#191104; background:linear-gradient(160deg,#ecd28a,var(--gold)); border:1px solid var(--gold-bright); border-radius:3px; padding:8px 12px; white-space:nowrap; min-height:2.75rem; }
+      #btnUpdateDismiss{ font-family:var(--sans); cursor:pointer; background:none; border:none; color:var(--muted); font-size:1rem; padding:6px 8px; min-height:2.75rem; }
+      /* ---------- v7 Wave A: splash, coach marks, empire subs, modal close, empty states ---------- */
+      #splash{ position:fixed; inset:0; z-index:300; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; animation:splashFallback .6s ease 2.4s forwards; }
+      #splash.hide{ opacity:0; visibility:hidden; pointer-events:none; transition:opacity var(--dur) var(--ease), visibility var(--dur) var(--ease); }
+      .splash-ring{ width:92px; height:92px; border-radius:50%; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-weight:800; font-size:2.7rem; color:var(--gold-bright); box-shadow:0 0 34px rgba(200,162,74,.3), inset 0 0 18px rgba(200,162,74,.15); }
+      .splash-word{ font-family:var(--serif); font-weight:800; letter-spacing:.24em; font-size:1.05rem; color:var(--cream); }
+      .splash-word em{ color:var(--gold-bright); font-style:normal; }
+      @keyframes splashFallback{ to{ opacity:0; visibility:hidden; } }
+      .mi-ic{ width:17px; height:17px; vertical-align:-3px; margin-right:9px; stroke:var(--gold); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+      .sheet-x{ position:absolute; top:10px; right:10px; width:2.75rem; height:2.75rem; min-height:2.75rem; padding:0; border-radius:50%; border:1px solid var(--line); background:rgba(200,162,74,.08); color:var(--cream); font-size:1rem; line-height:1; cursor:pointer; z-index:2; }
+      .sheet-x:hover{ background:rgba(200,162,74,.2); color:var(--gold-bright); }
+      .sheet .kicker{ padding-right:2.6rem; }
+      #coachBubble{ position:fixed; z-index:135; width:220px; background:linear-gradient(180deg,#241b10,#171208); border:1px solid var(--gold); color:var(--cream); border-radius:8px; padding:12px 14px; font-size:.92rem; line-height:1.45; box-shadow:0 14px 34px rgba(0,0,0,.55); cursor:pointer; animation:coachIn var(--dur) var(--ease); }
+      #coachBubble[hidden]{ display:none; }
+      #coachBubble::before{ content:""; position:absolute; top:-7px; left:var(--caret,26px); width:12px; height:12px; background:#241b10; border-left:1px solid var(--gold); border-top:1px solid var(--gold); transform:rotate(45deg); }
+      #coachBubble .coach-dismiss{ display:block; margin-top:6px; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+      @keyframes coachIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
+      .empire-subs{ display:flex; gap:8px; margin:0 0 16px; }
+      .emp-sub{ flex:1; font-family:var(--sans); cursor:pointer; min-height:2.75rem; font-size:.8rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); background:rgba(200,162,74,.06); border:1px solid var(--line-soft); border-radius:4px; transition:color var(--dur) var(--ease), background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+      .emp-sub.active{ color:#191104; background:linear-gradient(160deg,#ecd28a,var(--gold)); border-color:var(--gold-bright); }
+      .empty-motif{ width:44px; height:44px; stroke:var(--gold); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; opacity:.85; }
+      .empty-state{ text-align:center; }
+      .empty-state .empty-motif{ display:block; margin:0 auto 10px; }
+      .shelf-empty{ display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--muted); font-size:.86rem; text-align:center; width:100%; }
+      .ph-empty{ display:flex; align-items:center; gap:8px; color:var(--faint); font-size:.82rem; margin:6px 0 2px; }
+      .ph-empty .empty-motif{ width:22px; height:22px; flex:none; }
+      #thumbBar button{ transition:transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+      #thumbBar button:active{ transform:scale(.97); box-shadow:0 0 18px rgba(200,162,74,.6); }
+      @media (pointer:coarse){
+        .chip{ min-height:2.75rem; display:inline-flex; align-items:center; }
+        .price-btns .btn, .small-btns .btn, .compact-row .cr-step .btn{ min-height:2.75rem; }
+        details.ph summary{ min-height:2.75rem; display:flex; align-items:center; }
+      }
+      /* ---------- v7 Wave C: install banner, language row, play stats, daily trend ---------- */
+      .install-reward{ margin-left:8px; font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:#191104; background:linear-gradient(120deg,#ecd28a,var(--gold)); border-radius:99px; padding:2px 8px; font-weight:700; white-space:nowrap; }
+      .install-reward[hidden]{ display:none; }
+      .menu-item.install-hot{ background:rgba(200,162,74,.16); box-shadow:inset 0 0 0 1px var(--gold); color:var(--gold-bright); }
+      #installBanner{ display:flex; align-items:center; gap:10px; margin:10px 0 0; padding:8px 8px 8px 14px; border:1px solid var(--gold); border-radius:6px; background:linear-gradient(120deg, rgba(200,162,74,.18), rgba(243,234,216,.04)); font-size:.9rem; }
+      #installBanner[hidden]{ display:none; }
+      #installBanner span{ flex:1; color:var(--cream); line-height:1.4; }
+      .ib-btn{ font-family:var(--sans); cursor:pointer; font-weight:600; font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; color:#191104; background:linear-gradient(160deg,#ecd28a,var(--gold)); border:1px solid var(--gold-bright); border-radius:3px; padding:8px 14px; min-height:2.75rem; white-space:nowrap; }
+      #btnInstallDismiss{ font-family:var(--sans); cursor:pointer; background:none; border:none; color:var(--muted); font-size:1rem; padding:6px 10px; min-height:2.75rem; }
+      .lang-row{ display:flex; gap:6px; padding:4px 6px 2px; }
+      .lang-btn{ flex:1; font-family:var(--sans); cursor:pointer; min-height:2.75rem; font-size:.82rem; font-weight:600; letter-spacing:.05em; color:var(--muted); background:rgba(200,162,74,.06); border:1px solid var(--line-soft); border-radius:4px; }
+      .lang-btn.active{ color:#191104; background:linear-gradient(160deg,#ecd28a,var(--gold)); border-color:var(--gold-bright); }
+      .lang-note{ margin:0; padding:4px 12px 8px; font-size:.72rem; line-height:1.5; color:var(--faint); white-space:normal; }
+      .daily-trend{ color:var(--gold-bright); font-size:.86rem; letter-spacing:.03em; margin:0 0 12px; }
+      [dir="rtl"] .hstat .val, [dir="rtl"] .rep-sum-val, [dir="rtl"] .rep-frag-rev, [dir="rtl"] .report-total span, [dir="rtl"] .kv span:last-child{ direction:ltr; unicode-bidi:isolate; }
+      /* ---------- v7 Wave B: Rivalry standings table ---------- */
+      .rivalry-table{ width:100%; border-collapse:collapse; font-size:.88rem; }
+      .rivalry-table th{ text-align:left; color:var(--faint); font-size:.6rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; padding:4px 6px; border-bottom:1px solid var(--line); }
+      .rivalry-table td{ padding:8px 6px; border-bottom:1px solid var(--line-soft); color:var(--cream); vertical-align:top; }
+      .rivalry-table td.num, .rivalry-table th.num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+      .rivalry-table .rival-name{ font-family:var(--serif); font-weight:600; }
+      .rivalry-table .rival-hit{ display:block; color:var(--muted); font-size:.78rem; margin-top:2px; line-height:1.45; }
+      .rivalry-sub{ font-family:var(--serif); font-size:1.05rem; margin:18px 0 8px; color:var(--cream); }
+      .rivalry-sub:first-child{ margin-top:0; }
     </style>
   </head>
   <body>
+    <div id="splash" aria-hidden="true"><div class="splash-ring">M</div><div class="splash-word">MAISON <em>D'OR</em></div></div>
 
     <!-- ================= COMPACT HUD + TABS (v4) ================= -->
     <div class="sticky-stack">
       <header class="hud">
         <div class="hud-in">
           <div class="hud-line1">
-            <div class="brand-compact">MAISON <em>D'OR</em><span class="ver-badge">v6</span></div>
+            <div class="brand-compact">MAISON <em>D'OR</em><span class="ver-badge">v7</span></div>
             <div class="hud-week"><b id="hudWeekLabel">Week 1</b> · <span id="hudSeason">Spring · Year 1</span></div>
             <div class="menu-wrap">
               <button class="menu-btn" id="btnMenu" aria-haspopup="true" aria-expanded="false">Menu ⋯</button>
               <div class="menu-dropdown" id="menuDropdown" hidden>
-                <div class="menu-ver">MAISON D'OR · Version v6</div>
-                <button class="menu-item" id="btnExportTop">⇩&nbsp; Export Save</button>
-                <button class="menu-item" id="btnImportTop">⇧&nbsp; Import Save</button>
-                <button class="menu-item" id="btnNewGameTop">New Game</button>
-                <button class="menu-item" id="btnCheckUpdates">Check for updates — reload</button>
-                <div class="menu-ver">Empire &amp; Display</div>
-                <button class="menu-item" id="btnQuickWeekMenu">⚡&nbsp; Quick Week</button>
-                <button class="menu-item" id="btnShareEmpireMenu">Share My Empire</button>
-                <button class="menu-item" id="btnBigNumbers">Big Numbers: Off</button>
-                <button class="menu-item" id="btnInstall">Install App</button>
-                <div class="menu-ver">Save Slots</div>
+                <div class="menu-ver" id="menuVerLabel">MAISON D'OR · Version</div>
+                <button class="menu-item" id="btnExportTop"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m0 0l-4-4m4 4l4-4M4 19h16"/></svg>Export Save</button>
+                <button class="menu-item" id="btnImportTop"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14V3m0 0L8 7m4-4l4 4M4 19h16"/></svg>Import Save</button>
+                <button class="menu-item" id="btnNewGameTop"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8.5v7M8.5 12h7"/></svg>New Game</button>
+                <button class="menu-item" id="btnCheckUpdates"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 3v4h-4"/></svg>Check for updates — reload</button>
+                <div class="menu-ver" id="menuEmpireHead">Empire</div>
+                <button class="menu-item" id="btnQuickWeekMenu"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4.5 13.5H11L9.8 22 19 10h-6.5L13 2z"/></svg>Quick Week</button>
+                <button class="menu-item" id="btnShareEmpireMenu"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="17" cy="5.5" r="2.5"/><circle cx="17" cy="18.5" r="2.5"/><path d="M8.2 10.8l6.6-4M8.2 13.2l6.6 4"/></svg>Share My Empire</button>
+                <button class="menu-item" id="btnWhatsAppMenu"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L3 21l1.9-5.6A8.5 8.5 0 1 1 21 11.5z"/><path d="M9 9.8c.4 1.9 2.6 4.1 4.5 4.5l1.3-1.3 2.2.9c-.2 1.3-1 1.9-2.2 1.7C10.6 15 6.4 10.8 6.6 7.2 6.4 6 6.9 5.2 8.2 5l.9 2.2L7.8 8.5z"/></svg>Share on WhatsApp</button>
+                <button class="menu-item" id="btnInstall"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg>Install App<span class="install-reward" id="installReward" hidden>Week 3 reward</span></button>
+                <button class="menu-item" id="btnReplayTips"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a7 7 0 0 1 4 12.7c-.6.5-1 1-1 1.8H9c0-.8-.4-1.3-1-1.8A7 7 0 0 1 12 3z"/><path d="M9.5 20.5h5"/></svg>Replay Tips</button>
+                <div class="menu-ver" id="menuDisplayHead">Display</div>
+                <button class="menu-item" id="btnCompactMenu"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></svg><span>Compact View: Off</span></button>
+                <button class="menu-item" id="btnBigNumbers"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h4M12 16h8"/><circle cx="16" cy="8" r="2"/><circle cx="10" cy="16" r="2"/></svg><span>Big Numbers: Off</span></button>
+                <button class="menu-item" id="btnPlayStats"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-6M11 20V6M17 20v-9"/><path d="M3 20h18"/></svg>Your Play Stats</button>
+                <div class="menu-ver" id="langHead">Language</div>
+                <div class="lang-row" role="group" aria-label="Language">
+                  <button class="lang-btn" data-lang-btn="en">EN</button>
+                  <button class="lang-btn" data-lang-btn="ur">اردو</button>
+                  <button class="lang-btn" data-lang-btn="roman">Roman</button>
+                </div>
+                <p class="lang-note" id="langNote">Interface only — scent, note, event and rival names stay in English in every language.</p>
+                <div class="menu-ver" id="menuSlotsHead">Save Slots</div>
                 <div id="slotList"></div>
                 <div class="menu-ver" id="savedStamp">Saved · —</div>
               </div>
             </div>
           </div>
           <div class="hud-line2">
-            <div class="hstat"><label>Cash</label><span class="val gold" id="hudCash">$5,000</span></div>
-            <div class="hstat"><label>Net Worth</label><span class="val" id="hudWorth">$5,000</span></div>
-            <div class="hstat prestige-inline"><label>Prestige · <span id="hudTitle">Artisan</span> · <span id="hudPrestigeVal">10</span>/100</label>
+            <div class="hstat"><label id="hudCashLabel">Cash</label><span class="val gold" id="hudCash">$5,000</span></div>
+            <div class="hstat"><label id="hudWorthLabel">Net Worth</label><span class="val" id="hudWorth">$5,000</span></div>
+            <div class="hstat prestige-inline"><label><span id="hudPrestigeLabel">Prestige</span> · <span id="hudTitle">Artisan</span> · <span id="hudPrestigeVal">10</span>/100</label>
               <span class="prestige-row"><span class="prestige-bar"><span class="prestige-fill" id="hudPrestigeBar" style="display:block;width:10%"></span></span></span>
             </div>
           </div>
@@ -469,6 +542,12 @@
     <div class="wrap">
       <!-- Goal progress — one labelled line directly under the sticky HUD/tabs -->
       <div class="goal-line" id="goalStrip" style="margin-top:10px"></div>
+      <!-- v7 Wave C: one-time install banner, offered from Week 3 -->
+      <div id="installBanner" hidden>
+        <span id="installBannerText">Install MAISON D'OR for one-tap play</span>
+        <button class="ib-btn" id="btnInstallBanner">Install</button>
+        <button id="btnInstallDismiss" aria-label="Dismiss">✕</button>
+      </div>
       <!-- Trend forecast -->
       <div class="trendbar" id="trendBar"></div>
 
@@ -476,13 +555,16 @@
       <section class="panel active" id="panel-showroom">
         <h2 class="sec">The <i>Showroom</i></h2>
         <p class="sec-sub">Your active collection — tune prices, watch sales, retire faded scents.</p>
-        <div id="missionCard"></div>
+        <div id="dailyTrendLine" class="daily-trend"></div>
         <div class="flex-row" style="margin-bottom:12px">
           <button class="btn" id="btnViewToggle">View: Detailed</button>
           <button class="btn" id="btnShareEmpire">Share My Empire</button>
+          <button class="btn" id="btnWhatsApp">Share on WhatsApp</button>
         </div>
+        <div id="missionCard"></div>
         <div id="featurePanel"></div>
         <div class="empty" id="showroomEmpty" style="display:none">
+          <svg class="empty-motif" style="display:block;margin:0 auto 10px" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="19" y="3" width="10" height="7" rx="1"/><path d="M20 10h8v5l5 6v20a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3V21l5-6v-5z"/><path d="M15 31h18"/></svg>
           <div class="e-title">The shelves are bare</div>
           <p>Your boutique has nothing to sell. Compose your first fragrance in the Scent Lab and give the maison its signature.</p>
           <button class="btn solid" id="btnGoLab">Enter the Scent Lab</button>
@@ -490,7 +572,6 @@
         <h3 class="step" id="shelfHead">Bottle Collection Shelf</h3><div class="shelf" id="bottleShelf"></div>
         <div class="grid perfumes" id="perfumeGrid"></div>
         <h3 class="step">Gift Set · Bundle Two Scents</h3><div id="giftPanel"></div>
-        <h3 class="step" id="rivalHead">Rival Board · Weekly Movement</h3><div class="grid three" id="rivalBoard"></div>
       </section>
 
       <!-- ================= SCENT LAB ================= -->
@@ -555,6 +636,11 @@
       <section class="panel" id="panel-empire">
         <h2 class="sec">Marketing &amp; <i>Empire</i></h2>
         <p class="sec-sub">Campaigns, boutiques and R&amp;D that bend demand in your favour.</p>
+        <div class="empire-subs" role="tablist" aria-label="Empire sections">
+          <button class="emp-sub active" data-esub="upgrades" role="tab">Upgrades</button>
+          <button class="emp-sub" data-esub="world" role="tab">World</button>
+        </div>
+        <div id="empUpgrades">
 
         <h3 class="step">House Status</h3>
         <div class="card">
@@ -570,7 +656,6 @@
         <h3 class="step">The Perfumery Team</h3>
         <div id="perfumerPanel"></div>
 
-        <div id="scandalPanel"></div>
         <h3 class="step">Campaigns</h3>
         <div class="grid three" id="campaignList"></div>
 
@@ -584,13 +669,17 @@
         <div class="grid three" id="upgradeList"></div>
 
         <h3 class="step">Seasonal Campaigns</h3><div class="grid three" id="seasonalList"></div>
+        </div>
+        <div id="empWorld" hidden>
+        <div id="scandalPanel"></div>
         <h3 class="step">Boutique Cities · Expansion Buffs</h3><div class="grid three" id="cityList"></div><p style="color:var(--muted);font-size:.86rem" id="cityBuffs"></p>
         <h3 class="step">Finance · Loans &amp; Investors</h3><div class="grid two" id="financePanel"></div>
         <h3 class="step">PR Crisis Meter</h3><div class="card" id="prPanel"></div>
         <h3 class="step">Active Story Arcs</h3><div class="card" id="arcPanel"></div>
-        <h3 class="step">Arch-Rival</h3><div class="card" id="archPanel"></div>
+        <h3 class="step">Rivalry</h3><div class="card" id="rivalryPanel"></div>
         <h3 class="step">Market Trend Intelligence</h3>
         <div class="card" id="trendIntel"></div>
+        </div>
       </section>
 
       <!-- ================= LEDGER ================= -->
@@ -609,8 +698,8 @@
         <div class="divider"></div>
         <h3 class="step" style="margin-top:0">Save Management</h3>
         <div class="flex-row">
-          <button class="btn" id="btnExport">⇩ Export Save JSON</button>
-          <button class="btn" id="btnImport">⇧ Import Save JSON</button>
+          <button class="btn" id="btnExport"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m0 0l-4-4m4 4l4-4M4 19h16"/></svg>Export Save JSON</button>
+          <button class="btn" id="btnImport"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14V3m0 0L8 7m4-4l4 4M4 19h16"/></svg>Import Save JSON</button>
           <input type="file" id="importFile" accept=".json,application/json" style="display:none" />
           <button class="btn danger" id="btnNewGame">Start a New Game</button>
         </div>
@@ -618,23 +707,24 @@
       </section>
 
       <section class="panel" id="panel-trophies"><h2 class="sec">Trophies &amp; <i>Achievements</i></h2><p class="sec-sub">Milestones of the maison — unlocked trophies glow gold.</p><div class="trophy-grid" id="trophyGrid"></div><div class="divider"></div><h3 class="step">Personal Best Board</h3><div class="card" id="bestsPanel"></div><div class="divider"></div><h3 class="step">Award Season</h3><div class="card" id="awardPanel"></div></section>
-      <p class="foot">MAISON D'OR · v6 · A luxury perfume empire simulation · Progress saves automatically in this browser</p>
+      <p class="foot" id="footLine">MAISON D'OR · A luxury perfume empire simulation · Progress saves automatically in this browser</p>
     </div>
 
     <!-- ================= REPORT MODAL ================= -->
     <div class="overlay" id="reportOverlay">
-      <div class="sheet">
+      <div class="sheet"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
         <span class="kicker" id="reportKicker">Weekly Report</span>
         <h3 id="reportTitle">Week 1 Results</h3>
         <div id="reportBody"></div>
         <button class="btn solid block" id="btnReportClose" style="margin-top:18px">Continue</button>
         <button class="btn block" id="btnShareRecap" style="margin-top:8px">Share Recap</button>
+        <button class="btn block" id="btnWhatsAppRecap" style="margin-top:8px">Share on WhatsApp</button>
       </div>
     </div>
 
     <!-- ================= EVENT MODAL ================= -->
     <div class="overlay" id="eventOverlay">
-      <div class="sheet">
+      <div class="sheet"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
         <span class="kicker" id="eventKicker">Industry Event</span>
         <h3 id="eventTitle">An Opportunity</h3>
         <p id="eventText" style="color:var(--muted); line-height:1.6"></p>
@@ -644,7 +734,7 @@
 
     <!-- ================= WIN MODAL ================= -->
     <div class="overlay" id="winOverlay">
-      <div class="sheet" style="text-align:center">
+      <div class="sheet" style="text-align:center"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
         <span class="kicker">The Summit Reached</span>
         <h3 style="font-size:2rem">A Global Luxury Empire</h3>
         <p style="color:var(--muted); line-height:1.65">From a boutique pop-up to the summit of the fragrance world. MAISON D'OR now stands at <b style="color:var(--gold-bright)">100 Prestige</b> with a net worth beyond <b style="color:var(--gold-bright)">$1,000,000</b> — a house spoken of in the same breath as the great Parisian maisons.</p>
@@ -657,7 +747,7 @@
 
     <!-- ================= CONFIRM MODAL ================= -->
     <div class="overlay" id="confirmOverlay">
-      <div class="sheet">
+      <div class="sheet"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
         <span class="kicker">New Game</span>
         <h3>Begin a new maison?</h3>
         <p style="color:var(--muted); line-height:1.6">This permanently erases the current empire in <b id="confirmSlotNote" style="color:var(--cream)">Save Slot 1</b> — your other slots and your Personal Best Board are untouched — and starts again at Week 1. Choose a mode:</p>
@@ -671,7 +761,7 @@
 
     <!-- ================= RESCUE MODAL (v6) ================= -->
     <div class="overlay" id="rescueOverlay">
-      <div class="sheet">
+      <div class="sheet"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
         <span class="kicker">Bankruptcy Safety Net · One-Time Offer</span>
         <h3>An Investor Offers a Rescue</h3>
         <p style="color:var(--muted); line-height:1.6">The maison's cash has fallen below $0. A private investor will inject <b style="color:var(--gold-bright)">$20,000</b> today in exchange for <b style="color:var(--gold-bright)">20% equity</b> and −5 Prestige. This offer comes once in the life of the maison — and it will be recorded in the Ledger.</p>
@@ -682,7 +772,7 @@
 
     <!-- ================= v6 Wave 3: THUMB BAR / FLASH / UPDATE NOTICE ================= -->
     <div id="thumbBar" role="navigation" aria-label="Quick week actions">
-      <button id="btnQuickWeek" class="tb-quick">⚡ Quick Week</button>
+      <button id="btnQuickWeek" class="tb-quick"><svg class="mi-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4.5 13.5H11L9.8 22 19 10h-6.5L13 2z"/></svg><span id="quickWeekLabel">Quick Week</span></button>
       <button id="btnAdvanceThumb" class="btn-advance tb-adv">Advance Week ▸</button>
     </div>
     <div id="edgeFlash" aria-hidden="true"></div>
@@ -694,7 +784,7 @@
 
     <!-- ================= QUICK WEEK MODAL (item 37) ================= -->
     <div class="overlay" id="quickOverlay">
-      <div class="sheet">
+      <div class="sheet"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
         <span class="kicker">Quick Week · Summary</span>
         <h3 id="quickTitle">Week in Brief</h3>
         <div id="quickBody"></div>
@@ -704,7 +794,7 @@
 
     <!-- ================= COMEBACK MODAL (item 44) ================= -->
     <div class="overlay" id="comebackOverlay">
-      <div class="sheet" style="text-align:center">
+      <div class="sheet" style="text-align:center"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
         <span class="kicker">While You Were Away</span>
         <h3>Welcome Back to the Maison</h3>
         <p id="comebackText" style="color:var(--muted); line-height:1.65"></p>
@@ -714,7 +804,7 @@
 
     <!-- ================= SHARE CARD MODAL (items 41-42) ================= -->
     <div class="overlay" id="shareOverlay">
-      <div class="sheet" style="text-align:center">
+      <div class="sheet" style="text-align:center"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
         <span class="kicker">Share Card</span>
         <h3 id="shareTitle">My Empire</h3>
         <img id="shareImg" alt="MAISON D'OR share card" style="width:100%;height:auto;border:1px solid var(--line);border-radius:6px;margin-top:8px" />
@@ -728,7 +818,7 @@
 
     <!-- ================= INSTALL MODAL (item 46) ================= -->
     <div class="overlay" id="installOverlay">
-      <div class="sheet">
+      <div class="sheet"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
         <span class="kicker">Install App</span>
         <h3>Play MAISON D'OR Like an App</h3>
         <p style="color:var(--muted); line-height:1.65">Add the game to your home screen and it opens full-screen with its own icon — no browser bar, and your empire is right where you left it.</p>
@@ -738,7 +828,18 @@
       </div>
     </div>
 
+    <!-- ================= PLAY STATS MODAL (v7 Wave C) ================= -->
+    <div class="overlay" id="statsOverlay">
+      <div class="sheet"><button class="sheet-x" data-sheet-x aria-label="Close">✕</button>
+        <span class="kicker">Your Play Stats</span>
+        <h3 id="statsTitle">Your Play Stats</h3>
+        <div id="statsBody"></div>
+        <button class="btn solid block" id="btnStatsClose" style="margin-top:16px">Close</button>
+      </div>
+    </div>
+
     <canvas id="confettiCanvas" width="900" height="600"></canvas><div id="toasts"></div>
+    <div id="coachBubble" hidden role="note"><span id="coachText"></span><span class="coach-dismiss">Tap to dismiss</span></div>
 
 <script>
 "use strict";
@@ -844,7 +945,7 @@ const RIVAL_HITS = {
   "Velour": { name:"Velours de Soie", top:"Mandarin", heart:"Jasmine Sambac", base:"Madagascar Vanilla" },
   "Maison Verre": { name:"Verre Marin", top:"Sea Salt", heart:"Violet Leaf", base:"White Musk" }
 };
-const ACHIEVEMENTS=[{id:"rev10k",name:"First $10k Week",desc:"Earn $10,000 revenue in one week",test:s=>s.ledger.some(w=>w.revenue>=10000)},{id:"units100",name:"First 100 Units",desc:"Sell 100 units total",test:s=>s.totalUnits>=100},{id:"four",name:"Full Showroom",desc:"Have 4 active scents",test:s=>s.perfumes.length>=4},{id:"empire",name:"Global Empire",desc:"Reach the win goal",test:s=>!!s.won},{id:"prestige50",name:"Prestige 50",desc:"Reach 50 Prestige",test:s=>s.prestige>=50},{id:"rev100k",name:"$100k Lifetime Revenue",desc:"Reach $100,000 lifetime revenue",test:s=>s.totalRevenue>=100000},{id:"debtfree",name:"Debt-Free Growth",desc:"Reach Week 12 with no debt",test:s=>s.week>=12&&!s.debt},{id:"limited",name:"Limited Drop",desc:"Launch a Limited Edition scent",test:s=>!!s.launchedLimited}];
+const ACHIEVEMENTS=[{id:"firstweek",name:"First Week Complete",desc:"Finish Week 1 with at least one sale",test:s=>!!s.firstWeekDone},{id:"rev10k",name:"First $10k Week",desc:"Earn $10,000 revenue in one week",test:s=>s.ledger.some(w=>w.revenue>=10000)},{id:"units100",name:"First 100 Units",desc:"Sell 100 units total",test:s=>s.totalUnits>=100},{id:"four",name:"Full Showroom",desc:"Have 4 active scents",test:s=>s.perfumes.length>=4},{id:"empire",name:"Global Empire",desc:"Reach the win goal",test:s=>!!s.won},{id:"prestige50",name:"Prestige 50",desc:"Reach 50 Prestige",test:s=>s.prestige>=50},{id:"rev100k",name:"$100k Lifetime Revenue",desc:"Reach $100,000 lifetime revenue",test:s=>s.totalRevenue>=100000},{id:"debtfree",name:"Debt-Free Growth",desc:"Reach Week 12 with no debt",test:s=>s.week>=12&&!s.debt},{id:"limited",name:"Limited Drop",desc:"Launch a Limited Edition scent",test:s=>!!s.launchedLimited}];
 const FAM_COLORS = {
   Citrus:"linear-gradient(180deg, rgba(240,200,90,.35), rgba(230,170,40,.65))",
   Spicy:"linear-gradient(180deg, rgba(215,110,70,.35), rgba(180,60,35,.65))",
@@ -871,15 +972,18 @@ const ACTIVE_SLOT_KEY = "maison-dor-active-slot";
 const BESTS_KEY = "maison-dor-bests";
 const PREFS_KEY = "maison-dor-prefs";
 const LASTSEEN_KEY = "maison-dor-lastseen";
-const GAME_VERSION = 6;
+const GAME_VERSION = 7;
+/* v7 Wave B: save-format schema, stamped onto every save. Derived from GAME_VERSION so the
+   version literal lives in exactly one place in this script. */
+const SAVE_SCHEMA = GAME_VERSION;
 let SAVE_KEY = LEGACY_SAVE_KEY;
 let activeSlot = 1;
 function slotKey(n){ return SLOT_PREFIX + n; }
-let prefs = { compact:false, bigNumbers:false };
+let prefs = { compact:false, bigNumbers:false, lang:"en", stats:{ totalWeeks:0, sessions:0, firstPlay:"", highestWeek:0, stopWeeks:[] } };
 let bests = { bestWeekProfit:0, bestWeekProfitWeek:0, bestScentName:"", bestScentRevenue:0, fastestWin:0, highestNetWorth:0 };
 /* Item 45: Prestige Titles — six bands, Artisan to Icon */
 function prestigeTitle(p){ p = Math.round(Number(p)||0); if(p>=100) return "Icon"; if(p>=80) return "Luminary"; if(p>=60) return "Tastemaker"; if(p>=40) return "Connoisseur"; if(p>=20) return "Perfumer"; return "Artisan"; }
-function loadPrefs(){ try{ const pr = JSON.parse(localStorage.getItem(PREFS_KEY)); if(pr && typeof pr === "object") prefs = { compact:!!pr.compact, bigNumbers:!!pr.bigNumbers }; }catch(e){} }
+function loadPrefs(){ try{ const pr = JSON.parse(localStorage.getItem(PREFS_KEY)); if(pr && typeof pr === "object"){ prefs.compact = !!pr.compact; prefs.bigNumbers = !!pr.bigNumbers; if(["en","ur","roman"].includes(pr.lang)) prefs.lang = pr.lang; const st = pr.stats; if(st && typeof st === "object"){ prefs.stats.totalWeeks = Math.max(0, Math.round(Number(st.totalWeeks)||0)); prefs.stats.sessions = Math.max(0, Math.round(Number(st.sessions)||0)); prefs.stats.firstPlay = typeof st.firstPlay === "string" ? st.firstPlay : ""; prefs.stats.highestWeek = Math.max(0, Math.round(Number(st.highestWeek)||0)); prefs.stats.stopWeeks = Array.isArray(st.stopWeeks) ? st.stopWeeks.map(n=>Math.max(1, Math.round(Number(n)||1))).slice(-60) : []; } } }catch(e){} }
 function savePrefs(){ try{ localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); }catch(e){} }
 function loadBests(){ try{ const b = JSON.parse(localStorage.getItem(BESTS_KEY)); if(b && typeof b === "object") bests = Object.assign(bests, b); }catch(e){} }
 function saveBests(){ try{ localStorage.setItem(BESTS_KEY, JSON.stringify(bests)); }catch(e){} }
@@ -892,7 +996,7 @@ function updateBestsFromWeek(profit, weekPlayed){
   if(changed) saveBests();
 }
 /* Item 40: Last Saved stamp — refreshed on every save */
-function updateSavedStamp(){ const el = document.getElementById("savedStamp"); if(el){ const d = new Date(); const hh = String(d.getHours()).padStart(2,"0"), mm = String(d.getMinutes()).padStart(2,"0"); el.textContent = "Saved · Week " + S.week + " · " + hh + ":" + mm + " · Slot " + activeSlot; } }
+function updateSavedStamp(){ const el = document.getElementById("savedStamp"); if(el){ const d = new Date(); const hh = String(d.getHours()).padStart(2,"0"), mm = String(d.getMinutes()).padStart(2,"0"); el.textContent = t("saved") + " · " + t("week") + " " + S.week + " · " + hh + ":" + mm + " · " + t("slot") + " " + activeSlot; } }
 /* Item 39: Gold Edge Flash — intensity scales with the week's profit; never blocks taps */
 function goldFlash(profit){
   try{
@@ -906,6 +1010,7 @@ function goldFlash(profit){
 let uidC = 1;
 function defaultState(){
   return {
+    schema: SAVE_SCHEMA,
     week:1, cash:5000, prestige:10, tier:0, rd:0,
     perfumes:[], campaigns:[], ledger:[], log:[],
     hot:[], saturated:[], trendTimer:3,
@@ -920,11 +1025,17 @@ function defaultState(){
     vault:[], featuredId:"", loyaltyClub:false, dutyFree:false, collab:null, subBox:false, qc:false,
     cityManagers:{}, licenses:[], perfumer:{ name:SENIOR_PERFUMER_NAME, morale:70 },
     heir:{ step:0, style:"", nextWeek:0, done:false, buff:"" }, heirReady:false, fwPending:false,
-    scandal:{ active:false, step:0, lastWeek:0 }, archRival:"", archChanged:false, heritageLaunches:0, ending:""
+    scandal:{ active:false, step:0, lastWeek:0 }, archRival:"", archChanged:false, heritageLaunches:0, ending:"", coachStep:0, coachDone:false, empireSub:"upgrades",
+    /* v7 Wave C: install prompt state + scripted first-week flags */
+    installDismissed:false, installBannerShown:false, installAccepted:false, easyMissionUsed:false, rivalEventFired:false, firstWeekDone:false
   };
 }
 let S = defaultState();
-function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); localStorage.setItem(LASTSEEN_KEY, String(Date.now())); updateSavedStamp(); }catch(e){} }
+function save(){ try{ S.schema = SAVE_SCHEMA; localStorage.setItem(SAVE_KEY, JSON.stringify(S)); localStorage.setItem(LASTSEEN_KEY, String(Date.now())); updateSavedStamp(); }catch(e){} }
+/* Forward-compatible loader (v7 Wave B): the parsed save is hydrated over defaultState(),
+   so any field a save is missing simply takes its default, and unknown fields written by a
+   newer version are carried along harmlessly. A save is never rejected for its shape or its
+   schema value — only for being unreadable, or for lacking the core week/cash numbers. */
 function load(){
   try{
     const raw = localStorage.getItem(SAVE_KEY);
@@ -940,6 +1051,7 @@ function load(){
 
 /* ==================== HELPERS ==================== */
 const $ = id => document.getElementById(id);
+const EMPTY_MOTIF = '<svg class="empty-motif" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="19" y="3" width="10" height="7" rx="1"/><path d="M20 10h8v5l5 6v20a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3V21l5-6v-5z"/><path d="M15 31h18"/></svg>';
 const fmt = n => (n<0?"−$":"$") + Math.abs(Math.round(n)).toLocaleString("en-US");
 const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
 const rnd = (a,b) => a + Math.random()*(b-a);
@@ -963,6 +1075,7 @@ function segmentFit(p){
   return {VIPs:vip, Trendsetters:trend, Collectors:coll};
 }
 function confettiBurst(big){
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const c=$("confettiCanvas"); if(!c) return; const ctx=c.getContext("2d"); c.width=innerWidth; c.height=innerHeight;
   const parts=Array.from({length:big?120:50},()=>({x:innerWidth/2+(Math.random()-0.5)*220,y:innerHeight/3,vx:(Math.random()-0.5)*9,vy:-Math.random()*8-2,g:0.22,life:70+Math.random()*40,col:pick(["#ecd28a","#c8a24a","#fff3c4","#9dc08b"])}));
   let f=0; (function anim(){ ctx.clearRect(0,0,c.width,c.height); parts.forEach(pt=>{pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=pt.g;pt.life--;ctx.globalAlpha=Math.max(0,pt.life/80);ctx.fillStyle=pt.col;ctx.fillRect(pt.x,pt.y,6,4);}); ctx.globalAlpha=1; if(++f<90) requestAnimationFrame(anim); else ctx.clearRect(0,0,c.width,c.height); })();
@@ -1011,6 +1124,13 @@ function rollTrends(){
   }
   let sat = pick(pool.filter(f=>!hot.includes(f)));
   S.hot = hot; S.saturated = [sat]; S.trendTimer = 3;
+}
+/* ---------- v7 Wave C: Today's Trend — seeded by the real local calendar date ----------
+   Same family all day, changes at local midnight. Pure date math, no server. */
+function dailyTrendFam(){
+  const d = new Date();
+  const seed = d.getFullYear() * 372 + (d.getMonth() + 1) * 31 + d.getDate();
+  return ALL_FAMS[((seed * 7) + 3) % ALL_FAMS.length];
 }
 function trendMult(p){
   let m = 1;
@@ -1073,6 +1193,8 @@ function computeDemand(p){
   if(S.rd >= 3) demand *= 1.1;
   if(p.synergy || hasSynergy([p.top,p.heart,p.base])) demand *= 1.1;
   demand *= agingMult(p);
+  /* v7 Wave C: Today's Trend — scents of today's family gain +5% demand */
+  if([p.topFam, p.heartFam, p.baseFam].includes(dailyTrendFam())) demand *= 1.05;
   /* v6 Wave 2 multipliers */
   if(p.heritage) demand *= 1.15;
   if(S.featuredId) demand *= (p.id === S.featuredId) ? 1.3 : 0.9;
@@ -1096,11 +1218,19 @@ function genMission(){
   return { kind:"revenue", target, rewardCash: Math.round(rnd(700,1500)/50)*50, rewardPrestige: 3, desc: "Earn " + fmt(target) + " revenue", week: S.week };
 }
 function ensureMission(){ if(!S.mission || typeof S.mission !== "object" || !S.mission.desc) S.mission = genMission(); return S.mission; }
+/* v7 Wave C: scripted first win — a brand-new game's Week 1 mission is always the easy one */
+function firstMission(){
+  if(S.week === 1 && !S.easyMissionUsed){
+    S.easyMissionUsed = true;
+    return { kind:"units", target:10, rewardCash:750, rewardPrestige:2, desc:"Sell 10 units of any family", week:1 };
+  }
+  return genMission();
+}
 
 /* ==================== RENDER ==================== */
 function renderHUD(){
-  $("hudWeekLabel").textContent = "Week " + S.week;
-  $("hudSeason").textContent = seasonOf(S.week) + " · Year " + yearOf(S.week);
+  $("hudWeekLabel").textContent = t("week") + " " + S.week;
+  $("hudSeason").textContent = t("season_" + seasonOf(S.week)) + " · " + t("year") + " " + yearOf(S.week);
   $("hudPrestigeVal").textContent = Math.round(S.prestige);
   const hudTitleEl = $("hudTitle"); if(hudTitleEl) hudTitleEl.textContent = prestigeTitle(S.prestige);
   $("hudPrestigeBar").style.width = clamp(S.prestige,0,100) + "%";
@@ -1122,6 +1252,8 @@ function renderTrends(){
     '<span>Oversaturated <span class="chip sat">▼ ' + S.saturated.map(escapeHtml).join('</span><span class="chip sat">▼ ') + '</span> <span style="color:var(--faint)">0.5× demand</span></span>' +
     '<span>' + season + ' favours <span class="chip season">' + SEASON_FAMS[season].join('</span><span class="chip season">') + '</span></span>' +
     '<span style="color:var(--faint)">Trends shift in ' + S.trendTimer + ' wk</span>';
+  const dtEl = $("dailyTrendLine");
+  if(dtEl) dtEl.textContent = "✦ Today's Trend: " + dailyTrendFam() + " is in the air";
   const nwGoal = clamp(netWorth()/1000000*100, 0, 100);
   $("goalStrip").innerHTML =
     '<span>Goal <b>$1M Net Worth</b> — <b>' + fmt(netWorth()) + '</b> · ' + Math.round(nwGoal) + '%</span>' +
@@ -1143,11 +1275,47 @@ function perfumeBadges(p){
   return b.join("");
 }
 function renderShelfAndRivals(){
-  const shelf=$("bottleShelf"); if(shelf){ shelf.innerHTML = S.perfumes.length? S.perfumes.map(p=>{ const fam=p.baseFam; return '<div class="shelf-bottle"><div class="sb-cap"></div><div class="sb-body"><div class="sb-liq" style="background:'+(p.colour ? colourCss(p.colour) : (FAM_COLORS[fam]||FAM_COLORS.Amber))+'"></div></div><small>'+escapeHtml(p.name)+'<br>'+p.profile+'</small></div>'; }).join("") : '<span style="color:var(--faint)">No bottles yet — launch a scent to fill the shelf.</span>'; }
-  const rb=$("rivalBoard"); if(rb){ rb.innerHTML=(S.rivals||[]).map(r=>{ const hit=r.hit||RIVAL_HITS[r.name]; return '<article class="card"><span class="profile-tag">Rival House</span><h4 style="font-family:var(--serif);margin:4px 0">'+escapeHtml(r.name)+'</h4><div class="kv"><span>Prestige</span><span>'+Math.round(r.prestige)+'</span></div><div class="kv"><span>Last Sales</span><span>'+fmt(r.sales)+'</span></div><div class="kv"><span>Movement</span><span>'+(r.trend>=0?"▲ +":"▼ ")+fmt(Math.abs(r.trend||0))+'</span></div>'+(hit? '<div class="kv"><span>Bestseller</span><span>'+escapeHtml(hit.name)+'</span></div><div class="kv"><span>Formula</span><span>'+escapeHtml(hit.top)+' · '+escapeHtml(hit.heart)+' · '+escapeHtml(hit.base)+'</span></div><button class="btn block" data-clone="'+escapeHtml(r.name)+'" style="margin-top:10px">Analyse Hit — '+fmt(CLONE_COST)+' R&amp;D</button>' : '')+'</article>'; }).join("");
-    rb.querySelectorAll("[data-clone]").forEach(b=>b.addEventListener("click",()=>{ const r=(S.rivals||[]).find(x=>x.name===b.getAttribute("data-clone")); const hit=r && (r.hit||RIVAL_HITS[r.name]); if(!hit) return; if(S.cash<CLONE_COST){ toast("Analysing a rival bestseller costs "+fmt(CLONE_COST)+".","bad"); return; } S.cash-=CLONE_COST; lab.top=TOPS.find(n=>n.name===hit.top)||null; lab.heart=HEARTS.find(n=>n.name===hit.heart)||null; lab.base=BASES.find(n=>n.name===hit.base)||null; lab.name=hit.name+" Homage"; lab.test=null; const ni=$("labName"); if(ni) ni.value=lab.name; logEvent("🔬 Analysed <b>"+escapeHtml(r.name)+"</b>'s bestseller <b>"+escapeHtml(hit.name)+"</b> — its note combo is pre-filled in the Lab."); save(); renderAll(); switchTab("lab"); toast("🔬 Rival formula decoded — the Lab draft is pre-filled with <b>"+escapeHtml(hit.name)+"</b>'s notes (−"+fmt(CLONE_COST)+").","good"); }));
-  }
+  const shelf=$("bottleShelf"); if(shelf){ shelf.innerHTML = S.perfumes.length? S.perfumes.map(p=>{ const fam=p.baseFam; return '<div class="shelf-bottle"><div class="sb-cap"></div><div class="sb-body"><div class="sb-liq" style="background:'+(p.colour ? colourCss(p.colour) : (FAM_COLORS[fam]||FAM_COLORS.Amber))+'"></div></div><small>'+escapeHtml(p.name)+'<br>'+p.profile+'</small></div>'; }).join("") : '<span class="shelf-empty">' + EMPTY_MOTIF + '<span>No bottles yet — create your first scent in the Lab.</span></span>'; }
 }
+
+/* ---------- v7 Wave B: Rivalry — the single home for rivals (Empire → World) ---------- */
+/* The clone flow itself is unchanged: pay CLONE_COST, decode the hit's notes into a Lab draft, jump to the Lab. */
+function cloneRivalHit(name){
+  const r = (S.rivals||[]).find(x=>x.name===name);
+  const hit = r && (r.hit || RIVAL_HITS[r.name]);
+  if(!hit) return;
+  if(S.cash < CLONE_COST){ toast("Analysing a rival bestseller costs " + fmt(CLONE_COST) + ".", "bad"); return; }
+  S.cash -= CLONE_COST;
+  lab.top = TOPS.find(n=>n.name===hit.top) || null;
+  lab.heart = HEARTS.find(n=>n.name===hit.heart) || null;
+  lab.base = BASES.find(n=>n.name===hit.base) || null;
+  lab.name = hit.name + " Homage"; lab.test = null;
+  const ni = $("labName"); if(ni) ni.value = lab.name;
+  logEvent("🔬 Analysed <b>" + escapeHtml(r.name) + "</b>'s bestseller <b>" + escapeHtml(hit.name) + "</b> \u2014 its note combo is pre-filled in the Lab.");
+  save(); renderAll(); switchTab("lab");
+  toast("🔬 Rival formula decoded \u2014 the Lab draft is pre-filled with <b>" + escapeHtml(hit.name) + "</b>'s notes (\u2212" + fmt(CLONE_COST) + ").", "good");
+}
+/* One Rivalry card: standings table + arch-rival picker (#archPanel, filled by renderArch) + Clone Rival's Hit buttons. */
+function renderRivalry(){
+  const el = $("rivalryPanel"); if(!el) return;
+  const rows = (S.rivals||[]).map(r=>{
+    const hit = r.hit || RIVAL_HITS[r.name];
+    return '<tr><td><span class="rival-name">' + escapeHtml(r.name) + '</span>' + (S.archRival === r.name ? ' <span class="badge">\u2694 Arch-Rival</span>' : '') + (hit ? '<span class="rival-hit">Bestseller: ' + escapeHtml(hit.name) + ' \u2014 ' + escapeHtml(hit.top) + ' \u00B7 ' + escapeHtml(hit.heart) + ' \u00B7 ' + escapeHtml(hit.base) + '</span>' : '') + '</td>' +
+      '<td class="num">' + Math.round(r.prestige) + '</td><td class="num">' + fmt(r.sales) + '</td><td class="num">' + (r.trend>=0 ? "\u25B2 +" : "\u25BC ") + fmt(Math.abs(r.trend||0)) + '</td></tr>';
+  }).join("");
+  const cloneBtns = (S.rivals||[]).filter(r => r.hit || RIVAL_HITS[r.name]).map(r=>{
+    const hit = r.hit || RIVAL_HITS[r.name];
+    return '<div class="kv"><span>' + escapeHtml(r.name) + ' \u2014 \u201C' + escapeHtml(hit.name) + '\u201D</span><span><button class="btn" data-clone="' + escapeHtml(r.name) + '">Clone Rival\u2019s Hit \u2014 ' + fmt(CLONE_COST) + '</button></span></div>';
+  }).join("");
+  el.innerHTML =
+    '<h4 class="rivalry-sub">House Standings</h4>' +
+    '<table class="rivalry-table"><thead><tr><th>Rival House</th><th class="num">Prestige</th><th class="num">Last Sales</th><th class="num">Movement</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+    '<h4 class="rivalry-sub">Arch-Rival</h4><div id="archPanel"></div>' +
+    '<h4 class="rivalry-sub">Clone a Rival\u2019s Hit</h4>' +
+    '<p style="color:var(--muted);font-size:.87rem;line-height:1.55;margin:0 0 10px">Send your perfumers to analyse a rival bestseller: its exact note combo is decoded and pre-filled as a draft in the Scent Lab.</p>' + cloneBtns;
+  el.querySelectorAll("[data-clone]").forEach(b => b.addEventListener("click", () => cloneRivalHit(b.getAttribute("data-clone"))));
+}
+
 /* ---------- v6 Wave 2: Store Window Display pick ---------- */
 function renderFeature(){
   const fp = $("featurePanel"); if(!fp) return;
@@ -1163,8 +1331,8 @@ function renderShowroom(){ renderShelfAndRivals(); renderMissionGift(); renderFe
   const grid = $("perfumeGrid");
   const isEmpty = !S.perfumes.length;
   $("showroomEmpty").style.display = isEmpty ? "block" : "none";
-  /* v4: with no scents on sale, hide the shelf/rival sections so the empty state sits at the top */
-  ["shelfHead","bottleShelf","rivalHead","rivalBoard"].forEach(id => { const el = $(id); if(el) el.style.display = isEmpty ? "none" : ""; });
+  /* v4: with no scents on sale, hide the shelf section so the empty state sits at the top */
+  ["shelfHead","bottleShelf"].forEach(id => { const el = $(id); if(el) el.style.display = isEmpty ? "none" : ""; });
   /* v6 Wave 3 (item 35): Compact / Detailed view toggle — choice persists in prefs */
   const viewBtn = $("btnViewToggle"); if(viewBtn) viewBtn.textContent = prefs.compact ? "View: Compact" : "View: Detailed";
   if(prefs.compact){
@@ -1218,8 +1386,8 @@ function renderShowroom(){ renderShelfAndRivals(); renderMissionGift(); renderFe
       '<div class="small-btns"><button class="btn" data-restock="'+escapeHtml(p.id)+'">Produce 25 ('+fmt(p.cost*25)+')</button><button class="btn" data-remix="'+escapeHtml(p.id)+'">Remix / Clone</button></div>' +
       '<div class="small-btns"><button class="btn" data-autotoggle="'+escapeHtml(p.id)+'">Auto-Restock: '+(p.autoRestock?'ON':'OFF')+'</button><button class="btn" data-rstarget="-10:'+escapeHtml(p.id)+'">Target −10</button><button class="btn" data-rstarget="10:'+escapeHtml(p.id)+'">Target +10</button></div>' +
       '<div class="kv"><span>Restock Target</span><span>'+(p.restockTarget||0)+' units'+(p.autoRestock?' · restocked on Advance':'')+'</span></div>' +
-      '<details class="ph"><summary>Price History</summary>' + ((p.priceHistory && p.priceHistory.length) ? p.priceHistory.slice().reverse().map(h=>'<div class="kv"><span>'+fmt(h.price)+'</span><span>'+h.units+' units sold</span></div>').join("") : '<p style="color:var(--faint);font-size:.82rem;margin:6px 0 2px">No completed weeks yet — history appears after each Advance.</p>') + '</details>' +
-      '<label style="display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin:14px 0 4px">Adjust Price · <span style="color:var(--gold-bright)">' + fmt(p.price) + '</span></label>' +
+      '<details class="ph"><summary>Price History</summary>' + ((p.priceHistory && p.priceHistory.length) ? p.priceHistory.slice().reverse().map(h=>'<div class="kv"><span>'+fmt(h.price)+'</span><span>'+h.units+' units sold</span></div>').join("") : '<p class="ph-empty">' + EMPTY_MOTIF + '<span>No completed weeks yet — history appears after each Advance.</span></p>') + '</details>' +
+      '<label style="display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin:14px 0 4px">Adjust Price · <span style="color:var(--cream)">' + fmt(p.price) + '</span></label>' +
       '<input type="range" min="40" max="' + p.priceCap + '" step="5" value="' + p.price + '" data-price-for="' + escapeHtml(p.id) + '" />' +
       '<button class="btn danger block" data-discontinue="' + escapeHtml(p.id) + '" style="margin-top:10px">Discontinue</button>' +
     '</article>';
@@ -1295,7 +1463,7 @@ function renderMissionGift(){
         (S.giftSet && cur.length===2 ? '<p style="margin:0 0 12px">🎁 <b>Active Gift Set:</b> ' + escapeHtml(cur[0].name) + ' + ' + escapeHtml(cur[1].name) + ' at <b style="color:var(--gold-bright)">' + fmt(S.giftSet.price) + '</b> — sells each week while both scents are in stock. Stronger in Winter and Ramadan / Eid windows.</p>' : '<p style="color:var(--muted);margin:0 0 12px">Pair two active scents into one gift box at a bundle price. Each set sold draws one bottle from each scent\'s stock.</p>') +
         '<div class="grid two" style="gap:12px"><label style="font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)">First Scent<select id="gsA" style="margin-top:6px">' + opts(gsDraft.a) + '</select></label>' +
         '<label style="font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)">Second Scent<select id="gsB" style="margin-top:6px">' + opts(gsDraft.b) + '</select></label></div>' +
-        '<label style="display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin:14px 0 4px">Bundle Price · <span style="color:var(--gold-bright)">' + fmt(gsDraft.price) + '</span></label>' +
+        '<label style="display:block; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin:14px 0 4px">Bundle Price · <span style="color:var(--cream)">' + fmt(gsDraft.price) + '</span></label>' +
         '<input type="range" id="gsPrice" min="80" max="1000" step="10" value="' + gsDraft.price + '" />' +
         '<div class="flex-row" style="margin-top:12px"><button class="btn solid" id="btnSetGift">Set Gift Set</button>' + (S.giftSet ? '<button class="btn danger" id="btnClearGift">Remove Gift Set</button>' : '') + '</div></div>';
       const gA = $("gsA"), gB = $("gsB"), gP = $("gsPrice");
@@ -1385,12 +1553,18 @@ function sanitizeState(){
   S.heritageLaunches = Math.max(0, Math.round(Number(S.heritageLaunches)||0));
   if(!["","icon","empire","artisan"].includes(S.ending)) S.ending = "";
   if(Array.isArray(S.perfumes)) S.perfumes.forEach(pp=>{ pp.blind = !!pp.blind; pp.blindBonus = !!pp.blindBonus; pp.heritage = !!pp.heritage; });
+  /* v7 hydration — coach marks + Empire sub-section, safe defaults for older saves */
+  S.coachStep = clamp(Math.round(Number(S.coachStep)||0), 0, 2); S.coachDone = !!S.coachDone;
+  if(S.empireSub !== "world") S.empireSub = "upgrades";
+  /* v7 Wave C hydration — install state + scripted first-week flags */
+  S.installDismissed = !!S.installDismissed; S.installBannerShown = !!S.installBannerShown; S.installAccepted = !!S.installAccepted;
+  S.easyMissionUsed = !!S.easyMissionUsed; S.rivalEventFired = !!S.rivalEventFired; S.firstWeekDone = !!S.firstWeekDone;
 }
 
 /* ---------- v6 Wave 2: Formula Vault ---------- */
 function renderVault(){
   const vp = $("vaultPanel"); if(!vp) return;
-  if(!S.vault || !S.vault.length){ vp.innerHTML = '<div class="card"><p style="color:var(--muted);margin:0;line-height:1.6">The Vault is empty. When you discontinue a scent, its formula is archived here — relaunch it later as a <b style="color:var(--cream)">Heritage Edition</b> (+15% demand), or license it to a rival for a lump sum plus weekly royalties.</p></div>'; return; }
+  if(!S.vault || !S.vault.length){ vp.innerHTML = '<div class="card empty-state">' + EMPTY_MOTIF + '<p style="color:var(--muted);margin:0;line-height:1.6">The Vault is empty — discontinue a scent and its formula is archived here. Relaunch it later as a <b style="color:var(--cream)">Heritage Edition</b> (+15% demand), or license it to a rival for a lump sum plus weekly royalties.</p></div>'; return; }
   vp.innerHTML = '<div class="grid two">' + S.vault.map((v,i) =>
     '<article class="card"><span class="profile-tag">' + escapeHtml(v.profile || "Archived Formula") + '</span>' +
     '<h4 style="font-family:var(--serif);margin:4px 0;font-size:1.2rem">' + escapeHtml(v.name) + '</h4>' +
@@ -1509,9 +1683,12 @@ function testPanelHtml(){
   if(!ready) return '<p style="color:var(--faint);font-size:.82rem;line-height:1.5;margin:0">Pick a top, heart and base note, and twenty virtual testers will rate the draft before you spend a franc on launch.</p>';
   if(!lab.test) return '<button class="btn block" id="btnTestPanel">Run Test Panel</button><p style="color:var(--faint);font-size:.78rem;line-height:1.5;margin:8px 0 0">Informational only — the panel never blocks a launch.</p>';
   const t = lab.test;
+  const dtFam = dailyTrendFam();
+  const dtMatch = [lab.top.fam, lab.heart.fam, lab.base.fam].includes(dtFam);
   return '<div class="kv"><span>Tester Score</span><span style="color:var(--gold-bright);font-weight:600">' + t.score.toFixed(1) + ' / 10</span></div>' +
     '<div class="kv"><span>Predicted Segment Fit</span><span>' + t.seg + ' · ' + t.fit + '%</span></div>' +
     '<p style="color:var(--muted);font-size:.86rem;line-height:1.55;margin:8px 0 0">“' + t.verdict + '”</p>' +
+    (dtMatch ? '<p style="color:var(--gold-bright);font-size:.84rem;line-height:1.5;margin:6px 0 0">✦ Today\'s Trend: ' + dtFam + ' is in the air — this draft gains +5% demand today.</p>' : '') +
     '<button class="btn block" id="btnTestPanel" style="margin-top:10px">Re-run Test Panel</button>';
 }
 function runTestPanel(){
@@ -1669,7 +1846,9 @@ function renderEmpire(){
     '<p style="color:var(--muted); font-size:.86rem; line-height:1.6; margin:12px 0 0">Reading the market: a fragrance earns the 2× bonus when <em>any</em> of its three note families is hot, and suffers the 0.5× penalty when any is oversaturated. Seasonal fit stacks on top — fresh florals sing in spring, dark woods in winter.</p>';
   renderUpgrades();
   renderScandal();
+  renderRivalry();
   renderArch();
+  applyEmpireSub();
 }
 /* ---------- v6 Wave 2: House Upgrades (items 20, 21, 23, 24) ---------- */
 function renderUpgrades(){
@@ -1679,13 +1858,13 @@ function renderUpgrades(){
   const tierOk = S.tier >= TIERS.length - 1;
   el.innerHTML =
     '<article class="card up-card"><h4>Loyalty Club</h4>' +
-      (S.loyaltyClub ? '<span class="owned-pill">Active</span><p><b style="color:var(--cream)">' + members.toLocaleString("en-US") + ' members</b> (the club grows with Prestige) currently pay <b style="color:var(--cream)">' + fmt(members * 2) + '/week</b> — its own line in the Weekly Report. Members buy first: rival steal pressure and arch-rival pressure no longer touch your demand.</p>'
+      (S.loyaltyClub ? '<span class="owned-pill">Active</span><p><b style="color:var(--cream)">' + members.toLocaleString("en-US") + ' members</b> (the club grows with Prestige) currently pay <b style="color:var(--cream)">' + fmt(members * 2) + '/week</b> — paid out as Membership Income in the Weekly Report. Members buy first: rival steal pressure and arch-rival pressure no longer touch your demand.</p>'
                      : '<span class="price-line">$8,000</span><p>Launch the MAISON D\'OR Loyalty Club: members grow with Prestige and pay a small steady weekly amount, and your scents ignore rival steal effects while the club runs.</p><button class="btn block" id="btnBuyLoyalty" ' + (S.cash < 8000 ? "disabled" : "") + '>Launch Loyalty Club</button>') + '</article>' +
     '<article class="card up-card"><h4>Airport Duty-Free Counter</h4>' +
-      (S.dutyFree ? '<span class="owned-pill">Open</span><p>Your Clean &amp; Fresh scents sell extra volume through the duty-free counter every week — no rent, and its own line in the Weekly Report.</p>'
+      (S.dutyFree ? '<span class="owned-pill">Open</span><p>Your Clean &amp; Fresh scents sell extra volume through the duty-free counter every week — no rent, and its sales are reported under Partnership Income in the Weekly Report.</p>'
                   : '<span class="price-line">$25,000</span><p>' + (tierOk ? 'Open a counter at the international terminal: Clean &amp; Fresh profile scents sell at volume every week, rent-free.' : 'Unlocks only at the highest retail tier — <b style="color:var(--cream)">Global Luxury House</b>.') + '</p><button class="btn block" id="btnBuyDutyFree" ' + ((!tierOk || S.cash < 25000) ? "disabled" : "") + '>Open Duty-Free Counter</button>') + '</article>' +
     '<article class="card up-card"><h4>Scent of the Month · Subscription Box</h4>' +
-      (S.subBox ? (activeCount >= 3 ? '<span class="owned-pill">Running</span><p>Subscribers currently pay <b style="color:var(--cream)">' + fmt(activeCount * 150 + Math.round(S.prestige) * 10) + '/week</b> — scaled by your ' + activeCount + ' active scents and Prestige ' + Math.round(S.prestige) + '. Its own line in the Weekly Report.</p>'
+      (S.subBox ? (activeCount >= 3 ? '<span class="owned-pill">Running</span><p>Subscribers currently pay <b style="color:var(--cream)">' + fmt(activeCount * 150 + Math.round(S.prestige) * 10) + '/week</b> — scaled by your ' + activeCount + ' active scents and Prestige ' + Math.round(S.prestige) + ' — paid out as Membership Income in the Weekly Report.</p>'
                                     : '<span class="active-pill">Paused</span><p>The box needs <b style="color:var(--cream)">3+ active scents</b> — you currently have ' + activeCount + '. Launch another scent and the income resumes automatically.</p>')
                 : '<span class="price-line">$3,500</span><p>' + (activeCount >= 3 ? 'A monthly discovery box for subscribers: steady weekly income scaled by your active scent count + Prestige.' : 'Unlocks when you run <b style="color:var(--cream)">3+ active scents</b> — you currently have ' + activeCount + '.') + '</p><button class="btn block" id="btnBuySub" ' + ((activeCount < 3 || S.cash < 3500) ? "disabled" : "") + '>Launch Subscription Box</button>') + '</article>' +
     '<article class="card up-card"><h4>Quality Control Upgrade</h4>' +
@@ -1694,7 +1873,7 @@ function renderUpgrades(){
   const bl = $("btnBuyLoyalty");
   if(bl) bl.addEventListener("click", ()=>{ if(S.cash < 8000) return; S.cash -= 8000; S.loyaltyClub = true; logEvent("💳 The <b>Loyalty Club</b> launched — members pay weekly and shield the maison from rival steal effects."); toast("💳 <b>Loyalty Club launched</b> — " + Math.round(S.prestige * 10) + " founding members, and rival steal pressure no longer touches you.", "good"); save(); renderAll(); });
   const bd = $("btnBuyDutyFree");
-  if(bd) bd.addEventListener("click", ()=>{ if(S.cash < 25000 || S.tier < TIERS.length - 1) return; S.cash -= 25000; S.dutyFree = true; logEvent("✈️ The <b>Airport Duty-Free Counter</b> opened — Clean &amp; Fresh scents now sell at volume, rent-free."); toast("✈️ <b>Duty-Free Counter open</b> — watch for its line in the Weekly Report.", "good"); save(); renderAll(); });
+  if(bd) bd.addEventListener("click", ()=>{ if(S.cash < 25000 || S.tier < TIERS.length - 1) return; S.cash -= 25000; S.dutyFree = true; logEvent("✈️ The <b>Airport Duty-Free Counter</b> opened — Clean &amp; Fresh scents now sell at volume, rent-free."); toast("✈️ <b>Duty-Free Counter open</b> — watch for Partnership Income in the Weekly Report.", "good"); save(); renderAll(); });
   const bs = $("btnBuySub");
   if(bs) bs.addEventListener("click", ()=>{ if(S.cash < 3500 || S.perfumes.length < 3) return; S.cash -= 3500; S.subBox = true; logEvent("📦 The <b>Scent of the Month Subscription Box</b> launched — steady weekly income while 3+ scents stay active."); toast("📦 <b>Subscription Box launched</b> — steady income in every Weekly Report while you run 3+ scents.", "good"); save(); renderAll(); });
   const bq = $("btnBuyQC");
@@ -1801,7 +1980,7 @@ function renderChart(){
     const base = H - padB;
     bars += '<rect x="' + (x+bw*0.14) + '" y="' + (base-rh) + '" width="' + (bw*0.3) + '" height="' + rh + '" rx="2" fill="#c8a24a" opacity="0.9"><title>Week ' + d.week + ' revenue ' + fmt(d.revenue) + '</title></rect>';
     bars += '<rect x="' + (x+bw*0.52) + '" y="' + (d.profit>=0 ? base-ph : base) + '" width="' + (bw*0.3) + '" height="' + ph + '" rx="2" fill="' + (d.profit>=0 ? "#9dc08b" : "#d98a7e") + '"><title>Week ' + d.week + ' profit ' + fmt(d.profit) + '</title></rect>';
-    bars += '<text x="' + (x+bw/2) + '" y="' + (H-6) + '" fill="#7d7261" font-size="10" text-anchor="middle">W' + d.week + '</text>';
+    bars += '<text x="' + (x+bw/2) + '" y="' + (H-6) + '" fill="#9a8e79" font-size="10" text-anchor="middle">W' + d.week + '</text>';
   });
   let lines=""; if(data.some(d=>d.netWorth!==undefined)){ const maxNW=Math.max(1000,...data.map(d=>d.netWorth||0)); const pts=data.map((d,i)=>{ const x=padL+i*bw+bw/2; const y=padT+(1-(d.netWorth||0)/maxNW)*(H-padB-padT); return x+"," + y; }).join(" "); lines='<polyline points="'+pts+'" fill="none" stroke="#ecd28a" stroke-width="2"><title>Net worth line</title></polyline>'; const pts2=data.map((d,i)=>{ const x=padL+i*bw+bw/2; const y=padT+(1-(d.prestige||0)/100)*(H-padB-padT); return x+","+y; }).join(" "); lines+='<polyline points="'+pts2+'" fill="none" stroke="#b3a68d" stroke-width="1.5" stroke-dasharray="4 3"><title>Prestige line</title></polyline>'; }
   wrap.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%; height:auto; display:block" role="img" aria-label="Bar chart of weekly revenue versus profit">' +
@@ -1820,7 +1999,7 @@ function renderBests(){
     row("Highest Net Worth", bests.highestNetWorth ? fmt(bests.highestNetWorth) : "—") +
     '<p style="color:var(--faint);font-size:.8rem;margin:10px 0 0">Personal bests are kept across New Games and shared across all three save slots.</p>';
 }
-function renderAll(){ renderHUD(); renderTrends(); renderShowroom(); renderLab(); renderEmpire(); renderLedger(); renderTrophies(); renderBests(); }
+function renderAll(){ renderHUD(); renderTrends(); renderShowroom(); renderLab(); renderEmpire(); renderLedger(); renderTrophies(); renderBests(); try{ updateInstallUI(); }catch(e){} }
 </script>
 
 <script>
@@ -1868,6 +2047,8 @@ function launchPerfume(){
   $("labName").value = "";
   save(); renderAll();
   switchTab("showroom");
+  if(!S.coachDone && S.coachStep === 0){ S.coachStep = 1; save(); }
+  coachMaybe();
 }
 function launchCampaign(id){
   const c = CAMPAIGNS.find(x=>x.id===id);
@@ -2023,6 +2204,14 @@ function simulateWeek(){
   const subPaused = S.subBox && S.perfumes.length < 3;
   let royalties = 0; const royaltyLines = [];
   if(Array.isArray(S.licenses)) for(const L of S.licenses){ if(L.weeksLeft > 0){ royalties += L.amount; royaltyLines.push(L.name + " (" + L.rival + "): " + fmt(L.amount) + " · " + L.weeksLeft + " wk left"); } }
+  /* v7 Wave B: the four passive incomes present as TWO merged lines in the Weekly Report —
+     Membership Income (Loyalty Club + Subscription Box) and Partnership Income (Duty-Free
+     sales + formula-licensing royalties). The systems and every amount are unchanged. */
+  const membershipInc = loyaltyInc + subInc;
+  const partnershipInc = (dutyRow ? dutyRow.revenue : 0) + royalties;
+  const partnershipLines = [];
+  if(dutyRow) partnershipLines.push("Airport Duty-Free: " + fmt(dutyRow.revenue) + " (" + dutyRow.units + " units)");
+  royaltyLines.forEach(l => partnershipLines.push(l));
   let managerNet = 0; const managerLines = [];
   (S.cities||[]).forEach(cid => {
     const city = CITIES.find(x=>x.id===cid); if(!city) return;
@@ -2097,11 +2286,15 @@ function simulateWeek(){
     else if(S.heir.step > 0 && (weekPlayed + 1) >= (S.heir.nextWeek || 0)) S.heirReady = true;
   }
 
+  /* v7 Wave C: scripted first trophy — finishing Week 1 with any sale earns First Week Complete */
+  let firstWeekTrophy = false;
+  if(weekPlayed === 1 && unitsTotal > 0 && !S.firstWeekDone){ S.firstWeekDone = true; firstWeekTrophy = true; }
+
   /* advance the calendar */
   S.week += 1;
 
-  const report = { week:weekPlayed, season:seasonOf(weekPlayed), rows, revenue, production, overhead, profit, unitsTotal, prestigeDelta, expired, trendShifted, lostSales, storageCost, interest, autoLines, giftRow, missionLine, salary, salvageNotes:(S.salvageNotes||[]).slice(),
-    dutyRow, collabShare, loyaltyInc, loyaltyMembers, subInc, subPaused, royalties, royaltyLines, managerLines, managerNet, archBonus, archLine, heirInc };
+  const report = { week:weekPlayed, season:seasonOf(weekPlayed), rows, revenue, production, overhead, profit, unitsTotal, prestigeDelta, expired, trendShifted, lostSales, storageCost, interest, autoLines, giftRow, missionLine, salary, salvageNotes:(S.salvageNotes||[]).slice(), firstWeekTrophy,
+    dutyRow, collabShare, loyaltyInc, loyaltyMembers, subInc, subPaused, royalties, royaltyLines, membershipInc, partnershipInc, partnershipLines, managerLines, managerNet, archBonus, archLine, heirInc };
   S.salvageNotes = [];
   checkAchievements();
   if(revenue>=8000) setTimeout(()=>confettiBurst(true),300);
@@ -2114,6 +2307,8 @@ function simulateWeek(){
   if(unitsTotal >= 100) toast("A landmark week — <b>" + unitsTotal + " bottles</b> left the maison.", "good");
   /* v6 Wave 3: personal bests update + gold edge flash scaled to this week's profit */
   updateBestsFromWeek(profit, weekPlayed);
+  /* v7 Wave C: built-in play stats — lifetime weeks + highest week, kept in shared prefs */
+  try{ prefs.stats.totalWeeks = (prefs.stats.totalWeeks || 0) + 1; if(S.week > (prefs.stats.highestWeek || 0)) prefs.stats.highestWeek = S.week; savePrefs(); }catch(e){}
   goldFlash(profit);
   save();
   return report;
@@ -2121,8 +2316,8 @@ function simulateWeek(){
 let lastReport = null;
 function showReport(r){
   lastReport = r;
-  $("reportKicker").textContent = "Weekly Financial Report · " + r.season;
-  $("reportTitle").textContent = "Week " + r.week + " at the Maison";
+  $("reportKicker").textContent = t("reportKicker") + " · " + t("season_" + r.season);
+  $("reportTitle").textContent = t("reportTitle").replace("{n}", r.week);
   let html = "";
   if(r.rows.length){
     html += '<div class="rep-frag-list"><div class="rep-frag-head"><span>Fragrance</span><span class="rep-frag-nums"><span class="rep-frag-units">Units</span><span class="rep-frag-rev">Revenue</span></span></div>' +
@@ -2134,36 +2329,37 @@ function showReport(r){
     html += '<div class="stockout-warning" role="alert">⚠ You lost ' + r.lostSales + ' sales to stockouts — increase stock in the Showroom</div>';
   }
   html += '<div class="rep-summary">' +
-    '<div class="rep-sum-row"><span class="rep-sum-label">Total Revenue (' + r.unitsTotal + ' units)</span><span class="rep-sum-val">' + fmt(r.revenue) + '</span></div>' +
-    '<div class="rep-sum-row"><span class="rep-sum-label">Production &amp; Restock</span><span class="rep-sum-val">−' + fmt(r.production) + '</span></div>' +
-    '<div class="rep-sum-row"><span class="rep-sum-label">Overhead · ' + TIERS[S.tier].name + '</span><span class="rep-sum-val">−' + fmt(r.overhead) + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">' + t("revenue") + ' (' + r.unitsTotal + ' ' + t("units") + ')</span><span class="rep-sum-val">' + fmt(r.revenue) + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">' + t("production") + '</span><span class="rep-sum-val">−' + fmt(r.production) + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">' + t("overhead") + ' · ' + TIERS[S.tier].name + '</span><span class="rep-sum-val">−' + fmt(r.overhead) + '</span></div>' +
     (r.lostSales? '<div class="rep-sum-row"><span class="rep-sum-label">Stockouts — lost sales</span><span class="rep-sum-val">' + r.lostSales + ' units lost</span></div>':'') +
     (r.storageCost? '<div class="rep-sum-row"><span class="rep-sum-label">Overstock storage</span><span class="rep-sum-val">−' + fmt(r.storageCost) + '</span></div>':'') +
     (r.interest? '<div class="rep-sum-row"><span class="rep-sum-label">Loan interest (5%)</span><span class="rep-sum-val">−' + fmt(r.interest) + '</span></div>':'') +
     (r.salary? '<div class="rep-sum-row"><span class="rep-sum-label">Junior Perfumer salary</span><span class="rep-sum-val">−' + fmt(r.salary) + '</span></div>':'') +
-    (r.dutyRow? '<div class="rep-sum-row"><span class="rep-sum-label">Airport Duty-Free (' + r.dutyRow.units + ' units)</span><span class="rep-sum-val">+' + fmt(r.dutyRow.revenue) + '</span></div>':'') +
     (r.collabShare? '<div class="rep-sum-row"><span class="rep-sum-label">Collab revenue share — Atelier Vasseur (15%)</span><span class="rep-sum-val">−' + fmt(r.collabShare) + '</span></div>':'') +
-    (r.loyaltyInc? '<div class="rep-sum-row"><span class="rep-sum-label">Loyalty Club (' + (r.loyaltyMembers||0).toLocaleString("en-US") + ' members)</span><span class="rep-sum-val">+' + fmt(r.loyaltyInc) + '</span></div>':'') +
-    (r.subInc? '<div class="rep-sum-row"><span class="rep-sum-label">Subscription Box</span><span class="rep-sum-val">+' + fmt(r.subInc) + '</span></div>':'') +
-    (r.subPaused? '<div class="rep-sum-row"><span class="rep-sum-label">Subscription Box</span><span class="rep-sum-val">Paused — needs 3+ active scents</span></div>':'') +
-    (r.royalties? '<div class="rep-sum-row"><span class="rep-sum-label">Formula Royalties</span><span class="rep-sum-val">+' + fmt(r.royalties) + '</span></div>':'') +
+    (r.membershipInc? '<div class="rep-sum-row"><span class="rep-sum-label">Membership Income</span><span class="rep-sum-val">+' + fmt(r.membershipInc) + '</span></div>':'') +
+    (r.partnershipInc? '<div class="rep-sum-row"><span class="rep-sum-label">Partnership Income</span><span class="rep-sum-val">+' + fmt(r.partnershipInc) + '</span></div>':'') +
     (r.managerNet? '<div class="rep-sum-row"><span class="rep-sum-label">City Managers (net)</span><span class="rep-sum-val">' + fmt(r.managerNet) + '</span></div>':'') +
     (r.archBonus? '<div class="rep-sum-row"><span class="rep-sum-label">Arch-Rival Outsold Bonus</span><span class="rep-sum-val">+' + fmt(r.archBonus) + '</span></div>':'') +
     (r.heirInc? '<div class="rep-sum-row"><span class="rep-sum-label">Successor\'s Enterprise (3% of revenue)</span><span class="rep-sum-val">+' + fmt(r.heirInc) + '</span></div>':'') +
     '<div class="rep-sum-row"><span class="rep-sum-label">Rivals</span><span class="rep-sum-val rep-rivals-val">' + (S.rivals||[]).map(x=>'<span class="rep-rival-line">' + escapeHtml(x.name) + ' ' + fmt(x.sales) + '</span>').join("") + '</span></div>' +
     '<div class="rep-sum-row"><span class="rep-sum-label">PR Meter</span><span class="rep-sum-val">' + Math.round(S.prMeter||0) + '</span></div></div>';
-  html += '<div class="report-total"><span>Net ' + (r.profit>=0 ? "Profit" : "Loss") + '</span><span style="color:' + (r.profit>=0 ? "var(--green)" : "var(--red)") + '">' + fmt(r.profit) + '</span></div>';
+  html += '<div class="report-total"><span>' + (r.profit>=0 ? t("netProfit") : t("netLoss")) + '</span><span style="color:' + (r.profit>=0 ? "var(--green)" : "var(--red)") + '">' + fmt(r.profit) + '</span></div>';
+  if(r.firstWeekTrophy) html += '<p style="color:var(--gold-bright); font-size:.95rem; line-height:1.6; margin-top:10px">🏆 <b>First Week Complete!</b> Your first trophy is on the shelf — finishing Week 1 with a sale earns it. See it in the Trophies tab.</p>';
   html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:10px">Prestige ' + (r.prestigeDelta>=0 ? "rose" : "slipped") + ' by ' + Math.abs(Math.round(r.prestigeDelta*10)/10) + ' to <b style="color:var(--cream)">' + Math.round(S.prestige) + '</b>. Cash now stands at <b style="color:var(--cream)">' + fmt(S.cash) + '</b>.' +
     (r.trendShifted ? ' The market has shifted — check the Trend Forecast before composing your next scent.' : '') +
     (S.cash < 0 ? ' <span style="color:var(--red)">The maison is overdrawn — prestige and sales must recover quickly, or sell nothing and cut losses.</span>' : '') + '</p>';
   if(r.autoLines && r.autoLines.length) html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:10px">🔄 <b style="color:var(--cream)">Auto-Restock:</b> ' + r.autoLines.map(escapeHtml).join(" · ") + '</p>';
   if(r.missionLine) html += '<p style="color:var(--gold-bright); font-size:.9rem; line-height:1.6; margin-top:8px">' + escapeHtml(r.missionLine) + '</p>';
   if(r.managerLines && r.managerLines.length) html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:8px">🏙 <b style="color:var(--cream)">City Managers:</b><br/>' + r.managerLines.map(escapeHtml).join("<br/>") + '</p>';
-  if(r.royaltyLines && r.royaltyLines.length) html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:6px">🤝 <b style="color:var(--cream)">Formula Royalties:</b> ' + r.royaltyLines.map(escapeHtml).join(" · ") + '</p>';
+  if(r.membershipInc){ const mp = []; if(r.loyaltyInc) mp.push("Loyalty Club (" + (r.loyaltyMembers||0).toLocaleString("en-US") + " members) " + fmt(r.loyaltyInc)); if(r.subInc) mp.push("Subscription Box " + fmt(r.subInc)); if(mp.length) html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:6px">💳 <b style="color:var(--cream)">Membership Income:</b> ' + mp.map(escapeHtml).join(" · ") + '</p>'; }
+  if(r.subPaused) html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:6px">📦 <b style="color:var(--cream)">Membership Income:</b> the Subscription Box is paused — it needs 3+ active scents. Loyalty Club income is unaffected.</p>';
+  if(r.partnershipLines && r.partnershipLines.length) html += '<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:6px">🤝 <b style="color:var(--cream)">Partnership Income:</b> ' + r.partnershipLines.map(escapeHtml).join(" · ") + '</p>';
   if(r.archLine) html += '<p style="color:var(--gold-bright); font-size:.9rem; line-height:1.6; margin-top:8px">' + escapeHtml(r.archLine) + '</p>';
   if(r.salvageNotes && r.salvageNotes.length) html += r.salvageNotes.map(n=>'<p style="color:var(--muted); font-size:.88rem; line-height:1.6; margin-top:6px">♻ ' + escapeHtml(n) + '</p>').join("");
   $("reportBody").innerHTML = html;
   $("reportOverlay").classList.add("open");
+  if(r.firstWeekTrophy) setTimeout(() => confettiBurst(true), 300);
 }
 
 /* ==================== EVENTS ==================== */
@@ -2279,10 +2475,22 @@ function badMsg(html){ return { ok:false, html }; }
 function failMsg(text){ return { fail:true, html:text }; }
 let pendingEvent = null;
 function maybeEvent(){
+  /* v7 Wave C: scripted first rival event — if no rival event has fired by Week 3, one is forced now */
+  if(!S.rivalEventFired && S.week === 3){
+    const rpool = EVENTS.filter(e => /rival/i.test(e.kicker || "") && (!e.cond || e.cond()));
+    if(rpool.length){
+      pendingEvent = pick(rpool);
+      S.rivalEventFired = true;
+      S.nextEventWeek = S.week + 2 + Math.floor(Math.random()*2);
+      presentEvent();
+      return;
+    }
+  }
   if(S.week < S.nextEventWeek) return;
   const pool = EVENTS.filter(e => !e.cond || e.cond());
   if(!pool.length) return;
   pendingEvent = pick(pool);
+  if(/rival/i.test(pendingEvent.kicker || "")) S.rivalEventFired = true;
   /* v6 Wave 2 (item 24): Quality Control can quietly avert a negative event */
   if(S.qc && pendingEvent.neg && Math.random() < 0.4){
     S.nextEventWeek = S.week + 2;
@@ -2291,6 +2499,9 @@ function maybeEvent(){
     return;
   }
   S.nextEventWeek = S.week + 2 + Math.floor(Math.random()*2);
+  presentEvent();
+}
+function presentEvent(){
   $("eventKicker").textContent = pendingEvent.kicker;
   $("eventTitle").textContent = pendingEvent.title;
   $("eventText").textContent = pendingEvent.text;
@@ -2436,6 +2647,7 @@ function checkWin(){
 
 /* ==================== TABS ==================== */
 function switchTab(name){
+  coachHide();
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.getAttribute("data-tab") === name));
   document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + name));
 }
@@ -2488,6 +2700,8 @@ $("btnAdvance").addEventListener("click", () => {
 });
 $("btnReportClose").addEventListener("click", () => {
   $("reportOverlay").classList.remove("open");
+  try{ maybeInstallBanner(); }catch(e){}
+  if(!S.coachDone && S.coachStep === 1){ S.coachStep = 2; save(); setTimeout(coachMaybe, 350); }
   // Award season every 12 weeks (based on last ledger week)
   const lastW = S.ledger.length? S.ledger[S.ledger.length-1].week:0;
   if(lastW>0 && lastW%12===0 && S.perfumes.length){ const best=[...S.perfumes].sort((a,b)=>b.lifetimeRevenue-a.lifetimeRevenue)[0]; if(best && best.lifetimeRevenue>5000){ S.prestige=clamp(S.prestige+15,0,100); S.awards.push({week:lastW,name:"Fragrance of the Year",scent:best.name}); logEvent("🏆 <b>Fragrance Awards</b> — "+escapeHtml(best.name)+" wins! +15 Prestige."); toast("🏆 <b>Fragrance Awards!</b> "+escapeHtml(best.name)+" wins — +15 Prestige + trophy in Ledger/Trophies.","good"); confettiBurst(true); save(); renderAll(); } else { toast("Fragrance Awards held — no scent qualified this season.","bad"); } }
@@ -2527,7 +2741,7 @@ $("btnConfirmReset").addEventListener("click", () => {
   const chEl=document.querySelector('input[name="challenge"]:checked'); const ch=chEl?chEl.value:"normal";
   S = defaultState(); S.challenge=ch; if(ch==="hard") S.cash=1000; uidC = 1; displayedCash = S.cash;
   lab = { top:null, heart:null, base:null, bottle:2, price:120, name:"", conc:"EDP", signature:"", colour:"", test:null, limited:false, blind:false };
-  S.mission = genMission();
+  S.mission = firstMission();
   $("labName").value = "";
   rollTrends();
   logEvent("The maison is founded — a boutique pop-up, $5,000, and a perfumer's ambition.");
@@ -2551,10 +2765,10 @@ $("btnNewGameTop").addEventListener("click", () => $("confirmOverlay").classList
   dd.querySelectorAll(".menu-item").forEach(it => it.addEventListener("click", closeMenu));
   const upd = $("btnCheckUpdates");
   if(upd) upd.addEventListener("click", () => {
-    toast("Reloading the latest version (v6)…");
+    toast("Reloading the latest version (v" + GAME_VERSION + ")…");
     setTimeout(() => {
-      if(/[?&]v=6(&|$)/.test(window.location.search)) window.location.reload();
-      else window.location.search = "?v=6";
+      if(new RegExp("[?&]v=" + GAME_VERSION + "(&|$)").test(window.location.search)) window.location.reload();
+      else window.location.search = "?v=" + GAME_VERSION;
     }, 350);
   });
 })();
@@ -2563,7 +2777,6 @@ $("importFile").addEventListener("change", e => { if(e.target.files && e.target.
 /* ==================== v6 Wave 3 WIRING (items 33-48) ==================== */
 let pendingComeback = null;
 let shareBlob = null, shareFileName = "maison-dor.png";
-let deferredInstallPrompt = null;
 
 /* Item 48: Save Slots — migration + switching */
 function initSlots(){
@@ -2584,12 +2797,12 @@ function slotSummary(n){
     if(!raw) return "Empty slot";
     const d = JSON.parse(raw);
     if(!d || typeof d.week !== "number") return "Empty slot";
-    return "Week " + d.week + " · " + fmt(d.cash || 0) + " · Prestige " + Math.round(d.prestige || 0);
+    return t("week") + " " + d.week + " · " + fmt(d.cash || 0) + " · " + t("prestige") + " " + Math.round(d.prestige || 0);
   }catch(e){ return "Empty slot"; }
 }
 function renderMenuSlots(){
   const wrap = $("slotList"); if(!wrap) return;
-  wrap.innerHTML = [1,2,3].map(n => '<button class="menu-item slot-item" data-slot="' + n + '">' + (n === activeSlot ? "● " : "○ ") + "Save Slot " + n + (n === activeSlot ? " (active)" : "") + '<span class="slot-sum">' + escapeHtml(slotSummary(n)) + '</span></button>').join("");
+  wrap.innerHTML = [1,2,3].map(n => { const sum = slotSummary(n); const label = (sum === "Empty slot" && n > 1) ? t("emptySecond") : (sum === "Empty slot" ? t("emptySlot") : sum); return '<button class="menu-item slot-item" data-slot="' + n + '">' + (n === activeSlot ? "● " : "○ ") + t("saveSlot") + " " + n + (n === activeSlot ? " (" + t("active") + ")" : "") + '<span class="slot-sum">' + escapeHtml(label) + '</span></button>'; }).join("");
   wrap.querySelectorAll("[data-slot]").forEach(b => b.addEventListener("click", () => {
     const dd = $("menuDropdown"); if(dd) dd.hidden = true;
     const bb = $("btnMenu"); if(bb) bb.setAttribute("aria-expanded", "false");
@@ -2606,19 +2819,22 @@ function switchSlot(n){
   const had = load();
   if(!had){
     S = defaultState(); uidC = 1;
-    S.mission = genMission();
+    S.mission = firstMission();
     rollTrends();
     logEvent("The maison is founded — a boutique pop-up, $5,000, and a perfumer's ambition.");
   }
   displayedCash = S.cash;
   save(); renderAll(); renderMenuSlots();
+  coachMaybe();
+  setTimeout(() => { try{ maybeInstallBanner(); }catch(e){} }, 400);
   toast("Switched to <b>Save Slot " + n + "</b> — Week " + S.week + ", " + fmt(S.cash) + ", Prestige " + Math.round(S.prestige) + ".", "good");
 }
 
 /* Items 35-36: persisted display prefs */
 function applyPrefs(){
   document.body.classList.toggle("big-numbers", !!prefs.bigNumbers);
-  const bb = $("btnBigNumbers"); if(bb) bb.textContent = "Big Numbers: " + (prefs.bigNumbers ? "On" : "Off");
+  const bb = $("btnBigNumbers"); if(bb){ const lb = bb.querySelector("span"); if(lb) lb.textContent = t("bigNumbers") + ": " + (prefs.bigNumbers ? t("on") : t("off")); }
+  const cm = $("btnCompactMenu"); if(cm){ const lb = cm.querySelector("span"); if(lb) lb.textContent = t("compactView") + ": " + (prefs.compact ? t("on") : t("off")); }
   const vt = $("btnViewToggle"); if(vt) vt.textContent = prefs.compact ? "View: Compact" : "View: Detailed";
 }
 
@@ -2630,8 +2846,8 @@ function doQuickWeek(){
   $("quickBody").innerHTML =
     '<div class="report-total"><span>Net ' + (r.profit >= 0 ? "Profit" : "Loss") + '</span><span style="color:' + (r.profit >= 0 ? "var(--green)" : "var(--red)") + '">' + fmt(r.profit) + '</span></div>' +
     '<div class="rep-summary">' +
-    '<div class="rep-sum-row"><span class="rep-sum-label">Revenue</span><span class="rep-sum-val">' + fmt(r.revenue) + '</span></div>' +
-    '<div class="rep-sum-row"><span class="rep-sum-label">Units Sold</span><span class="rep-sum-val">' + r.unitsTotal + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">' + t("revenue") + '</span><span class="rep-sum-val">' + fmt(r.revenue) + '</span></div>' +
+    '<div class="rep-sum-row"><span class="rep-sum-label">' + t("unitsSold") + '</span><span class="rep-sum-val">' + r.unitsTotal + '</span></div>' +
     '<div class="rep-sum-row"><span class="rep-sum-label">Prestige Change</span><span class="rep-sum-val">' + (r.prestigeDelta >= 0 ? "+" : "−") + Math.abs(Math.round(r.prestigeDelta * 10) / 10) + ' → ' + Math.round(S.prestige) + ' · ' + prestigeTitle(S.prestige) + '</span></div>' +
     '<div class="rep-sum-row"><span class="rep-sum-label">Cash Now</span><span class="rep-sum-val">' + fmt(S.cash) + '</span></div></div>' +
     (r.lostSales > 0 ? '<div class="stockout-warning" role="alert">⚠ You lost ' + r.lostSales + ' sales to stockouts — increase stock in the Showroom</div>' : '');
@@ -2693,8 +2909,10 @@ function shareEmpireCard(){
     x.fillStyle = "#b3a68d"; x.font = '400 28px "Jost", sans-serif'; x.textAlign = "center";
     x.fillText("Lifetime revenue " + fmt(best.lifetimeRevenue), W / 2, 884);
   }
-  x.fillStyle = "#7d7261"; x.font = '500 24px "Jost", sans-serif'; x.textAlign = "center";
-  x.fillText("A LUXURY PERFUME EMPIRE", W / 2, H - 84);
+  x.fillStyle = "#9a8e79"; x.font = '500 24px "Jost", sans-serif'; x.textAlign = "center";
+  x.fillText("A LUXURY PERFUME EMPIRE", W / 2, H - 88);
+  x.fillStyle = "#ecd28a"; x.font = '600 21px "Jost", sans-serif';
+  x.fillText("https://farrakhimtiaz74.github.io/maison-d-or/", W / 2, H - 58);
   openShareImage(cv, "Share My Empire", "maison-dor-empire-week" + S.week + ".png");
 }
 function shareRecapCard(){
@@ -2716,8 +2934,10 @@ function shareRecapCard(){
   cardRow(x, W, 624, "Units Sold", String(r.unitsTotal));
   const pd = Math.round((r.prestigeDelta || 0) * 10) / 10;
   cardRow(x, W, 762, "Prestige", (pd >= 0 ? "+" : "−") + Math.abs(pd) + "  →  " + Math.round(S.prestige) + " · " + prestigeTitle(S.prestige));
-  x.fillStyle = "#7d7261"; x.font = '500 24px "Jost", sans-serif'; x.textAlign = "center";
-  x.fillText("A LUXURY PERFUME EMPIRE", W / 2, H - 84);
+  x.fillStyle = "#9a8e79"; x.font = '500 24px "Jost", sans-serif'; x.textAlign = "center";
+  x.fillText("A LUXURY PERFUME EMPIRE", W / 2, H - 88);
+  x.fillStyle = "#ecd28a"; x.font = '600 21px "Jost", sans-serif';
+  x.fillText("https://farrakhimtiaz74.github.io/maison-d-or/", W / 2, H - 58);
   openShareImage(cv, "Week " + r.week + " Recap", "maison-dor-week" + r.week + "-recap.png");
 }
 
@@ -2785,14 +3005,18 @@ function startVersionCheck(){
   }catch(e){}
 }
 
-/* Item 46: capture the browser's install prompt when offered */
-window.addEventListener("beforeinstallprompt", e => { try{ e.preventDefault(); }catch(err){} deferredInstallPrompt = e; });
+/* Item 46 + v7 Wave C: capture the browser's install prompt silently — it is NEVER offered on load.
+   It is only surfaced from the Menu's Install row or the Week-3 banner, on an explicit tap. */
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", e => { try{ e.preventDefault(); }catch(err){} deferredInstallPrompt = e; try{ updateInstallUI(); }catch(err){} });
+window.addEventListener("appinstalled", () => { try{ S.installAccepted = true; save(); updateInstallUI(); const b = $("installBanner"); if(b) b.hidden = true; }catch(e){} });
 
 $("btnAdvanceThumb").addEventListener("click", () => { $("btnAdvance").click(); });
 $("btnQuickWeek").addEventListener("click", doQuickWeek);
 $("btnQuickWeekMenu").addEventListener("click", doQuickWeek);
 $("btnQuickClose").addEventListener("click", () => { $("quickOverlay").classList.remove("open"); $("btnReportClose").click(); });
 $("btnViewToggle").addEventListener("click", () => { prefs.compact = !prefs.compact; savePrefs(); applyPrefs(); renderShowroom(); toast(prefs.compact ? "Showroom: <b>Compact</b> one-line rows." : "Showroom: <b>Detailed</b> cards."); });
+const bcm=$("btnCompactMenu"); if(bcm) bcm.addEventListener("click", () => { prefs.compact = !prefs.compact; savePrefs(); applyPrefs(); renderShowroom(); toast(prefs.compact ? "Showroom: <b>Compact</b> one-line rows." : "Showroom: <b>Detailed</b> cards."); });
 $("btnBigNumbers").addEventListener("click", () => { prefs.bigNumbers = !prefs.bigNumbers; savePrefs(); applyPrefs(); toast("Big Numbers " + (prefs.bigNumbers ? "<b>on</b> — HUD figures enlarged." : "<b>off</b>.")); });
 $("btnShareEmpire").addEventListener("click", shareEmpireCard);
 $("btnShareEmpireMenu").addEventListener("click", shareEmpireCard);
@@ -2813,16 +3037,7 @@ $("btnShareNative").addEventListener("click", () => {
     navigator.share({ files: [new File([shareBlob], shareFileName, { type: "image/png" })], title: "MAISON D'OR" }).catch(() => {});
   }catch(e){}
 });
-$("btnInstall").addEventListener("click", () => {
-  if(deferredInstallPrompt){
-    try{
-      deferredInstallPrompt.prompt();
-      if(deferredInstallPrompt.userChoice) deferredInstallPrompt.userChoice.then(() => { deferredInstallPrompt = null; }).catch(() => {});
-    }catch(e){ $("installOverlay").classList.add("open"); }
-  } else {
-    $("installOverlay").classList.add("open");
-  }
-});
+$("btnInstall").addEventListener("click", () => { if(!triggerInstall()) $("installOverlay").classList.add("open"); });
 $("btnInstallClose").addEventListener("click", () => $("installOverlay").classList.remove("open"));
 $("btnComebackCollect").addEventListener("click", () => {
   if(pendingComeback){
@@ -2842,10 +3057,284 @@ $("btnUpdateNow").addEventListener("click", () => {
 });
 $("btnUpdateDismiss").addEventListener("click", () => { const n = $("updateNotice"); if(n) n.hidden = true; });
 
+/* ==================== v7 Wave A WIRING: splash, coach marks, empire subs, modal close ==================== */
+function hideSplash(){ const sp = $("splash"); if(!sp || sp.classList.contains("hide")) return; sp.style.pointerEvents = "none"; sp.classList.add("hide"); setTimeout(() => { sp.style.display = "none"; if(sp.parentNode) sp.parentNode.removeChild(sp); }, 240); }
+const COACH_TEXTS = ["1 — Create your first scent", "2 — Advance the week to sell it", "3 — Watch trends, restock, grow Prestige"];
+function coachTarget(step){
+  if(step === 0) return document.querySelector('.tab-btn[data-tab="lab"]');
+  if(step === 1) return $("btnAdvance");
+  return $("trendBar");
+}
+function coachShow(step){
+  const b = $("coachBubble"); if(!b) return;
+  $("coachText").textContent = t("coach" + (step + 1)) || COACH_TEXTS[step] || "";
+  b.hidden = false;
+  const tgt = coachTarget(step);
+  if(tgt && tgt.getBoundingClientRect){
+    const r = tgt.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const bl = Math.max(10, Math.min(window.innerWidth - 240, cx - 32));
+    b.style.left = bl + "px";
+    b.style.setProperty("--caret", Math.max(12, Math.min(196, cx - bl - 6)) + "px");
+    if(r.bottom + 100 < window.innerHeight){ b.style.top = (r.bottom + 10) + "px"; b.style.bottom = "auto"; }
+    else { b.style.top = "auto"; b.style.bottom = (window.innerHeight - r.top + 10) + "px"; }
+  }
+}
+function coachHide(){ const b = $("coachBubble"); if(b) b.hidden = true; }
+function coachMaybe(){
+  if(!S || S.coachDone){ coachHide(); return; }
+  if(S.coachStep === 0){ if(S.week === 1 && !(S.perfumes || []).length) coachShow(0); else coachHide(); }
+  else if(S.coachStep === 1){ if((S.perfumes || []).length) coachShow(1); else coachHide(); }
+  else if(S.coachStep === 2){ coachShow(2); }
+}
+(function(){
+  const cb = $("coachBubble");
+  if(cb) cb.addEventListener("click", () => {
+    if(S && S.coachStep >= 2 && !S.coachDone){ S.coachDone = true; save(); }
+    coachHide();
+  });
+  const rt = $("btnReplayTips");
+  if(rt) rt.addEventListener("click", () => {
+    S.coachDone = false;
+    S.coachStep = (S.perfumes || []).length ? (S.week > 1 ? 2 : 1) : 0;
+    save();
+    setTimeout(coachMaybe, 80);
+  });
+})();
+function applyEmpireSub(){
+  const sub = (S && S.empireSub === "world") ? "world" : "upgrades";
+  const up = $("empUpgrades"), wo = $("empWorld");
+  if(up) up.hidden = sub !== "upgrades";
+  if(wo) wo.hidden = sub !== "world";
+  document.querySelectorAll(".emp-sub").forEach(b => b.classList.toggle("active", b.getAttribute("data-esub") === sub));
+}
+document.querySelectorAll(".emp-sub").forEach(b => b.addEventListener("click", () => { S.empireSub = b.getAttribute("data-esub"); save(); applyEmpireSub(); }));
+function closeSheetEl(sheet){
+  if(!sheet) return;
+  const ov = sheet.closest ? sheet.closest(".overlay") : null; if(!ov) return;
+  const click = id => { const el = $(id); if(el){ el.click(); return true; } return false; };
+  if(ov.id === "reportOverlay"){ click("btnReportClose"); return; }
+  if(ov.id === "quickOverlay"){ click("btnQuickClose"); return; }
+  if(ov.id === "shareOverlay"){ click("btnShareClose"); return; }
+  if(ov.id === "installOverlay"){ click("btnInstallClose"); return; }
+  if(ov.id === "statsOverlay"){ click("btnStatsClose"); return; }
+  if(ov.id === "winOverlay"){ click("btnWinClose"); return; }
+  if(ov.id === "confirmOverlay"){ click("btnCancelReset"); return; }
+  if(ov.id === "rescueOverlay"){ click("btnRescueDecline"); return; }
+  if(ov.id === "comebackOverlay"){ click("btnComebackCollect"); return; }
+  if(ov.id === "eventOverlay"){ const fc = ov.querySelector("#eventChoices .choice-btn"); if(fc){ fc.click(); return; } }
+  ov.classList.remove("open");
+}
+document.querySelectorAll(".sheet").forEach(sheet => {
+  const x = sheet.querySelector("[data-sheet-x]");
+  if(x) x.addEventListener("click", () => closeSheetEl(sheet));
+  let ty = null;
+  sheet.addEventListener("touchstart", e => {
+    if(e.touches.length === 1){ const r = sheet.getBoundingClientRect(); ty = (e.touches[0].clientY - r.top < 72) ? e.touches[0].clientY : null; }
+  }, { passive: true });
+  sheet.addEventListener("touchend", e => {
+    if(ty === null) return;
+    const dy = e.changedTouches[0].clientY - ty; ty = null;
+    if(dy > 70) closeSheetEl(sheet);
+  }, { passive: true });
+});
+
+/* ==================== v7 Wave C WIRING: language, WhatsApp, install, play stats ==================== */
+/* Language dictionary — interface CHROME only. Game content (scent, note, event and rival
+   names and bodies) stays English in every mode; the toggle's footnote says so. */
+const I18N = {
+  tab_showroom:{en:"Showroom",ur:"شو روم",ro:"Showroom"},
+  tab_lab:{en:"Lab",ur:"لیب",ro:"Lab"},
+  tab_empire:{en:"Empire",ur:"سلطنت",ro:"Saltanat"},
+  tab_ledger:{en:"Ledger",ur:"کھاتہ",ro:"Khata"},
+  tab_trophies:{en:"Trophies",ur:"ٹرافیاں",ro:"Trophies"},
+  advance:{en:"Advance Week",ur:"ہفتہ آگے بڑھائیں",ro:"Hafta Aage Barhayen"},
+  quickWeek:{en:"Quick Week",ur:"فوری ہفتہ",ro:"Fori Hafta"},
+  cash:{en:"Cash",ur:"نقدی",ro:"Naqdi"},
+  netWorth:{en:"Net Worth",ur:"کل مالیت",ro:"Kul Maliyat"},
+  prestige:{en:"Prestige",ur:"وقار",ro:"Waqar"},
+  week:{en:"Week",ur:"ہفتہ",ro:"Hafta"},
+  year:{en:"Year",ur:"سال",ro:"Saal"},
+  season_Spring:{en:"Spring",ur:"بہار",ro:"Bahaar"},
+  season_Summer:{en:"Summer",ur:"گرما",ro:"Garmi"},
+  season_Autumn:{en:"Autumn",ur:"خزاں",ro:"Khizan"},
+  season_Winter:{en:"Winter",ur:"سرما",ro:"Sardi"},
+  menuEmpire:{en:"Empire",ur:"سلطنت",ro:"Saltanat"},
+  menuDisplay:{en:"Display",ur:"ڈسپلے",ro:"Display"},
+  menuSlots:{en:"Save Slots",ur:"سیو سلاٹس",ro:"Save Slots"},
+  exportSave:{en:"Export Save",ur:"سیو ڈاؤن لوڈ کریں",ro:"Save Download Karen"},
+  importSave:{en:"Import Save",ur:"سیو اپ لوڈ کریں",ro:"Save Upload Karen"},
+  newGame:{en:"New Game",ur:"نیا کھیل",ro:"Naya Khel"},
+  checkUpdates:{en:"Check for updates — reload",ur:"اپڈیٹس چیک کریں — دوبارہ لوڈ",ro:"Updates Check Karen — Reload"},
+  shareEmpire:{en:"Share My Empire",ur:"میری سلطنت شیئر کریں",ro:"Meri Saltanat Share Karen"},
+  shareWhatsApp:{en:"Share on WhatsApp",ur:"واٹس ایپ پر شیئر کریں",ro:"WhatsApp Par Share Karen"},
+  installApp:{en:"Install App",ur:"ایپ انسٹال کریں",ro:"App Install Karen"},
+  replayTips:{en:"Replay Tips",ur:"تجاویز دوبارہ دیکھیں",ro:"Tips Dobara Dekhen"},
+  compactView:{en:"Compact View",ur:"مختصر منظر",ro:"Mukhtasar View"},
+  bigNumbers:{en:"Big Numbers",ur:"بڑے نمبر",ro:"Baray Numbers"},
+  playStats:{en:"Your Play Stats",ur:"آپ کے کھیل کے اعداد",ro:"Aap Ke Khel Ke Adaad"},
+  saveSlot:{en:"Save Slot",ur:"سیو سلاٹ",ro:"Save Slot"},
+  active:{en:"active",ur:"فعال",ro:"active"},
+  emptySlot:{en:"Empty slot",ur:"خالی سلاٹ",ro:"Khali Slot"},
+  emptySecond:{en:"Empty — start a second empire here",ur:"خالی — یہاں دوسری سلطنت شروع کریں",ro:"Khali — yahan doosri saltanat shuru karen"},
+  saved:{en:"Saved",ur:"محفوظ",ro:"Saved"},
+  slot:{en:"Slot",ur:"سلاٹ",ro:"Slot"},
+  on:{en:"On",ur:"آن",ro:"On"},
+  off:{en:"Off",ur:"آف",ro:"Off"},
+  language:{en:"Language",ur:"زبان",ro:"Zaban"},
+  langNote:{en:"Interface only — scent, note, event and rival names stay in English in every language.",ur:"صرف انٹرفیس بدلے گا — سینٹ، نوٹس، ایونٹس اور حریفوں کے نام ہر زبان میں انگریزی ہی رہیں گے۔",ro:"Sirf interface badlega — scent, note, event aur rival ke naam har zaban mein English hi rahenge."},
+  reportKicker:{en:"Weekly Financial Report",ur:"ہفتہ وار مالی رپورٹ",ro:"Haftawar Mali Report"},
+  reportTitle:{en:"Week {n} at the Maison",ur:"ہفتہ {n} کے نتائج",ro:"Hafta {n} Ke Nataij"},
+  revenue:{en:"Revenue",ur:"آمدنی",ro:"Aamdani"},
+  production:{en:"Production & Restock",ur:"پیداوار و بحالی",ro:"Production aur Restock"},
+  overhead:{en:"Overhead",ur:"عمومی اخراجات",ro:"Aam Akhrajat"},
+  units:{en:"units",ur:"یونٹس",ro:"units"},
+  unitsSold:{en:"Units Sold",ur:"فروخت شدہ یونٹس",ro:"Farokht Shuda Units"},
+  netProfit:{en:"Net Profit",ur:"خالص منافع",ro:"Khalis Munafa"},
+  netLoss:{en:"Net Loss",ur:"خالص نقصان",ro:"Khalis Nuqsan"},
+  continue:{en:"Continue",ur:"جاری رکھیں",ro:"Jari Rakhen"},
+  shareRecap:{en:"Share Recap",ur:"خلاصہ شیئر کریں",ro:"Khulasa Share Karen"},
+  coach1:{en:"1 — Create your first scent",ur:"1 — اپنا پہلا سینٹ بنائیں",ro:"1 — Apna pehla scent banayen"},
+  coach2:{en:"2 — Advance the week to sell it",ur:"2 — بیچنے کے لیے ہفتہ آگے بڑھائیں",ro:"2 — Bechne ke liye hafta aage barhayen"},
+  coach3:{en:"3 — Watch trends, restock, grow Prestige",ur:"3 — رجحانات دیکھیں، اسٹاک بھریں، وقار بڑھائیں",ro:"3 — Trends dekhen, restock karen, Waqar barhayen"},
+  tapDismiss:{en:"Tap to dismiss",ur:"بند کرنے کے لیے چھوئیں",ro:"Band karne ke liye chhooyen"},
+  totalWeeks:{en:"Total Weeks Played",ur:"کل کھیلے گئے ہفتے",ro:"Kul Khelay Gaye Haftay"},
+  sessions:{en:"Sessions",ur:"سیشنز",ro:"Sessions"},
+  firstPlayed:{en:"First Played",ur:"پہلی بار کھیلا",ro:"Pehli Baar Khela"},
+  highestWeek:{en:"Highest Week Reached",ur:"سب سے آگے پہنچا ہفتہ",ro:"Sab Se Aage Hafta"},
+  stopWeek:{en:"Week You Most Often Stop At",ur:"عام طور پر رکنے کا ہفتہ",ro:"Aam Tor Par Rukne Ka Hafta"},
+  statsNote:{en:"Your own play history, kept on this device.",ur:"آپ کی اپنی کھیل کی تاریخ، اسی ڈیوائس پر محفوظ۔",ro:"Aap ki apni khel ki tareekh, isi device par mehfooz."},
+  installBanner:{en:"Install MAISON D'OR for one-tap play",ur:"ایک چھو سے کھیلنے کے لیے MAISON D'OR انسٹال کریں",ro:"Ek tap se khelne ke liye MAISON D'OR install karen"},
+  installBtn:{en:"Install",ur:"انسٹال کریں",ro:"Install Karen"},
+  week3reward:{en:"Week 3 reward",ur:"ہفتہ 3 کا انعام",ro:"Hafta 3 ka inaam"}
+};
+function t(k){ const d = I18N[k]; if(!d) return k; const lk = prefs.lang === "roman" ? "ro" : prefs.lang; return d[lk] || d.en; }
+function setBtnLabel(el, txt){ if(!el) return; for(let i = 0; i < el.childNodes.length; i++){ const n = el.childNodes[i]; if(n.nodeType === 3 && n.textContent.trim()){ n.textContent = txt; return; } } el.appendChild(document.createTextNode(txt)); }
+function applyLang(){
+  document.querySelectorAll(".tab-btn").forEach(b => { const k = "tab_" + b.getAttribute("data-tab"); if(I18N[k]) b.textContent = t(k); });
+  const adv = t("advance") + " ▸";
+  if($("btnAdvance")) $("btnAdvance").textContent = adv;
+  if($("btnAdvanceThumb")) $("btnAdvanceThumb").textContent = adv;
+  const ql = $("quickWeekLabel"); if(ql) ql.textContent = t("quickWeek");
+  setBtnLabel($("btnExportTop"), t("exportSave"));
+  setBtnLabel($("btnImportTop"), t("importSave"));
+  setBtnLabel($("btnNewGameTop"), t("newGame"));
+  setBtnLabel($("btnCheckUpdates"), t("checkUpdates"));
+  setBtnLabel($("btnQuickWeekMenu"), t("quickWeek"));
+  setBtnLabel($("btnShareEmpireMenu"), t("shareEmpire"));
+  setBtnLabel($("btnWhatsAppMenu"), t("shareWhatsApp"));
+  setBtnLabel($("btnInstall"), t("installApp"));
+  setBtnLabel($("btnReplayTips"), t("replayTips"));
+  setBtnLabel($("btnPlayStats"), t("playStats"));
+  setBtnLabel($("btnShareEmpire"), t("shareEmpire"));
+  setBtnLabel($("btnWhatsApp"), t("shareWhatsApp"));
+  setBtnLabel($("btnWhatsAppRecap"), t("shareWhatsApp"));
+  if($("menuEmpireHead")) $("menuEmpireHead").textContent = t("menuEmpire");
+  if($("menuDisplayHead")) $("menuDisplayHead").textContent = t("menuDisplay");
+  if($("menuSlotsHead")) $("menuSlotsHead").textContent = t("menuSlots");
+  if($("langHead")) $("langHead").textContent = t("language");
+  if($("langNote")) $("langNote").textContent = t("langNote");
+  if($("hudCashLabel")) $("hudCashLabel").textContent = t("cash");
+  if($("hudWorthLabel")) $("hudWorthLabel").textContent = t("netWorth");
+  if($("hudPrestigeLabel")) $("hudPrestigeLabel").textContent = t("prestige");
+  if($("btnReportClose")) $("btnReportClose").textContent = t("continue");
+  if($("btnShareRecap")) $("btnShareRecap").textContent = t("shareRecap");
+  if($("installBannerText")) $("installBannerText").textContent = t("installBanner");
+  if($("btnInstallBanner")) $("btnInstallBanner").textContent = t("installBtn");
+  const rw = $("installReward"); if(rw) rw.textContent = t("week3reward");
+  const cd = document.querySelector("#coachBubble .coach-dismiss"); if(cd) cd.textContent = t("tapDismiss");
+  document.querySelectorAll("[data-lang-btn]").forEach(b => b.classList.toggle("active", b.getAttribute("data-lang-btn") === prefs.lang));
+  const rtl = prefs.lang === "ur";
+  [".sticky-stack", "#menuDropdown", "#reportOverlay .sheet", "#quickOverlay .sheet", "#statsOverlay .sheet", "#installOverlay .sheet", "#shareOverlay .sheet"].forEach(sel => { const el = document.querySelector(sel); if(el){ if(rtl) el.setAttribute("dir", "rtl"); else el.removeAttribute("dir"); } });
+  applyPrefs();
+  renderHUD();
+  renderMenuSlots();
+  updateSavedStamp();
+}
+document.querySelectorAll("[data-lang-btn]").forEach(b => b.addEventListener("click", e => { e.stopPropagation(); prefs.lang = b.getAttribute("data-lang-btn"); savePrefs(); applyLang(); }));
+
+/* WhatsApp share loop — pre-filled empire summary + the game's link */
+const GAME_URL = "https://farrakhimtiaz74.github.io/maison-d-or/";
+function openWhatsApp(){
+  const txt = "🏆 I am a " + prestigeTitle(S.prestige) + " at MAISON D'OR — Prestige " + Math.round(S.prestige) + " · Net Worth " + fmt(netWorth()) + " · " + t("week") + " " + S.week + ", " + t("year") + " " + yearOf(S.week) + ".\nPlay MAISON D'OR free: " + GAME_URL;
+  try{ window.open("https://wa.me/?text=" + encodeURIComponent(txt), "_blank", "noopener"); }catch(e){}
+}
+$("btnWhatsApp").addEventListener("click", openWhatsApp);
+$("btnWhatsAppMenu").addEventListener("click", openWhatsApp);
+$("btnWhatsAppRecap").addEventListener("click", openWhatsApp);
+
+/* Install: Week-3 highlight on the Menu row + one-time banner. Dismissal lives in the save. */
+function updateInstallUI(){
+  const btn = $("btnInstall"); if(!btn || typeof S === "undefined" || !S) return;
+  const eligible = S.week >= 3 && !S.installDismissed && !S.installAccepted;
+  btn.classList.toggle("install-hot", !!eligible);
+  const rw = $("installReward"); if(rw) rw.hidden = !eligible;
+}
+function triggerInstall(){
+  if(deferredInstallPrompt){
+    const dp = deferredInstallPrompt; deferredInstallPrompt = null;
+    try{
+      /* The captured beforeinstallprompt event's own show method (not a window dialog):
+         it only exists where the platform fired the event, which never happens in a
+         sandboxed frame — there the Install row falls back to the instructions sheet. */
+      const showNative = dp.prompt.bind(dp);
+      showNative();
+      if(dp.userChoice) dp.userChoice.then(res => { if(res && res.outcome === "accepted"){ S.installAccepted = true; } else { S.installDismissed = true; } save(); updateInstallUI(); }).catch(() => {});
+      return true;
+    }catch(e){}
+  }
+  return false;
+}
+function maybeInstallBanner(){
+  if(!S || S.week < 3 || S.installDismissed || S.installAccepted || S.installBannerShown) return;
+  if(document.querySelector(".overlay.open")) return;
+  S.installBannerShown = true; save();
+  const b = $("installBanner"); if(b) b.hidden = false;
+}
+$("btnInstallBanner").addEventListener("click", () => { const b = $("installBanner"); if(b) b.hidden = true; if(!triggerInstall()) $("installOverlay").classList.add("open"); });
+$("btnInstallDismiss").addEventListener("click", () => { S.installDismissed = true; save(); updateInstallUI(); const b = $("installBanner"); if(b) b.hidden = true; });
+
+/* Built-in play stats — the player's own data, on their own device, in shared prefs */
+function openPlayStats(){
+  const st = prefs.stats;
+  const freq = {}; (st.stopWeeks || []).forEach(w => { freq[w] = (freq[w] || 0) + 1; });
+  let modeW = 0, modeC = 0;
+  Object.keys(freq).forEach(k => { if(freq[k] > modeC){ modeC = freq[k]; modeW = Number(k); } });
+  const rows = [
+    [t("totalWeeks"), String(st.totalWeeks || 0)],
+    [t("sessions"), String(st.sessions || 0)],
+    [t("firstPlayed"), st.firstPlay || "—"],
+    [t("highestWeek"), st.highestWeek ? t("week") + " " + st.highestWeek : "—"],
+    [t("stopWeek"), modeW ? t("week") + " " + modeW : "—"]
+  ];
+  $("statsBody").innerHTML = rows.map(r => '<div class="kv"><span>' + escapeHtml(r[0]) + '</span><span>' + escapeHtml(r[1]) + '</span></div>').join("") +
+    '<p style="color:var(--faint);font-size:.8rem;line-height:1.5;margin-top:12px">' + escapeHtml(t("statsNote")) + '</p>';
+  $("statsTitle").textContent = t("playStats");
+  $("statsOverlay").classList.add("open");
+}
+$("btnPlayStats").addEventListener("click", openPlayStats);
+$("btnStatsClose").addEventListener("click", () => $("statsOverlay").classList.remove("open"));
+let sessionEndRecorded = false;
+function recordSessionEnd(){
+  if(sessionEndRecorded) return; sessionEndRecorded = true;
+  try{
+    if(S && S.week){
+      prefs.stats.stopWeeks = (prefs.stats.stopWeeks || []).concat([S.week]).slice(-60);
+      if(S.week > (prefs.stats.highestWeek || 0)) prefs.stats.highestWeek = S.week;
+      savePrefs();
+    }
+  }catch(e){}
+}
+window.addEventListener("pagehide", recordSessionEnd);
+window.addEventListener("beforeunload", recordSessionEnd);
+
 /* ==================== INIT ==================== */
 (function init(){
   initSlots();
   loadPrefs(); loadBests();
+  /* v7 Wave B: version displays read from the single GAME_VERSION constant */
+  const mvEl = $("menuVerLabel"); if(mvEl) mvEl.textContent = "MAISON D'OR · Version v" + GAME_VERSION;
+  const flEl = $("footLine"); if(flEl) flEl.textContent = "MAISON D'OR · v" + GAME_VERSION + " · A luxury perfume empire simulation · Progress saves automatically in this browser";
   const PREV_SEEN = (function(){ try{ return Number(localStorage.getItem(LASTSEEN_KEY) || 0); }catch(e){ return 0; } })();
   const had = load();
   if(!had || !S.hot || !S.hot.length){
@@ -2855,11 +3344,15 @@ $("btnUpdateDismiss").addEventListener("click", () => { const n = $("updateNotic
   }
   // Daily login bonus (real calendar days)
   try{ const today=new Date().toISOString().slice(0,10); if(S.lastLoginDate && S.lastLoginDate!==today){ const yest=new Date(Date.now()-86400000).toISOString().slice(0,10); S.loginStreak = (S.lastLoginDate===yest)? (S.loginStreak||0)+1 : 1; const bonusCash=250+(S.loginStreak*50); S.cash+=bonusCash; S.prestige=clamp(S.prestige+1,0,100); S.lastLoginDate=today; setTimeout(()=>toast("🎁 Daily bonus — Day "+S.loginStreak+" streak: <b>+"+fmt(bonusCash)+"</b> cash & +1 Prestige hype. Come back tomorrow to keep the streak.","good"),700); save(); } else if(!S.lastLoginDate){ S.lastLoginDate=today; S.loginStreak=1; save(); } }catch(e){}
-  if(!S.mission) { S.mission = genMission(); save(); }
+  if(!S.mission) { S.mission = firstMission(); save(); }
   displayedCash = S.cash;
+  /* v7 Wave C: play-stats session bookkeeping (shared prefs, this device only) */
+  try{ prefs.stats.sessions = (prefs.stats.sessions || 0) + 1; if(!prefs.stats.firstPlay) prefs.stats.firstPlay = new Date().toISOString().slice(0, 10); if(S.week > (prefs.stats.highestWeek || 0)) prefs.stats.highestWeek = S.week; savePrefs(); }catch(e){}
   renderAll(); checkAchievements();
   /* v6 Wave 3 init: prefs, slot menu, bests seed, swipe, modal watcher, version check */
-  applyPrefs(); renderMenuSlots(); updateSavedStamp();
+  applyPrefs(); renderMenuSlots(); updateSavedStamp(); applyEmpireSub();
+  /* v7 Wave C: restore the saved interface language across slots */
+  try{ applyLang(); }catch(e){}
   updateBestsFromWeek(null, S.week);
   initModalWatcher(); initSwipe(); startVersionCheck();
   /* Item 44: Comeback Bonus — last played 3+ real days ago, granted once per absence */
@@ -2877,7 +3370,13 @@ $("btnUpdateDismiss").addEventListener("click", () => { const n = $("updateNotic
     }
   }catch(e){}
   if(!had) setTimeout(() => toast("Welcome to <b>MAISON D'OR</b>. Compose a fragrance in the Scent Lab, then advance the week to sell it."), 500);
+  setTimeout(hideSplash, 600);
+  setTimeout(coachMaybe, 1500);
+  setTimeout(() => { try{ maybeInstallBanner(); }catch(e){} }, 1900);
 })();
+/* v7 Wave D: register the real service worker shipped alongside the game on GitHub Pages.
+   Silent by design — if sw.js is absent (preview environments), nothing changes. */
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function(){}); }
 </script>
 </body>
 </html>
