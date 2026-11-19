@@ -2,7 +2,7 @@
 // The page document is NETWORK-FIRST so updates show on the next launch, not one launch late;
 // static assets fall back to cache for offline play.
 const CACHE_PREFIX = 'maison-dor-pwa-';
-const CACHE_NAME = `${CACHE_PREFIX}v3`;
+const CACHE_NAME = `${CACHE_PREFIX}v4`;
 const SCOPE = self.registration.scope;
 const CORE = [SCOPE, `${SCOPE}index.html`, `${SCOPE}manifest.webmanifest`, `${SCOPE}icon.svg`];
 
